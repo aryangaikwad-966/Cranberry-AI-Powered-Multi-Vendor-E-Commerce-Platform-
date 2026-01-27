@@ -1,0 +1,238 @@
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { CheckCircle, Package, Truck, ArrowRight, Home, ShoppingBag, Loader2 } from 'lucide-react';
+import { ordersApi } from '../../services/api';
+import { Button } from '../../components/ui/button';
+import { Separator } from '../../components/ui/separator';
+import confetti from '../../lib/confetti';
+
+const OrderConfirmationPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [order, setOrder] = useState(null);
+  const [payment, setPayment] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const orderId = location.state?.orderId;
+  const paymentId = location.state?.paymentId;
+
+  useEffect(() => {
+    if (!orderId) {
+      navigate('/orders');
+      return;
+    }
+
+    loadOrderDetails();
+
+    // Trigger confetti animation
+    setTimeout(() => {
+      confetti();
+    }, 500);
+  }, [orderId]);
+
+  const loadOrderDetails = async () => {
+    try {
+      const data = await ordersApi.getById(orderId);
+      setOrder(data.order || data);
+      setPayment(data.payment);
+    } catch (error) {
+      console.error('Failed to load order:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 text-[#0071E3] animate-spin mx-auto mb-4" />
+          <p className="text-slate-600">Loading order details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-slate-50" data-testid="order-confirmation">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Success Header */}
+        <div className="text-center mb-12">
+          <div className="w-24 h-24 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center animate-bounce-in">
+            <CheckCircle className="w-14 h-14 text-green-600" />
+          </div>
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+            Order Confirmed! 🎉
+          </h1>
+          <p className="text-lg text-slate-600">
+            Thank you for your purchase. Your order has been successfully placed.
+          </p>
+        </div>
+
+        {/* Order Details Card */}
+        <div className="bg-white rounded-2xl shadow-card overflow-hidden mb-8">
+          {/* Order ID Header */}
+          <div className="bg-gradient-to-r from-[#0071E3] to-[#34C759] px-6 py-4">
+            <div className="flex items-center justify-between text-white">
+              <div>
+                <p className="text-sm opacity-80">Order Number</p>
+                <p className="text-xl font-bold font-mono">#{orderId}</p>
+              </div>
+              {paymentId && (
+                <div className="text-right">
+                  <p className="text-sm opacity-80">Payment ID</p>
+                  <p className="text-sm font-mono">{paymentId}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Order Info */}
+          <div className="p-6">
+            {/* Status Timeline */}
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                </div>
+                <p className="text-xs text-slate-600 mt-2">Confirmed</p>
+              </div>
+              <div className="flex-1 h-1 bg-slate-200 mx-2">
+                <div className="h-full bg-green-500 w-1/4 rounded-full" />
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                  <Package className="w-5 h-5 text-slate-400" />
+                </div>
+                <p className="text-xs text-slate-400 mt-2">Processing</p>
+              </div>
+              <div className="flex-1 h-1 bg-slate-200 mx-2" />
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                  <Truck className="w-5 h-5 text-slate-400" />
+                </div>
+                <p className="text-xs text-slate-400 mt-2">Shipped</p>
+              </div>
+              <div className="flex-1 h-1 bg-slate-200 mx-2" />
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                  <Home className="w-5 h-5 text-slate-400" />
+                </div>
+                <p className="text-xs text-slate-400 mt-2">Delivered</p>
+              </div>
+            </div>
+
+            <Separator className="my-6" />
+
+            {/* Order Items */}
+            {order?.items && order.items.length > 0 && (
+              <div className="mb-6">
+                <h3 className="font-semibold text-slate-900 mb-4">Order Items</h3>
+                <div className="space-y-3">
+                  {order.items.map((item, index) => (
+                    <div key={index} className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl">
+                      <img
+                        src={item.product?.imageUrl || item.product?.images?.[0] || '/placeholder.png'}
+                        alt={item.product?.name}
+                        className="w-16 h-16 object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <p className="font-medium text-slate-900">{item.product?.name}</p>
+                        <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                      </div>
+                      <p className="font-semibold text-slate-900">
+                        ₹{(item.price * 83).toFixed(0)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <Separator className="my-6" />
+
+            {/* Summary */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-slate-500">Shipping Address</p>
+                <p className="font-medium text-slate-900 mt-1">
+                  {order?.shippingAddress || 'Address will be updated'}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-slate-500">Total Amount</p>
+                <p className="text-2xl font-bold text-[#0071E3]">
+                  ₹{((order?.totalAmount || 0) * 83).toFixed(0)}
+                </p>
+              </div>
+            </div>
+
+            {/* Payment Status */}
+            {payment && (
+              <div className="mt-6 p-4 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-medium text-green-800">Payment Successful</span>
+                </div>
+                <p className="text-sm text-green-600 mt-1">
+                  Paid via Razorpay • {payment.currency} {payment.amount?.toFixed(2)}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* What's Next */}
+        <div className="bg-white rounded-2xl p-6 shadow-card mb-8">
+          <h3 className="font-semibold text-slate-900 mb-4">What happens next?</h3>
+          <div className="space-y-3 text-sm text-slate-600">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-xs font-bold text-blue-600">1</span>
+              </div>
+              <p>You'll receive an email confirmation with your order details.</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-xs font-bold text-blue-600">2</span>
+              </div>
+              <p>Our team will process your order and prepare it for shipping.</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-xs font-bold text-blue-600">3</span>
+              </div>
+              <p>You'll get tracking details once your order is shipped.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Button
+            asChild
+            className="flex-1 h-12 bg-[#0071E3] hover:bg-[#0077ED] text-white rounded-xl"
+          >
+            <Link to="/orders">
+              <Package className="w-5 h-5 mr-2" />
+              View My Orders
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="flex-1 h-12 rounded-xl"
+          >
+            <Link to="/shop">
+              <ShoppingBag className="w-5 h-5 mr-2" />
+              Continue Shopping
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrderConfirmationPage;

@@ -1,0 +1,16 @@
+# Common ignores
+.DS_Store
+.idea/
+*.iml
+
+# Backend
+Cranberry-Backend/target/
+Cranberry-Backend/.env
+Cranberry-Backend/.vscode/
+
+# Frontend
+Cranberry-Frontend/node_modules/
+Cranberry-Frontend/dist/
+Cranberry-Frontend/.env
+Cranberry-Frontend/.env.development
+Cranberry-Frontend/.env.production
