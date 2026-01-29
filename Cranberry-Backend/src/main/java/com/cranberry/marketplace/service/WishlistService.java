@@ -37,6 +37,7 @@ public class WishlistService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public WishlistResponse getWishlist(Long userId) {
         Wishlist wishlist = getOrCreateWishlist(userId);
         return toWishlistResponse(wishlist);

@@ -418,8 +418,8 @@ export const aiApi = {
 // ============================================
 export const vendorsApi = {
   // GET /api/admin/vendors
-  getAll: async () => {
-    return apiClient.get('/api/admin/vendors');
+  getAll: async (status) => {
+    return apiClient.get('/api/admin/vendors', { params: { status } });
   },
 
   // GET /api/admin/vendors/{id}
@@ -445,6 +445,14 @@ export const adminApi = {
   // Dashboard stats
   getStats: async () => {
     return apiClient.get('/api/admin/dashboard');
+  },
+  // Get all products (Admin version)
+  getAllProducts: async () => {
+    return apiClient.get('/api/admin/products');
+  },
+  // Moderate product status
+  moderateProduct: async (id, status) => {
+    return apiClient.put(`/api/admin/products/${id}/moderate`, null, { params: { status } });
   },
 };
 

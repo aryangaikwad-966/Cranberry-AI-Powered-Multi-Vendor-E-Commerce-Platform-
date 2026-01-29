@@ -1,6 +1,7 @@
 package com.cranberry.marketplace.exception;
 
 import com.cranberry.marketplace.dto.ApiResponse;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -40,10 +41,10 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-    @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
+    @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class, JwtException.class})
     public ResponseEntity<ApiResponse<?>> handleAuthException(Exception ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.error("Authentication failed: Invalid credentials"));
+                .body(ApiResponse.error("Authentication failed: " + ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

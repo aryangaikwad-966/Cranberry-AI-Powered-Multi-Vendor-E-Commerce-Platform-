@@ -91,36 +91,88 @@ const OrderConfirmationPage = () => {
           <div className="p-6">
             {/* Status Timeline */}
             <div className="flex items-center justify-between mb-8">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                </div>
-                <p className="text-xs text-slate-600 mt-2">Confirmed</p>
-              </div>
-              <div className="flex-1 h-1 bg-slate-200 mx-2">
-                <div className="h-full bg-green-500 w-1/4 rounded-full" />
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
-                  <Package className="w-5 h-5 text-slate-400" />
-                </div>
-                <p className="text-xs text-slate-400 mt-2">Processing</p>
-              </div>
-              <div className="flex-1 h-1 bg-slate-200 mx-2" />
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
-                  <Truck className="w-5 h-5 text-slate-400" />
-                </div>
-                <p className="text-xs text-slate-400 mt-2">Shipped</p>
-              </div>
-              <div className="flex-1 h-1 bg-slate-200 mx-2" />
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
-                  <Home className="w-5 h-5 text-slate-400" />
-                </div>
-                <p className="text-xs text-slate-400 mt-2">Delivered</p>
-              </div>
+              {[
+                { key: 'PAID', label: 'Confirmed', icon: CheckCircle },
+                { key: 'PROCESSING', label: 'Processing', icon: Package },
+                { key: 'SHIPPED', label: 'Shipped', icon: Truck },
+                { key: 'DELIVERED', label: 'Delivered', icon: Home },
+              ].map((step, index, array) => {
+                const statuses = ['CREATED', 'PAYMENT_PENDING', 'PAID', 'PROCESSING', 'SHIPPED', 'DELIVERED'];
+                const currentIndex = statuses.indexOf(order?.status || 'PAID');
+                const stepIndex = statuses.indexOf(step.key);
+                const isCompleted = currentIndex >= stepIndex;
+                const isCurrent = currentIndex === stepIndex;
+
+                return (
+                  <div key={step.key} className="flex-1 flex items-center">
+                    <div className="flex flex-col items-center flex-1">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isCompleted ? 'bg-green-100' : 'bg-slate-100'
+                        }`}>
+                        <step.icon className={`w-5 h-5 ${isCompleted ? 'text-green-600' : 'text-slate-400'}`} />
+                      </div>
+                      <p className={`text-xs mt-2 font-medium ${isCompleted ? 'text-slate-900' : 'text-slate-400'}`}>
+                        {step.label}
+                      </p>
+                    </div>
+                    {index < array.length - 1 && (
+                      <div className="w-full h-1 bg-slate-100 mt-[-20px]">
+                        <div
+                          className="h-full bg-green-500 transition-all duration-500"
+                          style={{ width: currentIndex > stepIndex ? '100%' : currentIndex === stepIndex ? '50%' : '0%' }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
+
+            {/* Tracking Card */}
+            {(order?.status === 'SHIPPED' || order?.status === 'PROCESSING') && (
+              <div className="mb-8 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-700">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center">
+                      {order?.status === 'SHIPPED' ? (
+                        <Truck className="w-7 h-7 text-[#0071E3]" />
+                      ) : (
+                        <Package className="w-7 h-7 text-[#0071E3]" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-sm text-[#0071E3] font-bold font-display uppercase tracking-wider">
+                        {order?.status === 'SHIPPED' ? 'In Transit' : 'Preparing Order'}
+                      </p>
+                      <p className="text-xs text-slate-500 font-mono mt-1">
+                        Tracking: {order?.trackingNumber || `CRB-${orderId}-PENDING`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tighter">Current Location</p>
+                    <p className="text-sm font-semibold text-slate-900 flex items-center justify-end gap-1">
+                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                      {order?.status === 'SHIPPED' ? 'Sorting Center, Mumbai' : 'Cranberry Hub, Bengaluru'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-blue-100/50">
+                  <div>
+                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tighter">Estimated Delivery</p>
+                    <p className="text-sm font-bold text-slate-900">
+                      {order?.estimatedDeliveryDate
+                        ? new Date(order.estimatedDeliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+                        : 'Checking...'}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tighter">Shipping Mode</p>
+                    <p className="text-sm font-bold text-slate-900 border-b border-dotted border-slate-300 inline-block">SwiftX Express</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <Separator className="my-6" />
 

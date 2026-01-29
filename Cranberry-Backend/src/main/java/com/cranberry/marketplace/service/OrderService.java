@@ -81,13 +81,21 @@ public class OrderService {
         return savedOrder;
     }
 
+    @Transactional(readOnly = true)
     public Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId)
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+        // Force initialization of items
+        order.getItems().size();
+        return order;
     }
 
+    @Transactional(readOnly = true)
     public List<Order> getOrdersByUser(Long userId) {
-        return orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        List<Order> orders = orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        // Force initialization of items for each order
+        orders.forEach(order -> order.getItems().size());
+        return orders;
     }
 
     public List<OrderItem> getOrderItems(Long orderId) {
@@ -96,8 +104,11 @@ public class OrderService {
 
     // ============== ADMIN METHODS ==============
 
+    @Transactional(readOnly = true)
     public List<Order> getAllOrders() {
-        return orderRepository.findAllByOrderByCreatedAtDesc();
+        List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
+        orders.forEach(order -> order.getItems().size());
+        return orders;
     }
 
     public List<Order> getOrdersByStatus(String status) {
@@ -138,6 +149,13 @@ public class OrderService {
             }
         } catch (IllegalArgumentException e) {
             throw new BadRequestException("Invalid order status: " + newStatus);
+        }
+
+        if (OrderStatus.SHIPPED.name().equals(newStatus)) {
+            if (order.getTrackingNumber() == null) {
+                order.setTrackingNumber("CRB" + System.currentTimeMillis() + (int)(Math.random() * 1000));
+                order.setEstimatedDeliveryDate(LocalDateTime.now().plusDays(3 + (int)(Math.random() * 5)));
+            }
         }
 
         order.setStatus(newStatus);

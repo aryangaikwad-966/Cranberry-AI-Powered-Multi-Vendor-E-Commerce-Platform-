@@ -255,9 +255,13 @@ const CheckoutPage = () => {
     }
   };
 
-  // Redirect if cart is empty
+  useEffect(() => {
+    if (items.length === 0 && paymentStep !== 'success') {
+      navigate('/cart');
+    }
+  }, [items.length, paymentStep, navigate]);
+
   if (items.length === 0 && paymentStep !== 'success') {
-    navigate('/cart');
     return null;
   }
 

@@ -36,6 +36,7 @@ public class CartService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public CartResponse getCart(Long userId) {
         Cart cart = getOrCreateCart(userId);
         return toCartResponse(cart);

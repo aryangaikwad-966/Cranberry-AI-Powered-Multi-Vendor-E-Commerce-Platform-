@@ -37,7 +37,7 @@ const AdminProducts = () => {
 
   const loadProducts = async () => {
     try {
-      const response = await productsApi.getAll({ limit: 100 });
+      const response = await adminApi.getAllProducts();
       // Handle both array and paginated response { products: [...] }
       const data = Array.isArray(response) ? response : (response.products || []);
       setProducts(data);

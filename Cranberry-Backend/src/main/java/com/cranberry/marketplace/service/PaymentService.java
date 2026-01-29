@@ -41,7 +41,8 @@ public class PaymentService {
         this.razorpayKey = key;
         this.razorpaySecret = secret;
         this.razorpayClient = new RazorpayClient(key, secret);
-        logger.info("Razorpay client initialized successfully");
+        String maskedKey = (key != null && key.length() > 5) ? key.substring(0, 5) + "..." : "invalid";
+        logger.info("Razorpay client initialized with key: {}", maskedKey);
     }
 
     /**
@@ -156,13 +157,14 @@ public class PaymentService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
-        // Delete existing failed payment if exists
+        // Delete existing failed/pending payment if exists
         paymentRepository.findByOrderId(orderId).ifPresent(existingPayment -> {
-            if ("FAILED".equals(existingPayment.getStatus()) || "PENDING".equals(existingPayment.getStatus())) {
-                paymentRepository.delete(existingPayment);
-            } else if ("PAID".equals(existingPayment.getStatus())) {
+            String status = existingPayment.getStatus();
+            if ("PAID".equals(status)) {
                 throw new BadRequestException("Payment already completed for this order");
             }
+            // Allow retry for FAILED, PENDING, or CREATED
+            paymentRepository.delete(existingPayment);
         });
 
         // Reset order status if needed

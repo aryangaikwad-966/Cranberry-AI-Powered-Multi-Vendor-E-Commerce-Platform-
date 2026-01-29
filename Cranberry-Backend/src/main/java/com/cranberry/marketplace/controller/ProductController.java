@@ -1,6 +1,7 @@
 package com.cranberry.marketplace.controller;
 
 import com.cranberry.marketplace.dto.ApiResponse;
+import com.cranberry.marketplace.dto.ProductResponse;
 import com.cranberry.marketplace.model.Product;
 import com.cranberry.marketplace.model.Vendor;
 import com.cranberry.marketplace.security.JwtUtil;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -48,14 +50,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Product>>> getAllProducts(
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Boolean featured,
             @RequestParam(required = false) Integer limit) {
-        List<Product> products = productService.getFilteredProducts(category, search, minPrice, maxPrice, featured, limit);
+        List<ProductResponse> products = productService.getFilteredProducts(category, search, minPrice, maxPrice, featured, limit)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(ApiResponse.success(products));
     }
 
@@ -66,8 +71,11 @@ public class ProductController {
     }
 
     @GetMapping("/vendor/{vendorId}")
-    public ResponseEntity<ApiResponse<List<Product>>> getProductsByVendor(@PathVariable Long vendorId) {
-        List<Product> products = productService.getProductsByVendor(vendorId);
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getProductsByVendor(@PathVariable Long vendorId) {
+        List<ProductResponse> products = productService.getProductsByVendor(vendorId)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(ApiResponse.success(products));
     }
 
@@ -100,5 +108,20 @@ public class ProductController {
         String token = authHeader.substring(7);
         String email = JwtUtil.extractEmail(token);
         return authService.findByEmail(email).getId();
+    }
+
+    private ProductResponse convertToResponse(Product p) {
+        return new ProductResponse(
+                p.getId(),
+                p.getName(),
+                p.getDescription(),
+                p.getPrice(),
+                p.getStock(),
+                p.getImageUrl(),
+                p.getCategory(),
+                p.getStatus(),
+                p.getVendor() != null ? p.getVendor().getId() : null,
+                p.getVendor() != null ? p.getVendor().getShopName() : "Unknown Vendor"
+        );
     }
 }

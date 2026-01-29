@@ -317,6 +317,15 @@ const OrdersPage = () => {
                     </Button>
                   )}
                   <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleViewOrder(order)}
+                    className="border-[#0071E3] text-[#0071E3] hover:bg-blue-50"
+                  >
+                    <Truck className="h-4 w-4 mr-1" />
+                    Track Order
+                  </Button>
+                  <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => handleViewOrder(order)}
@@ -419,8 +428,8 @@ const OrdersPage = () => {
                 <>
                   <Separator />
                   <div className={`rounded-xl p-4 ${orderPayment.status === 'PAID'
-                      ? 'bg-green-50 border border-green-200'
-                      : 'bg-slate-50 border border-slate-200'
+                    ? 'bg-green-50 border border-green-200'
+                    : 'bg-slate-50 border border-slate-200'
                     }`}>
                     <div className="flex items-center gap-2 mb-3">
                       <CreditCard className={`h-5 w-5 ${orderPayment.status === 'PAID' ? 'text-green-600' : 'text-slate-600'

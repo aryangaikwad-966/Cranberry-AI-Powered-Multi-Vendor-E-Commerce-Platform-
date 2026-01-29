@@ -14,10 +14,21 @@ public class Vendor {
     private String contactPhone;
     private String address;
     private String status; // PENDING, APPROVED
+    
+    @Column(name = "logo_url")
+    private String logo;
+    
+    @Column(name = "created_at", updatable = false)
+    private java.time.LocalDateTime joinedAt;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @PrePersist
+    protected void onCreate() {
+        joinedAt = java.time.LocalDateTime.now();
+    }
 
     // Getters and Setters
     public Long getId() {
@@ -74,5 +85,21 @@ public class Vendor {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public java.time.LocalDateTime getJoinedAt() {
+        return joinedAt;
+    }
+
+    public void setJoinedAt(java.time.LocalDateTime joinedAt) {
+        this.joinedAt = joinedAt;
     }
 }

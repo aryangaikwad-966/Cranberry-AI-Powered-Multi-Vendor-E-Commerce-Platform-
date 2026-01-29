@@ -87,7 +87,8 @@ public class ProductService {
     public List<Product> getFilteredProducts(String category, String search, Double minPrice,
                                               Double maxPrice, Boolean featured, Integer limit) {
         List<Product> products = productRepository.findAll().stream()
-                .filter(p -> p.getVendor() == null || "approved".equalsIgnoreCase(p.getVendor().getStatus()) || "active".equalsIgnoreCase(p.getVendor().getStatus()))
+                .filter(p -> (p.getVendor() == null || "approved".equalsIgnoreCase(p.getVendor().getStatus()) || "active".equalsIgnoreCase(p.getVendor().getStatus()))
+                             && "active".equalsIgnoreCase(p.getStatus()))
                 .collect(Collectors.toList());
 
         // Filter by search query

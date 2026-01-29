@@ -2,6 +2,9 @@ package com.cranberry.marketplace.controller;
 
 import com.cranberry.marketplace.dto.AdminDashboardResponse;
 import com.cranberry.marketplace.dto.ApiResponse;
+import com.cranberry.marketplace.dto.ProductResponse;
+import com.cranberry.marketplace.dto.VendorResponse;
+import com.cranberry.marketplace.model.Product;
 import com.cranberry.marketplace.model.Vendor;
 import com.cranberry.marketplace.service.AdminService;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +29,16 @@ public class AdminController {
     }
 
     @GetMapping("/vendors")
-    public ResponseEntity<ApiResponse<List<Vendor>>> getAllVendors() {
-        List<Vendor> vendors = adminService.getAllVendors();
+    public ResponseEntity<ApiResponse<List<VendorResponse>>> getAllVendors(
+            @RequestParam(required = false) String status) {
+        List<VendorResponse> vendors = adminService.getAllVendors(status);
         return ResponseEntity.ok(ApiResponse.success(vendors));
+    }
+
+    @GetMapping("/products")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts() {
+        List<ProductResponse> products = adminService.getAllProducts();
+        return ResponseEntity.ok(ApiResponse.success(products));
     }
 
     @PutMapping("/vendors/{id}/approve")
@@ -47,5 +57,11 @@ public class AdminController {
     public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long id) {
         adminService.deleteProduct(id);
         return ResponseEntity.ok(ApiResponse.success("Product deleted"));
+    }
+
+    @PutMapping("/products/{id}/moderate")
+    public ResponseEntity<ApiResponse<Product>> moderateProduct(@PathVariable Long id, @RequestParam String status) {
+        Product product = adminService.moderateProduct(id, status);
+        return ResponseEntity.ok(ApiResponse.success("Product status updated to " + status, product));
     }
 }

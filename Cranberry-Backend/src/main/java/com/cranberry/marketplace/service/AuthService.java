@@ -33,12 +33,25 @@ public class AuthService {
         return userRepository.save(user);
     }
 
+
     public User login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadRequestException("Invalid credentials");
+        }
+
+        // If user is a vendor, check approval status
+        if ("VENDOR".equalsIgnoreCase(user.getRole())) {
+            // Check vendor status
+            com.cranberry.marketplace.model.Vendor vendor = user.getVendor();
+            if (vendor == null) {
+                throw new BadRequestException("Vendor profile not found. Please register as a vendor.");
+            }
+            if (!"APPROVED".equalsIgnoreCase(vendor.getStatus())) {
+                throw new BadRequestException("Your vendor account is not approved yet. Please wait for admin approval.");
+            }
         }
 
         return user;

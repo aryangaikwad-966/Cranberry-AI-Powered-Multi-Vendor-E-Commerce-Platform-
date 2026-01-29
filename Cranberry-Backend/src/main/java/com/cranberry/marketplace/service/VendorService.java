@@ -1,7 +1,14 @@
 package com.cranberry.marketplace.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.cranberry.marketplace.dto.VendorDashboardResponse;
 import com.cranberry.marketplace.dto.VendorRequest;
+import com.cranberry.marketplace.exception.BadRequestException;
+import com.cranberry.marketplace.exception.ResourceNotFoundException;
 import com.cranberry.marketplace.model.Order;
 import com.cranberry.marketplace.model.Product;
 import com.cranberry.marketplace.model.User;
@@ -10,12 +17,6 @@ import com.cranberry.marketplace.repository.OrderRepository;
 import com.cranberry.marketplace.repository.ProductRepository;
 import com.cranberry.marketplace.repository.UserRepository;
 import com.cranberry.marketplace.repository.VendorRepository;
-import com.cranberry.marketplace.exception.ResourceNotFoundException;
-import com.cranberry.marketplace.exception.BadRequestException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class VendorService {
@@ -36,7 +37,7 @@ public class VendorService {
     @Transactional
     public Vendor createVendor(VendorRequest request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getUserId()));
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getUserId()));
 
         // Check if vendor already exists for this user
         if (vendorRepository.findByUserId(request.getUserId()).isPresent()) {
@@ -48,14 +49,18 @@ public class VendorService {
         vendor.setContactEmail(request.getContactEmail());
         vendor.setContactPhone(request.getContactPhone());
         vendor.setAddress(request.getAddress());
+        vendor.setLogo(request.getLogo());
         vendor.setUser(user);
         vendor.setStatus("pending");
 
-        // Update user role to VENDOR
-        user.setRole("VENDOR");
-        userRepository.save(user);
+        // Save vendor first
+        Vendor savedVendor = vendorRepository.save(vendor);
 
-        return vendorRepository.save(vendor);
+        // Set both sides of the relationship
+        user.setRole("VENDOR");
+        user.setVendor(savedVendor);
+        userRepository.save(user);
+        return savedVendor;
     }
 
     public List<Vendor> getAllVendors() {

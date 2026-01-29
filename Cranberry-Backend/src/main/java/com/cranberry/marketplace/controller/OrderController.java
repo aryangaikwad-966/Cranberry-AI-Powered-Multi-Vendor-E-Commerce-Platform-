@@ -45,34 +45,91 @@ public class OrderController {
     // ============== CUSTOMER ENDPOINTS ==============
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Order>>> getCurrentUserOrders(
+    public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getCurrentUserOrders(
             @RequestHeader("Authorization") String authHeader) {
         Long userId = extractUserId(authHeader);
         List<Order> orders = orderService.getOrdersByUser(userId);
-        return ResponseEntity.ok(ApiResponse.success(orders));
+        
+        List<Map<String, Object>> data = orders.stream().map(order -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", order.getId());
+            map.put("status", order.getStatus());
+            map.put("totalAmount", order.getTotalAmount());
+            map.put("createdAt", order.getCreatedAt());
+            
+            // Map items for thumbnails
+            List<Map<String, Object>> items = order.getItems().stream().map(item -> {
+                Map<String, Object> itemMap = new HashMap<>();
+                Map<String, Object> productMap = new HashMap<>();
+                productMap.put("id", item.getProduct().getId());
+                productMap.put("name", item.getProduct().getName());
+                productMap.put("imageUrl", item.getProduct().getImageUrl());
+                itemMap.put("product", productMap);
+                itemMap.put("quantity", item.getQuantity());
+                itemMap.put("price", item.getPrice());
+                return itemMap;
+            }).toList();
+            
+            map.put("items", items);
+            map.put("itemCount", items.size());
+            return map;
+        }).toList();
+        
+        return ResponseEntity.ok(ApiResponse.success(data));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Order>> createOrder(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> createOrder(
             @RequestHeader("Authorization") String authHeader,
             @Valid @RequestBody OrderRequest request) {
         Long userId = extractUserId(authHeader);
         request.setUserId(userId);
         Order createdOrder = orderService.createOrder(request);
-        return ResponseEntity.ok(ApiResponse.success("Order created successfully", createdOrder));
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", createdOrder.getId());
+        data.put("status", createdOrder.getStatus());
+        data.put("totalAmount", createdOrder.getTotalAmount());
+        
+        return ResponseEntity.ok(ApiResponse.success("Order created successfully", data));
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getOrderById(@PathVariable Long orderId) {
         Order order = orderService.getOrderById(orderId);
         
-        Map<String, Object> response = new HashMap<>();
-        response.put("order", order);
+        Map<String, Object> orderMap = new HashMap<>();
+        orderMap.put("id", order.getId());
+        orderMap.put("status", order.getStatus());
+        orderMap.put("totalAmount", order.getTotalAmount());
+        orderMap.put("shippingAddress", order.getShippingAddress());
+        orderMap.put("trackingNumber", order.getTrackingNumber());
+        orderMap.put("estimatedDeliveryDate", order.getEstimatedDeliveryDate());
+        orderMap.put("createdAt", order.getCreatedAt());
         
-        // Try to get payment info if exists
+        // Map items
+        List<Map<String, Object>> items = order.getItems().stream().map(item -> {
+            Map<String, Object> itemMap = new HashMap<>();
+            itemMap.put("productId", item.getProduct().getId());
+            itemMap.put("productName", item.getProduct().getName());
+            itemMap.put("quantity", item.getQuantity());
+            itemMap.put("price", item.getPrice());
+            itemMap.put("imageUrl", item.getProduct().getImageUrl());
+            return itemMap;
+        }).toList();
+        orderMap.put("items", items);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("order", orderMap);
+        
         try {
             Payment payment = paymentService.getPaymentByOrderId(orderId);
-            response.put("payment", payment);
+            Map<String, Object> paymentMap = new HashMap<>();
+            paymentMap.put("id", payment.getId());
+            paymentMap.put("status", payment.getStatus());
+            paymentMap.put("amount", payment.getAmount());
+            paymentMap.put("currency", payment.getCurrency());
+            response.put("payment", paymentMap);
         } catch (Exception e) {
             response.put("payment", null);
         }

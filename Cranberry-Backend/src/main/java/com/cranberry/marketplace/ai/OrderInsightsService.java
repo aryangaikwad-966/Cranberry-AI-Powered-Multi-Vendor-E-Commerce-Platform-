@@ -1,17 +1,23 @@
 package com.cranberry.marketplace.ai;
 
-import com.cranberry.marketplace.model.Order;
-import com.cranberry.marketplace.model.OrderItem;
-import com.cranberry.marketplace.model.OrderStatus;
-import com.cranberry.marketplace.repository.OrderRepository;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.cranberry.marketplace.model.Order;
+import com.cranberry.marketplace.model.OrderItem;
+import com.cranberry.marketplace.model.OrderStatus;
+import com.cranberry.marketplace.repository.OrderRepository;
 
 /**
  * AI-Powered Order Analytics Service
@@ -34,36 +40,68 @@ public class OrderInsightsService {
      * Generate comprehensive AI-powered insights for order analytics
      */
     public OrderInsightsResponse generateInsights() {
-        List<Order> allOrders = orderRepository.findAllByOrderByCreatedAtDesc();
-        
-        if (allOrders.isEmpty()) {
+        try {
+            logger.info("Generating AI insights for orders...");
+            List<Order> allOrders = orderRepository.findAllByOrderByCreatedAtDesc();
+            logger.info("Found {} orders", allOrders.size());
+
+            if (allOrders.isEmpty()) {
+                return OrderInsightsResponse.builder()
+                        .summary("No orders found in the system yet.")
+                        .insights(Collections.emptyList())
+                        .recommendations(Collections.emptyList())
+                        .build();
+            }
+
+            // Calculate metrics
+            OrderMetrics metrics = calculateMetrics(allOrders);
+            logger.info("Metrics calculated");
+
+            // Generate AI insights
+            List<InsightItem> insights = generateAiInsights(metrics, allOrders);
+            logger.info("AI insights generated");
+
+            // Generate recommendations
+            List<RecommendationItem> recommendations = generateRecommendations(metrics, allOrders);
+            logger.info("Recommendations generated");
+
+            // Generate summary using AI
+            String summary;
+            try {
+                summary = generateExecutiveSummary(metrics);
+                logger.info("Summary generated");
+            } catch (Exception aiEx) {
+                logger.warn("AI summary generation failed, using fallback. Error: {}", aiEx.getMessage());
+                summary = String.format(
+                        "Your store has processed %d orders with total revenue of $%.2f. " +
+                        "Average order value is $%.2f with a %.1f%% conversion rate. " +
+                        "Last 7 days saw %d orders generating $%.2f in revenue.",
+                        metrics.getTotalOrders(),
+                        metrics.getTotalRevenue(),
+                        metrics.getAverageOrderValue(),
+                        metrics.getConversionRate(),
+                        metrics.getOrdersLast7Days(),
+                        metrics.getRevenueLast7Days()
+                );
+            }
+
             return OrderInsightsResponse.builder()
-                    .summary("No orders found in the system yet.")
+                    .summary(summary)
+                    .metrics(metrics)
+                    .insights(insights)
+                    .recommendations(recommendations)
+                    .topProducts(getTopProducts(allOrders))
+                    .salesTrend(calculateSalesTrend(allOrders))
+                    .build();
+        } catch (Exception e) {
+            logger.error("Error in generateInsights: ", e);
+            // Return a user-friendly error summary instead of throwing
+            return OrderInsightsResponse.builder()
+                    .summary("AI insights could not be generated at this time. Please try again later.")
                     .insights(Collections.emptyList())
                     .recommendations(Collections.emptyList())
                     .build();
         }
-
-        // Calculate metrics
-        OrderMetrics metrics = calculateMetrics(allOrders);
-        
-        // Generate AI insights
-        List<InsightItem> insights = generateAiInsights(metrics, allOrders);
-        
-        // Generate recommendations
-        List<RecommendationItem> recommendations = generateRecommendations(metrics, allOrders);
-        
-        // Generate summary using AI
-        String summary = generateExecutiveSummary(metrics);
-
-        return OrderInsightsResponse.builder()
-                .summary(summary)
-                .metrics(metrics)
-                .insights(insights)
-                .recommendations(recommendations)
-                .topProducts(getTopProducts(allOrders))
-                .salesTrend(calculateSalesTrend(allOrders))
-                .build();
     }
 
     private OrderMetrics calculateMetrics(List<Order> orders) {
@@ -341,10 +379,11 @@ public class OrderInsightsService {
     }
 
     private boolean isRevenueStatus(String status) {
-        return OrderStatus.PAID.name().equals(status) ||
-               OrderStatus.PROCESSING.name().equals(status) ||
-               OrderStatus.SHIPPED.name().equals(status) ||
-               OrderStatus.DELIVERED.name().equals(status);
+        if (status == null) return false;
+        return OrderStatus.PAID.name().equalsIgnoreCase(status) ||
+               OrderStatus.PROCESSING.name().equalsIgnoreCase(status) ||
+               OrderStatus.SHIPPED.name().equalsIgnoreCase(status) ||
+               OrderStatus.DELIVERED.name().equalsIgnoreCase(status);
     }
 
     // ============== RESPONSE CLASSES ==============

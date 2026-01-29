@@ -20,6 +20,10 @@ public class Order {
     private String status;
 
     private String shippingAddress;
+    
+    private String trackingNumber;
+
+    private LocalDateTime estimatedDeliveryDate;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -69,6 +73,22 @@ public class Order {
 
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
+    }
+
+    public LocalDateTime getEstimatedDeliveryDate() {
+        return estimatedDeliveryDate;
+    }
+
+    public void setEstimatedDeliveryDate(LocalDateTime estimatedDeliveryDate) {
+        this.estimatedDeliveryDate = estimatedDeliveryDate;
     }
 
     public LocalDateTime getCreatedAt() {

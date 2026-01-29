@@ -38,17 +38,22 @@ public class PaymentController {
         return ResponseEntity.ok(ApiResponse.success("Payment initiated", response));
     }
 
-    /**
-     * Verify Razorpay payment after successful checkout
-     */
     @PostMapping("/verify")
-    public ResponseEntity<ApiResponse<Payment>> verifyPayment(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> verifyPayment(
             @RequestParam String razorpayOrderId,
             @RequestParam String razorpayPaymentId,
             @RequestParam String razorpaySignature) {
         Payment payment = paymentService.verifyAndCompletePayment(
                 razorpayOrderId, razorpayPaymentId, razorpaySignature);
-        return ResponseEntity.ok(ApiResponse.success("Payment verified successfully", payment));
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", payment.getId());
+        data.put("status", payment.getStatus());
+        data.put("orderId", payment.getOrder().getId());
+        data.put("amount", payment.getAmount());
+        data.put("razorpayPaymentId", payment.getRazorpayPaymentId());
+        
+        return ResponseEntity.ok(ApiResponse.success("Payment verified successfully", data));
     }
 
     /**

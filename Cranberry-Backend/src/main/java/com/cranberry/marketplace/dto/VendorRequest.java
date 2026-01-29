@@ -19,6 +19,8 @@ public class VendorRequest {
     @NotNull(message = "User ID is required")
     private Long userId;
 
+    private String logo;
+
     public String getShopName() {
         return shopName;
     }
@@ -57,5 +59,13 @@ public class VendorRequest {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }

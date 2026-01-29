@@ -1,7 +1,14 @@
 package com.cranberry.marketplace.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -19,8 +26,12 @@ public class User {
     @JsonIgnore
     private String password;
 
+
     // ADMIN, VENDOR, CUSTOMER
     private String role;
+
+    @OneToOne(mappedBy = "user", cascade = jakarta.persistence.CascadeType.ALL)
+    private Vendor vendor;
 
     public Long getId() {
         return id;
@@ -60,5 +71,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 }

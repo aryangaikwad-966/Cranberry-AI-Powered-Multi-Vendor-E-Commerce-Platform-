@@ -158,18 +158,23 @@ public class AiService {
         // Get the most recent order
         Order latestOrder = orders.get(orders.size() - 1);
 
-        String trackingInfo = String.format("""
-            📦 **Your Latest Order (Order #%d)**
-            Status: %s
-            Total Amount: $%.2f
-            Shipping Address: %s
-            Ordered on: %s
-            """,
-                latestOrder.getId(),
-                latestOrder.getStatus(),
-                latestOrder.getTotalAmount(),
-                latestOrder.getShippingAddress() != null ? latestOrder.getShippingAddress() : "Not specified",
-                latestOrder.getCreatedAt().toString());
+        StringBuilder trackingInfoBuilder = new StringBuilder();
+        trackingInfoBuilder.append(String.format("📦 **Your Latest Order (Order #%d)**\n", latestOrder.getId()));
+        trackingInfoBuilder.append(String.format("Status: %s\n", latestOrder.getStatus()));
+        trackingInfoBuilder.append(String.format("Total Amount: $%.2f\n", latestOrder.getTotalAmount()));
+        
+        if (latestOrder.getTrackingNumber() != null) {
+            trackingInfoBuilder.append(String.format("Tracking ID: %s\n", latestOrder.getTrackingNumber()));
+        }
+        
+        if (latestOrder.getEstimatedDeliveryDate() != null) {
+            trackingInfoBuilder.append(String.format("Est. Delivery: %s\n", latestOrder.getEstimatedDeliveryDate().toLocalDate().toString()));
+        }
+        
+        trackingInfoBuilder.append(String.format("Shipping Address: %s\n", latestOrder.getShippingAddress() != null ? latestOrder.getShippingAddress() : "Not specified"));
+        trackingInfoBuilder.append(String.format("Ordered on: %s\n", latestOrder.getCreatedAt().toLocalDate().toString()));
+
+        String trackingInfo = trackingInfoBuilder.toString();
 
         String reply = String.format("""
             Here's the status of your most recent order:
@@ -697,23 +702,17 @@ public class AiService {
     }
 
     private ProductResponse convertToProductResponse(Product product) {
-        ProductResponse response = new ProductResponse();
-        response.setId(product.getId());
-        response.setName(product.getName());
-        response.setDescription(product.getDescription());
-        response.setPrice(product.getPrice());
-        response.setStock(product.getStock());
-        response.setImageUrl(product.getImageUrl());
-        response.setCategory(product.getCategory());
-
-        if (product.getVendor() != null) {
-            ProductResponse.VendorSummary vendorSummary = new ProductResponse.VendorSummary(
-                    product.getVendor().getId(),
-                    product.getVendor().getShopName()
-            );
-            response.setVendor(vendorSummary);
-        }
-
-        return response;
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getStock(),
+                product.getImageUrl(),
+                product.getCategory(),
+                product.getStatus(),
+                product.getVendor() != null ? product.getVendor().getId() : null,
+                product.getVendor() != null ? product.getVendor().getShopName() : "Unknown Vendor"
+        );
     }
 }
