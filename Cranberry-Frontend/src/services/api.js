@@ -3,7 +3,7 @@ import axios from 'axios';
 // API Service - Aligned with Cranberry Backend
 // Backend: Spring Boot + MySQL + Ollama AI
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 // Single Axios instance for all API calls
 export const apiClient = axios.create({

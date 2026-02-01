@@ -1,0 +1,9 @@
+{
+    "name": "cranberry-marketplace",
+    "version": "1.0.0",
+    "scripts": {
+        "build": "cd Cranberry-Frontend && npm install && npm run build",
+        "dev": "cd Cranberry-Frontend && npm run dev",
+        "install": "cd Cranberry-Frontend && npm install"
+    }
+}

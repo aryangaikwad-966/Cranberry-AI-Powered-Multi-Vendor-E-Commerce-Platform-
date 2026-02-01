@@ -1,0 +1,7 @@
+Cranberry-Backend
+*.md
+.git
+.gitignore
+node_modules
+.DS_Store
+*.log
