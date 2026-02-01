@@ -62,7 +62,7 @@ const HomePage = () => {
   ];
 
   const features = [
-    { icon: Truck, title: 'Free Shipping', desc: 'On orders over $100' },
+    { icon: Truck, title: 'Free Shipping', desc: 'On orders over ₹5000' },
     { icon: Shield, title: 'Secure Payment', desc: '100% protected' },
     { icon: RefreshCw, title: 'Easy Returns', desc: '30-day returns' },
     { icon: Headphones, title: '24/7 Support', desc: 'AI-powered help' },

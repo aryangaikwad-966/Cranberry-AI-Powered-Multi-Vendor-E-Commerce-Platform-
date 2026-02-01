@@ -1,19 +1,23 @@
 
 package com.cranberry.marketplace.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.cranberry.marketplace.exception.ResourceNotFoundException;
 import com.cranberry.marketplace.model.Product;
 import com.cranberry.marketplace.repository.ProductRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
 public class ProductService {
     public List<Product> getApprovedProducts() {
-        return productRepository.findByStatus("approved");
+        // Get products with status "active" or "APPROVED"
+        List<Product> approvedProducts = productRepository.findByStatus("active");
+        approvedProducts.addAll(productRepository.findByStatus("APPROVED"));
+        return approvedProducts;
     }
 
     private final ProductRepository productRepository;
@@ -91,9 +95,18 @@ public class ProductService {
 
     public List<Product> getFilteredProducts(String category, String search, Double minPrice,
                                               Double maxPrice, Boolean featured, Integer limit) {
+        // Only show products that are approved/active AND from approved vendors
         List<Product> products = productRepository.findAll().stream()
-                .filter(p -> (p.getVendor() == null || "approved".equalsIgnoreCase(p.getVendor().getStatus()) || "active".equalsIgnoreCase(p.getVendor().getStatus()))
-                             && "active".equalsIgnoreCase(p.getStatus()))
+                .filter(p -> {
+                    // Check vendor is approved
+                    boolean vendorApproved = p.getVendor() == null || 
+                            "APPROVED".equalsIgnoreCase(p.getVendor().getStatus()) || 
+                            "active".equalsIgnoreCase(p.getVendor().getStatus());
+                    // Check product is approved/active
+                    boolean productApproved = "active".equalsIgnoreCase(p.getStatus()) || 
+                            "APPROVED".equalsIgnoreCase(p.getStatus());
+                    return vendorApproved && productApproved;
+                })
                 .collect(Collectors.toList());
 
         // Filter by search query

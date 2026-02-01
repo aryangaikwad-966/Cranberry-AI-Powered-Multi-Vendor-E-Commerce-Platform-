@@ -142,11 +142,24 @@ const VendorProducts = () => {
   );
 
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-700';
+    const statusLower = (status || '').toLowerCase();
+    switch (statusLower) {
+      case 'active':
+      case 'approved': return 'bg-green-100 text-green-700';
       case 'pending': return 'bg-yellow-100 text-yellow-700';
       case 'rejected': return 'bg-red-100 text-red-700';
       default: return 'bg-slate-100 text-slate-700';
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    const statusLower = (status || '').toLowerCase();
+    switch (statusLower) {
+      case 'active':
+      case 'approved': return 'Approved';
+      case 'pending': return 'Pending Approval';
+      case 'rejected': return 'Rejected';
+      default: return status || 'Unknown';
     }
   };
 
@@ -349,7 +362,7 @@ const VendorProducts = () => {
                   <TableCell>{product.stock}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(product.status)}>
-                      {product.status}
+                      {getStatusLabel(product.status)}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">

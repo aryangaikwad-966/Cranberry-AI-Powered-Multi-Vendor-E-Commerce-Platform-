@@ -58,13 +58,13 @@ public class ProductController {
             Vendor vendor = vendorService.getVendorByUserId(userId);
             product.setVendor(vendor);
             
-            // Default status
+            // Default status is PENDING - admin must approve
             if (product.getStatus() == null) {
-                product.setStatus("approved");
+                product.setStatus("pending");
             }
 
             Product savedProduct = productService.addProduct(product);
-            return ResponseEntity.ok(ApiResponse.success("Product added successfully", savedProduct));
+            return ResponseEntity.ok(ApiResponse.success("Product added successfully. It will be visible after admin approval.", savedProduct));
         } catch (Exception e) {
              return ResponseEntity.badRequest().body(ApiResponse.error("Failed to add product: " + e.getMessage()));
         }

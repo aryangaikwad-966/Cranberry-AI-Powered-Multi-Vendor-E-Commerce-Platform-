@@ -10,7 +10,7 @@ import {
   Menu,
   Store,
   BarChart3,
-  DollarSign,
+  IndianRupee,
   CheckCircle,
   LogOut
 } from 'lucide-react';
@@ -29,7 +29,7 @@ const DashboardLayout = ({ type = 'vendor' }) => {
     { name: 'Products', href: '/vendor/products', icon: Package },
     { name: 'Orders', href: '/vendor/orders', icon: ShoppingCart },
     { name: 'Analytics', href: '/vendor/analytics', icon: BarChart3 },
-    { name: 'Price Suggestions', href: '/vendor/price-suggest', icon: DollarSign },
+    { name: 'Price Suggestions', href: '/vendor/price-suggest', icon: IndianRupee },
     { name: 'Settings', href: '/vendor/settings', icon: Settings },
   ];
 

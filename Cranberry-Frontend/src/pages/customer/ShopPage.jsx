@@ -194,8 +194,8 @@ const ShopPage = () => {
             data-testid="price-range-slider"
           />
           <div className="flex items-center justify-between text-sm text-slate-600">
-            <span>${filters.minPrice}</span>
-            <span>${filters.maxPrice}</span>
+            <span>₹{filters.minPrice}</span>
+            <span>₹{filters.maxPrice}</span>
           </div>
         </div>
       </div>
@@ -337,7 +337,7 @@ const ShopPage = () => {
               )}
               {(filters.minPrice > 0 || filters.maxPrice < 5000) && (
                 <span className="inline-flex items-center px-3 py-1 bg-white border border-slate-200 rounded-full text-sm text-slate-600">
-                  ${filters.minPrice} - ${filters.maxPrice}
+                  ₹{filters.minPrice} - ₹{filters.maxPrice}
                   <button onClick={() => setFilters(prev => ({ ...prev, minPrice: 0, maxPrice: 5000 }))} className="ml-2">
                     <X className="h-3 w-3" />
                   </button>

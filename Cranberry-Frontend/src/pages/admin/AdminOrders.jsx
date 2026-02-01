@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
     Package, Clock, Truck, CheckCircle, XCircle,
     Filter, Search, RefreshCw, ChevronDown, Eye,
-    DollarSign, TrendingUp, AlertCircle, Loader2,
+    IndianRupee, TrendingUp, AlertCircle, Loader2,
     CreditCard, Sparkles
 } from 'lucide-react';
 import { ordersApi, paymentsApi, aiApi, ORDER_STATUSES, ORDER_STATUS_LABELS } from '../../services/api';
@@ -188,7 +188,7 @@ const AdminOrders = () => {
         {
             title: 'Total Revenue',
             value: `₹${(statistics.totalRevenue * 83).toFixed(0).toLocaleString()}`,
-            icon: DollarSign,
+            icon: IndianRupee,
             color: 'text-green-600 bg-green-100'
         },
         {

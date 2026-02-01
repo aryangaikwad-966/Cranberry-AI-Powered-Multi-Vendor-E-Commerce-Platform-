@@ -464,6 +464,10 @@ export const adminApi = {
   moderateProduct: async (id, status) => {
     return apiClient.put(`/api/admin/products/${id}/moderate`, null, { params: { status } });
   },
+  // Delete product (Admin only)
+  deleteProduct: async (id) => {
+    return apiClient.delete(`/api/admin/products/${id}`);
+  },
 };
 
 // ============================================

@@ -19,6 +19,10 @@ public class RegisterRequest {
     private String password;
 
     private String role = "CUSTOMER"; // Default role
+    
+    // Vendor-specific fields (optional, only used when role is VENDOR)
+    private String storeName;
+    private String storeDescription;
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -31,4 +35,10 @@ public class RegisterRequest {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    
+    public String getStoreName() { return storeName; }
+    public void setStoreName(String storeName) { this.storeName = storeName; }
+    
+    public String getStoreDescription() { return storeDescription; }
+    public void setStoreDescription(String storeDescription) { this.storeDescription = storeDescription; }
 }

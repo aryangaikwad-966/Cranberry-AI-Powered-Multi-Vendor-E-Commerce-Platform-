@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, CheckCircle, XCircle, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
-import { productsApi, adminApi } from '../../services/api';
+import { adminApi } from '../../services/api';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
@@ -61,7 +61,7 @@ const AdminProducts = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
       try {
-        await productsApi.delete(id);
+        await adminApi.deleteProduct(id);
         loadProducts();
       } catch (error) {
         console.error('Failed to delete product:', error);
@@ -71,22 +71,35 @@ const AdminProducts = () => {
 
   const filteredProducts = (products || [])
     .filter(p => (p.name || '').toLowerCase().includes(searchQuery.toLowerCase()))
-    .filter(p => activeTab === 'all' || p.status === activeTab);
+    .filter(p => activeTab === 'all' || (p.status || '').toLowerCase() === activeTab);
 
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-700';
+    const statusLower = (status || '').toLowerCase();
+    switch (statusLower) {
+      case 'active':
+      case 'approved': return 'bg-green-100 text-green-700';
       case 'pending': return 'bg-yellow-100 text-yellow-700';
       case 'rejected': return 'bg-red-100 text-red-700';
       default: return 'bg-slate-100 text-slate-700';
     }
   };
 
+  const getStatusLabel = (status) => {
+    const statusLower = (status || '').toLowerCase();
+    switch (statusLower) {
+      case 'active':
+      case 'approved': return 'Approved';
+      case 'pending': return 'Pending';
+      case 'rejected': return 'Rejected';
+      default: return status || 'Unknown';
+    }
+  };
+
   const statusCounts = {
     all: (products || []).length,
-    pending: (products || []).filter(p => p.status === 'pending').length,
-    active: (products || []).filter(p => p.status === 'active').length,
-    rejected: (products || []).filter(p => p.status === 'rejected').length,
+    pending: (products || []).filter(p => (p.status || '').toLowerCase() === 'pending').length,
+    active: (products || []).filter(p => ['active', 'approved'].includes((p.status || '').toLowerCase())).length,
+    rejected: (products || []).filter(p => (p.status || '').toLowerCase() === 'rejected').length,
   };
 
   return (
@@ -162,7 +175,7 @@ const AdminProducts = () => {
                       <TableCell>₹{(product.price * 83).toFixed(2)}</TableCell>
                       <TableCell>
                         <Badge className={getStatusColor(product.status)}>
-                          {product.status}
+                          {getStatusLabel(product.status)}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
@@ -177,7 +190,7 @@ const AdminProducts = () => {
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
-                            {product.status === 'pending' && (
+                            {(product.status || '').toLowerCase() === 'pending' && (
                               <>
                                 <DropdownMenuItem
                                   onClick={() => handleModerate(product.id, 'active')}

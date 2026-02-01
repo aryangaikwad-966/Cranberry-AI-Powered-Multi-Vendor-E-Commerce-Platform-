@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Package, ShoppingCart, DollarSign, TrendingUp, Eye, MoreHorizontal, AlertCircle } from 'lucide-react';
+import { Package, ShoppingCart, IndianRupee, TrendingUp, Eye, MoreHorizontal, AlertCircle } from 'lucide-react';
 import { vendorApi, ordersApi } from '../../services/api';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
@@ -86,7 +86,7 @@ const VendorDashboard = () => {
   const statCards = [
     { title: 'Total Products', value: stats.totalProducts, icon: Package, color: 'text-blue-600 bg-blue-100' },
     { title: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: 'text-green-600 bg-green-100' },
-    { title: 'Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: DollarSign, color: 'text-purple-600 bg-purple-100' },
+    { title: 'Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: IndianRupee, color: 'text-purple-600 bg-purple-100' },
     { title: 'Pending Orders', value: stats.pendingOrders, icon: TrendingUp, color: 'text-orange-600 bg-orange-100' },
   ];
 

@@ -313,7 +313,7 @@ const ProductDetailPage = () => {
                   <Truck className="h-5 w-5 text-[#0071E3]" />
                 </div>
                 <p className="text-sm font-medium text-slate-900">Free Shipping</p>
-                <p className="text-xs text-slate-500">Over $100</p>
+                <p className="text-xs text-slate-500">Over ₹5000</p>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 mx-auto mb-2 bg-slate-50 rounded-xl flex items-center justify-center">
@@ -378,7 +378,7 @@ const ProductDetailPage = () => {
               <div className="max-w-2xl space-y-6">
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-2">Shipping</h3>
-                  <p className="text-slate-600">Free shipping on orders over $100. Standard delivery takes 3-5 business days.</p>
+                  <p className="text-slate-600">Free shipping on orders over ₹5000. Standard delivery takes 3-5 business days.</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 mb-2">Returns</h3>

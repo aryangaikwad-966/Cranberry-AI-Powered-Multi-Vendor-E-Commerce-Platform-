@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Package, ShoppingCart, Users, Store, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Package, ShoppingCart, Users, Store, IndianRupee, TrendingUp, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
 import { adminApi, vendorsApi } from '../../services/api';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
@@ -18,6 +19,7 @@ const AdminDashboard = () => {
     pendingVendors: 0,
   });
   const [pendingVendors, setPendingVendors] = useState([]);
+  const [pendingProducts, setPendingProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,13 +28,17 @@ const AdminDashboard = () => {
 
   const loadDashboardData = async () => {
     try {
-      const [statsData, vendors] = await Promise.all([
+      const [statsData, vendors, products] = await Promise.all([
         adminApi.getStats(),
         vendorsApi.getAll('pending'),
+        adminApi.getAllProducts(),
       ]);
 
       setStats(statsData);
-      setPendingVendors(vendors);
+      setPendingVendors(vendors || []);
+      // Filter pending products
+      const pending = (products || []).filter(p => (p.status || '').toLowerCase() === 'pending');
+      setPendingProducts(pending);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
     } finally {
@@ -58,8 +64,26 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleApproveProduct = async (productId) => {
+    try {
+      await adminApi.moderateProduct(productId, 'active');
+      loadDashboardData();
+    } catch (error) {
+      console.error('Failed to approve product:', error);
+    }
+  };
+
+  const handleRejectProduct = async (productId) => {
+    try {
+      await adminApi.moderateProduct(productId, 'rejected');
+      loadDashboardData();
+    } catch (error) {
+      console.error('Failed to reject product:', error);
+    }
+  };
+
   const statCards = [
-    { title: 'Total Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: DollarSign, color: 'text-green-600 bg-green-100', change: '+12.5%' },
+    { title: 'Total Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: IndianRupee, color: 'text-green-600 bg-green-100', change: '+12.5%' },
     { title: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: 'text-blue-600 bg-blue-100', change: '+8.2%' },
     { title: 'Total Products', value: stats.totalProducts, icon: Package, color: 'text-purple-600 bg-purple-100', change: '+5.1%' },
     { title: 'Total Vendors', value: stats.totalVendors, icon: Store, color: 'text-orange-600 bg-orange-100', change: '+2.4%' },
@@ -173,6 +197,76 @@ const AdminDashboard = () => {
         </Card>
       )}
 
+      {/* Pending Product Approvals */}
+      {pendingProducts.length > 0 && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center">
+                  <Package className="h-5 w-5 mr-2 text-yellow-600" />
+                  Pending Product Approvals
+                </CardTitle>
+                <CardDescription>
+                  Review and approve new product listings
+                </CardDescription>
+              </div>
+              <Badge className="bg-yellow-100 text-yellow-700">
+                {pendingProducts.length} pending
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {pendingProducts.slice(0, 5).map((product) => (
+                <div
+                  key={product.id}
+                  className="flex items-center justify-between p-4 bg-slate-50 rounded-xl"
+                  data-testid={`pending-product-${product.id}`}
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={product.imageUrl || product.images?.[0] || 'https://via.placeholder.com/150'}
+                      alt={product.name}
+                      className="w-12 h-12 rounded-xl bg-white object-cover"
+                    />
+                    <div>
+                      <p className="font-medium text-slate-900">{product.name}</p>
+                      <p className="text-sm text-slate-500">₹{(product.price * 83).toFixed(2)} • {product.vendorName || 'Unknown Vendor'}</p>
+                      <p className="text-xs text-slate-400">{product.category}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleRejectProduct(product.id)}
+                      className="text-red-600 hover:bg-red-50"
+                    >
+                      <XCircle className="h-4 w-4 mr-1" />
+                      Reject
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => handleApproveProduct(product.id)}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      <CheckCircle className="h-4 w-4 mr-1" />
+                      Approve
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              {pendingProducts.length > 5 && (
+                <Link to="/admin/products" className="block text-center text-sm text-[#0071E3] hover:underline mt-4">
+                  View all {pendingProducts.length} pending products →
+                </Link>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card>
@@ -207,18 +301,24 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
-                <Store className="h-6 w-6 mb-2" />
-                <span>Manage Vendors</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
-                <Package className="h-6 w-6 mb-2" />
-                <span>Review Products</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
-                <ShoppingCart className="h-6 w-6 mb-2" />
-                <span>View Orders</span>
-              </Button>
+              <Link to="/admin/vendors">
+                <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center">
+                  <Store className="h-6 w-6 mb-2" />
+                  <span>Manage Vendors</span>
+                </Button>
+              </Link>
+              <Link to="/admin/products">
+                <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center">
+                  <Package className="h-6 w-6 mb-2" />
+                  <span>Review Products</span>
+                </Button>
+              </Link>
+              <Link to="/admin/orders">
+                <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center">
+                  <ShoppingCart className="h-6 w-6 mb-2" />
+                  <span>View Orders</span>
+                </Button>
+              </Link>
               <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
                 <Users className="h-6 w-6 mb-2" />
                 <span>Manage Users</span>

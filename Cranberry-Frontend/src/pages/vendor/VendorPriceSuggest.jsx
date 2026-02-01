@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles, DollarSign, TrendingUp, Info } from 'lucide-react';
+import { Sparkles, IndianRupee, TrendingUp, Info } from 'lucide-react';
 import { useAIPriceSuggest } from '../../hooks/useAI';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -139,7 +139,7 @@ const VendorPriceSuggest = () => {
               <Card className="border-[#0071E3] border-2">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center text-[#0071E3]">
-                    <DollarSign className="h-5 w-5 mr-2" />
+                    <IndianRupee className="h-5 w-5 mr-2" />
                     Recommended Price
                   </CardTitle>
                 </CardHeader>

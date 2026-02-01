@@ -54,7 +54,7 @@ const VendorRegisterPage = () => {
                 storeName: formData.storeName,
                 storeDescription: formData.storeDescription
             });
-            toast.success('Vendor registration successful! Please sign in.');
+            toast.success('Vendor registration successful! Your account is pending admin approval. You will be able to login once approved.');
             navigate('/login', { replace: true });
         } catch (err) {
             toast.error(err.message || 'Registration failed.');
@@ -84,9 +84,16 @@ const VendorRegisterPage = () => {
                     <h1 className="font-display text-2xl font-bold text-slate-900 text-center mb-2">
                         Become a Vendor
                     </h1>
-                    <p className="text-slate-500 text-center mb-8">
+                    <p className="text-slate-500 text-center mb-4">
                         Register your store and start selling
                     </p>
+
+                    {/* Approval Notice */}
+                    <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl text-blue-700 text-sm">
+                        <strong>Note:</strong> After registration, your vendor account will be reviewed by our admin team.
+                        You will be able to login and access your dashboard once your account is approved.
+                    </div>
+
                     {displayError && (
                         <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm">
                             {displayError}

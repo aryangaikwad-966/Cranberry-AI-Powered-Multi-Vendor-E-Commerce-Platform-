@@ -77,10 +77,11 @@ const AdminVendors = () => {
 
   const filteredVendors = vendors
     .filter(v => (v.name || '').toLowerCase().includes(searchQuery.toLowerCase()))
-    .filter(v => activeTab === 'all' || v.status === activeTab);
+    .filter(v => activeTab === 'all' || (v.status || '').toLowerCase() === activeTab);
 
   const getStatusColor = (status) => {
-    switch (status) {
+    const statusLower = (status || '').toLowerCase();
+    switch (statusLower) {
       case 'approved': return 'bg-green-100 text-green-700';
       case 'pending': return 'bg-yellow-100 text-yellow-700';
       case 'rejected': return 'bg-red-100 text-red-700';
@@ -90,9 +91,9 @@ const AdminVendors = () => {
 
   const statusCounts = {
     all: vendors.length,
-    pending: vendors.filter(v => v.status === 'pending').length,
-    approved: vendors.filter(v => v.status === 'approved').length,
-    rejected: vendors.filter(v => v.status === 'rejected').length,
+    pending: vendors.filter(v => (v.status || '').toLowerCase() === 'pending').length,
+    approved: vendors.filter(v => (v.status || '').toLowerCase() === 'approved').length,
+    rejected: vendors.filter(v => (v.status || '').toLowerCase() === 'rejected').length,
   };
 
   return (
@@ -192,7 +193,7 @@ const AdminVendors = () => {
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
-                            {vendor.status === 'pending' && (
+                            {(vendor.status || '').toLowerCase() === 'pending' && (
                               <>
                                 <DropdownMenuItem
                                   onClick={() => handleApprove(vendor.id)}

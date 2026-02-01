@@ -19,6 +19,7 @@ export const useAIChat = () => {
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
+  const [streamingResponse, setStreamingResponse] = useState('');
   const [suggestedProducts, setSuggestedProducts] = useState([]);
 
   const sendMessage = useCallback(async (content, userId = null) => {
@@ -77,9 +78,10 @@ export const useAIChat = () => {
       timestamp: new Date().toISOString()
     }]);
     setSuggestedProducts([]);
+    setStreamingResponse('');
   }, []);
 
-  return { messages, sendMessage, isTyping, suggestedProducts, clearChat };
+  return { messages, sendMessage, isTyping, streamingResponse, suggestedProducts, clearChat };
 };
 
 // ============================================
