@@ -130,6 +130,26 @@ export const authApi = {
     }
   },
 
+  // POST /api/auth/google - Google OAuth login
+  googleLogin: async (credential) => {
+    try {
+      const authResponse = await apiClient.post('/api/auth/google', { credential });
+      if (authResponse?.token) {
+        localStorage.setItem('auth_token', authResponse.token);
+      }
+      return authResponse;
+    } catch (error) {
+      if (error.offline || error.status === 503) {
+        throw {
+          status: 503,
+          message: 'Cannot login with Google - backend server is offline. Please start the Spring Boot backend.',
+          success: false,
+        };
+      }
+      throw error;
+    }
+  },
+
   // GET /api/auth/me
   getProfile: async () => {
     return apiClient.get('/api/auth/me');

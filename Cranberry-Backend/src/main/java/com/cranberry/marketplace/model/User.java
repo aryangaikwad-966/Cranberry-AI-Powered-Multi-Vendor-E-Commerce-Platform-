@@ -30,6 +30,13 @@ public class User {
     // ADMIN, VENDOR, CUSTOMER
     private String role;
 
+    // Google OAuth ID
+    @Column(name = "google_id")
+    private String googleId;
+
+    // Profile avatar URL
+    private String avatar;
+
     @OneToOne(mappedBy = "user", cascade = jakarta.persistence.CascadeType.ALL)
     @JsonIgnore
     private Vendor vendor;
@@ -80,5 +87,21 @@ public class User {
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

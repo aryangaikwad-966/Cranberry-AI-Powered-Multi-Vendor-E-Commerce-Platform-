@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from '../../components/ui/sonner';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
@@ -8,9 +8,11 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 
+const GOOGLE_CLIENT_ID = '450428172091-02gr6i1g36271b41jq6tt9duheeqnvfs.apps.googleusercontent.com';
+
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { register, error, clearError } = useAuth();
+  const { register, googleLogin, error, clearError } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -20,6 +22,61 @@ const RegisterPage = () => {
     confirmPassword: '',
   });
   const [validationError, setValidationError] = useState('');
+
+  // Load Google Sign-In script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleCallback,
+        });
+        window.google.accounts.id.renderButton(
+          document.getElementById('google-signup-btn'),
+          {
+            theme: 'outline',
+            size: 'large',
+            width: '100%',
+            text: 'signup_with',
+            shape: 'rectangular',
+          }
+        );
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handleGoogleCallback = async (response) => {
+    setIsLoading(true);
+    try {
+      const result = await googleLogin(response.credential);
+      toast.success('Account created successfully!');
+      const role = result.user?.role?.toLowerCase();
+
+      setTimeout(() => {
+        if (role === 'admin') {
+          navigate('/admin');
+        } else if (role === 'vendor') {
+          navigate('/vendor');
+        } else {
+          navigate('/', { replace: true });
+        }
+        window.location.reload();
+      }, 100);
+    } catch (err) {
+      toast.error(err.message || 'Google signup failed');
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -192,6 +249,19 @@ const RegisterPage = () => {
               {isLoading ? 'Creating account...' : 'Create Account'}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-slate-500">or sign up with</span>
+            </div>
+          </div>
+
+          {/* Google Sign-Up Button */}
+          <div id="google-signup-btn" className="flex justify-center"></div>
 
           <div className="mt-6 text-center">
             <span className="text-slate-500">Already have an account? </span>

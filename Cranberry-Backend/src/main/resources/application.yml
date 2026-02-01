@@ -33,6 +33,10 @@ jwt:
   secret: ${JWT_SECRET:cranberry-marketplace-super-secret-jwt-key-123456}
   expiration: ${JWT_EXPIRATION:86400000}
 
+# ---------- GOOGLE OAUTH CONFIG ----------
+google:
+  client-id: ${GOOGLE_CLIENT_ID:}
+
 # ---------- SERVER CONFIG ----------
 server:
   port: 8080

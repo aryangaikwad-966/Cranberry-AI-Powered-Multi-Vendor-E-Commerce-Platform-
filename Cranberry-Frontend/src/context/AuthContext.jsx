@@ -84,6 +84,36 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    const googleLogin = useCallback(async (credential) => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const result = await api.authApi.googleLogin(credential);
+
+            const userData = result.user || result.data?.user || result;
+            const tokenValue = result.token || result.data?.token || localStorage.getItem(AUTH_TOKEN_KEY);
+
+            const userObj = {
+                id: userData.id || userData.userId,
+                name: userData.name || userData.username || 'User',
+                email: userData.email,
+                role: (userData.role || 'CUSTOMER').toLowerCase(),
+                avatar: userData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.name || userData.email}`
+            };
+
+            setUser(userObj);
+            setToken(tokenValue);
+            localStorage.setItem(AUTH_USER_KEY, JSON.stringify(userObj));
+
+            return { user: userObj, token: tokenValue };
+        } catch (err) {
+            setError(err.message || 'Google login failed');
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     const logout = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -121,6 +151,7 @@ export const AuthProvider = ({ children }) => {
         isVendor: user?.role === 'VENDOR' || user?.role === 'vendor',
         isAdmin: user?.role === 'ADMIN' || user?.role === 'admin',
         login,
+        googleLogin,
         register,
         logout,
         updateProfile,

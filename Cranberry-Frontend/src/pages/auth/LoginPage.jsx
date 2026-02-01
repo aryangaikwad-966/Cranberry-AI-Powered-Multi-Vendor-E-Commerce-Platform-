@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import CranberryLogo from '../../components/ui/Cranberrylogo';
@@ -7,10 +7,12 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 
+const GOOGLE_CLIENT_ID = '450428172091-02gr6i1g36271b41jq6tt9duheeqnvfs.apps.googleusercontent.com';
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, error, clearError } = useAuth();
+  const { login, googleLogin, error, clearError } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,6 +21,59 @@ const LoginPage = () => {
   });
 
   const from = location.state?.from?.pathname || '/';
+
+  // Load Google Sign-In script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleCallback,
+        });
+        window.google.accounts.id.renderButton(
+          document.getElementById('google-signin-btn'),
+          {
+            theme: 'outline',
+            size: 'large',
+            width: '100%',
+            text: 'continue_with',
+            shape: 'rectangular',
+          }
+        );
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handleGoogleCallback = async (response) => {
+    setIsLoading(true);
+    try {
+      const result = await googleLogin(response.credential);
+      const role = result.user?.role?.toLowerCase();
+
+      setTimeout(() => {
+        if (role === 'admin') {
+          navigate('/admin');
+        } else if (role === 'vendor') {
+          navigate('/vendor');
+        } else {
+          navigate(from, { replace: true });
+        }
+        window.location.reload();
+      }, 100);
+    } catch (err) {
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -145,6 +200,19 @@ const LoginPage = () => {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-slate-500">or continue with</span>
+            </div>
+          </div>
+
+          {/* Google Sign-In Button */}
+          <div id="google-signin-btn" className="flex justify-center"></div>
 
           <div className="mt-6 text-center">
             <span className="text-slate-500">Don't have an account? </span>

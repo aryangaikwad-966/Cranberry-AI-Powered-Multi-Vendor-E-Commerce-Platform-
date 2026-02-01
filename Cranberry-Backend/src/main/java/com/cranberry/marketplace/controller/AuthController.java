@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cranberry.marketplace.dto.ApiResponse;
 import com.cranberry.marketplace.dto.AuthResponse;
+import com.cranberry.marketplace.dto.GoogleAuthRequest;
 import com.cranberry.marketplace.dto.LoginRequest;
 import com.cranberry.marketplace.dto.RegisterRequest;
 import com.cranberry.marketplace.dto.VendorRequest;
 import com.cranberry.marketplace.model.User;
 import com.cranberry.marketplace.security.JwtUtil;
 import com.cranberry.marketplace.service.AuthService;
+import com.cranberry.marketplace.service.GoogleAuthService;
 import com.cranberry.marketplace.service.VendorService;
 
 import jakarta.validation.Valid;
@@ -26,10 +28,12 @@ public class AuthController {
 
     private final AuthService authService;
     private final VendorService vendorService;
+    private final GoogleAuthService googleAuthService;
 
-    public AuthController(AuthService authService, VendorService vendorService) {
+    public AuthController(AuthService authService, VendorService vendorService, GoogleAuthService googleAuthService) {
         this.authService = authService;
         this.vendorService = vendorService;
+        this.googleAuthService = googleAuthService;
     }
 
     @PostMapping("/register")
@@ -79,6 +83,17 @@ public class AuthController {
                 user.getName(), user.getEmail(), user.getRole());
 
         return ResponseEntity.ok(ApiResponse.success("Login successful", authResponse));
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<ApiResponse<AuthResponse>> googleAuth(@Valid @RequestBody GoogleAuthRequest request) {
+        User user = googleAuthService.authenticateGoogleUser(request.getCredential());
+        String token = JwtUtil.generateToken(user.getEmail(), user.getId(), user.getRole());
+
+        AuthResponse authResponse = new AuthResponse(token, user.getId(),
+                user.getName(), user.getEmail(), user.getRole());
+
+        return ResponseEntity.ok(ApiResponse.success("Google login successful", authResponse));
     }
 
     @GetMapping("/me")
