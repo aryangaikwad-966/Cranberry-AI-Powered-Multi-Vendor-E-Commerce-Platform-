@@ -227,9 +227,24 @@ public class OrderController {
             @PathVariable Long orderId,
             @RequestParam String status,
             @RequestHeader("Authorization") String authHeader) {
-        // Allow vendors and admins to update order status
+        
         String role = extractUserRole(authHeader);
-        if (!"admin".equalsIgnoreCase(role) && !"vendor".equalsIgnoreCase(role)) {
+        boolean isAuthorized = "admin".equalsIgnoreCase(role) || "vendor".equalsIgnoreCase(role);
+
+        // Fallback: If role is not VENDOR (e.g. CUSTOMER), check if they have an approved vendor profile
+        if (!isAuthorized) {
+            try {
+                Long userId = extractUserId(authHeader);
+                Vendor vendor = vendorService.getVendorByUserId(userId);
+                if (vendor != null && "approved".equalsIgnoreCase(vendor.getStatus())) {
+                    isAuthorized = true;
+                }
+            } catch (Exception e) {
+                // Ignore fallback error
+            }
+        }
+
+        if (!isAuthorized) {
             return ResponseEntity.status(403)
                     .body(ApiResponse.error("Only admins and vendors can update order status"));
         }

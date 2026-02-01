@@ -84,7 +84,7 @@ const VendorPriceSuggest = () => {
               </select>
             </div>
             <div>
-              <Label htmlFor="price">Your Intended Price ($)</Label>
+              <Label htmlFor="price">Your Intended Price (₹)</Label>
               <Input
                 id="price"
                 name="price"
@@ -146,10 +146,10 @@ const VendorPriceSuggest = () => {
                 <CardContent>
                   <div className="text-center py-4">
                     <p className="font-display text-5xl font-bold text-slate-900">
-                      ${suggestion.recommendedPrice?.toFixed(2) || '0.00'}
+                      ₹{suggestion.recommendedPrice ? (suggestion.recommendedPrice * 83).toFixed(2) : '0.00'}
                     </p>
                     <p className="text-slate-500 mt-2">
-                      Range: ${suggestion.priceRange?.min?.toFixed(2) || '0.00'} - ${suggestion.priceRange?.max?.toFixed(2) || '0.00'}
+                      Range: ₹{suggestion.priceRange?.min ? (suggestion.priceRange.min * 83).toFixed(2) : '0.00'} - ₹{suggestion.priceRange?.max ? (suggestion.priceRange.max * 83).toFixed(2) : '0.00'}
                     </p>
                   </div>
 
@@ -179,7 +179,7 @@ const VendorPriceSuggest = () => {
                     <div className="bg-slate-50 rounded-xl p-4">
                       <p className="text-sm text-slate-500">Cranberry Average</p>
                       <p className="font-display text-xl font-bold text-slate-900">
-                        ${suggestion.competitorAnalysis?.averagePrice?.toFixed(2) || '0.00'}
+                        ₹{suggestion.competitorAnalysis?.averagePrice ? (suggestion.competitorAnalysis.averagePrice * 83).toFixed(2) : '0.00'}
                       </p>
                     </div>
                     <div className="bg-slate-50 rounded-xl p-4">

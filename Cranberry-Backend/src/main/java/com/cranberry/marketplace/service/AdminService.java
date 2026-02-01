@@ -110,6 +110,13 @@ public class AdminService {
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new RuntimeException("Vendor not found with id: " + vendorId));
         vendor.setStatus("APPROVED");
+        
+        // Also update the user role to VENDOR
+        if (vendor.getUser() != null) {
+            vendor.getUser().setRole("VENDOR");
+            userRepository.save(vendor.getUser());
+        }
+        
         return vendorRepository.save(vendor);
     }
 
@@ -125,6 +132,13 @@ public class AdminService {
             throw new RuntimeException("Product not found with id: " + productId);
         }
         productRepository.deleteById(productId);
+    }
+
+    public void deleteVendor(Long vendorId) {
+        if (!vendorRepository.existsById(vendorId)) {
+            throw new RuntimeException("Vendor not found with id: " + vendorId);
+        }
+        vendorRepository.deleteById(vendorId);
     }
 
     public Product moderateProduct(Long productId, String status) {

@@ -1,3 +1,4 @@
+
 package com.cranberry.marketplace.service;
 
 import com.cranberry.marketplace.exception.ResourceNotFoundException;
@@ -8,8 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 public class ProductService {
+    public List<Product> getApprovedProducts() {
+        return productRepository.findByStatus("approved");
+    }
 
     private final ProductRepository productRepository;
 

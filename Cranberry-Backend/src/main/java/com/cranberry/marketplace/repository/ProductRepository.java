@@ -1,13 +1,17 @@
+
 package com.cranberry.marketplace.repository;
 
-import com.cranberry.marketplace.model.Product;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import com.cranberry.marketplace.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    List<Product> findByStatus(String status);
 
     List<Product> findByVendorId(Long vendorId);
 

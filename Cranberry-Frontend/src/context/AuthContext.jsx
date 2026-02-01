@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { authApi, decodeToken } from '../services/api';
+import api, { decodeToken } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(true);
         setError(null);
         try {
-            const result = await authApi.login(email, password);
+            const result = await api.authApi.login(email, password);
 
             // Handle different backend response formats
             // Could be: { user, token } or { data: { user, token } } or just the user object with token
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(true);
         setError(null);
         try {
-            await authApi.register(userData);
+            await api.authApi.register(userData);
             // Do not set user or token here. Registration only.
             return true;
         } catch (err) {
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
     const logout = useCallback(async () => {
         setIsLoading(true);
         try {
-            await authApi.logout();
+            await api.authApi.logout();
             setUser(null);
             setToken(null);
             localStorage.removeItem(AUTH_USER_KEY);
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
     const updateProfile = useCallback(async (updates) => {
         setError(null);
         try {
-            const updatedUser = await authApi.updateProfile(updates);
+            const updatedUser = await api.authApi.updateProfile(updates);
             setUser(updatedUser);
             localStorage.setItem(AUTH_USER_KEY, JSON.stringify(updatedUser));
             return updatedUser;

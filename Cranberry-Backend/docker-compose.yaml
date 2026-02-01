@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: cranberry-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: cranberry_db
+      MYSQL_USER: cranberry
+      MYSQL_PASSWORD: ${DB_PASSWORD:-rootpassword}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - cranberry-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cranberry-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # Database
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cranberry_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: cranberry
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      
+      # JWT
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-min-32-characters}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      
+      # Razorpay
+      RAZORPAY_KEY: ${RAZORPAY_KEY:-your_razorpay_key}
+      RAZORPAY_SECRET: ${RAZORPAY_SECRET:-your_razorpay_secret}
+      
+      # Ollama (connect to host machine)
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - cranberry-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  cranberry-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

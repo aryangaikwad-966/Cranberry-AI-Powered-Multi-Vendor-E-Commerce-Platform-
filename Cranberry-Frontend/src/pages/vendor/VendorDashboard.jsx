@@ -6,8 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 
+import { useNavigate } from 'react-router-dom';
+
 const VendorDashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOrders: 0,
@@ -20,6 +23,7 @@ const VendorDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [isNotVendor, setIsNotVendor] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     loadDashboardData();
@@ -48,6 +52,7 @@ const VendorDashboard = () => {
       setTopProducts(Array.isArray(products) ? products.slice(0, 5) : []);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
+      setErrorMsg(error.message || 'Failed to load dashboard data');
       if (error.response && error.response.status === 404) {
         setIsNotVendor(true);
       }
@@ -81,7 +86,7 @@ const VendorDashboard = () => {
   const statCards = [
     { title: 'Total Products', value: stats.totalProducts, icon: Package, color: 'text-blue-600 bg-blue-100' },
     { title: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: 'text-green-600 bg-green-100' },
-    { title: 'Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, icon: DollarSign, color: 'text-purple-600 bg-purple-100' },
+    { title: 'Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: DollarSign, color: 'text-purple-600 bg-purple-100' },
     { title: 'Pending Orders', value: stats.pendingOrders, icon: TrendingUp, color: 'text-orange-600 bg-orange-100' },
   ];
 
@@ -106,6 +111,17 @@ const VendorDashboard = () => {
           Here's what's happening with your store today.
         </p>
       </div>
+
+      {/* Error Banner */}
+      {errorMsg && !isNotVendor && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start space-x-3">
+          <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <h3 className="text-sm font-medium text-red-900">Error Loading Dashboard</h3>
+            <p className="text-sm text-red-700 mt-1">{errorMsg}</p>
+          </div>
+        </div>
+      )}
 
       {/* Verification Banner */}
       {stats.status === 'pending' && (
@@ -147,7 +163,7 @@ const VendorDashboard = () => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Recent Orders</CardTitle>
-              <Button variant="ghost" size="sm">View All</Button>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/vendor/orders')}>View All</Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -164,7 +180,7 @@ const VendorDashboard = () => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-slate-900">${order.total.toFixed(2)}</p>
+                      <p className="font-medium text-slate-900">₹{order.totalAmount ? (order.totalAmount * 83).toFixed(2) : '0.00'}</p>
                       <Badge className={getStatusColor(order.status)}>
                         {order.status}
                       </Badge>
@@ -201,7 +217,7 @@ const VendorDashboard = () => {
                       <p className="text-sm text-slate-500">{product.stock} in stock</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-slate-900">${product.price.toFixed(2)}</p>
+                      <p className="font-medium text-slate-900">₹{(product.price * 83).toFixed(2)}</p>
                       <div className="flex items-center text-sm text-yellow-600">
                         <span>★ {product.rating}</span>
                       </div>

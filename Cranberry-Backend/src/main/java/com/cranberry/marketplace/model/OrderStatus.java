@@ -31,8 +31,8 @@ public enum OrderStatus {
         return switch (this) {
             case CREATED -> target == PAYMENT_PENDING || target == CANCELLED;
             case PAYMENT_PENDING -> target == PAID || target == CANCELLED;
-            case PAID -> target == PROCESSING || target == CANCELLED;
-            case PROCESSING -> target == SHIPPED;
+            case PAID -> target == PROCESSING || target == SHIPPED || target == DELIVERED || target == CANCELLED;
+            case PROCESSING -> target == SHIPPED || target == DELIVERED;
             case SHIPPED -> target == DELIVERED;
             case DELIVERED, CANCELLED -> false; // Terminal states
         };

@@ -73,7 +73,12 @@ const AdminOrders = () => {
             } else {
                 ordersData = await ordersApi.getAllAdmin();
             }
-            setOrders(ordersData || []);
+            // Defensive: ensure orders is always an array
+            if (Array.isArray(ordersData)) {
+                setOrders(ordersData);
+            } else {
+                setOrders([]);
+            }
 
             // Load statistics
             const stats = await ordersApi.getStatistics();
@@ -282,9 +287,9 @@ const AdminOrders = () => {
                                 <div
                                     key={index}
                                     className={`p-4 rounded-xl ${insight.type === 'POSITIVE' ? 'bg-green-100 border-green-200' :
-                                            insight.type === 'WARNING' ? 'bg-yellow-100 border-yellow-200' :
-                                                insight.type === 'ACTION_REQUIRED' ? 'bg-red-100 border-red-200' :
-                                                    'bg-blue-100 border-blue-200'
+                                        insight.type === 'WARNING' ? 'bg-yellow-100 border-yellow-200' :
+                                            insight.type === 'ACTION_REQUIRED' ? 'bg-red-100 border-red-200' :
+                                                'bg-blue-100 border-blue-200'
                                         } border`}
                                 >
                                     <p className="font-semibold text-slate-900 text-sm">{insight.title}</p>

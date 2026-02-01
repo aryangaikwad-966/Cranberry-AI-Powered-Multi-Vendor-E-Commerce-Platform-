@@ -29,6 +29,7 @@ import VendorRegisterPage from './pages/auth/VendorRegisterPage';
 import VendorDashboard from './pages/vendor/VendorDashboard';
 import VendorProducts from './pages/vendor/VendorProducts';
 import VendorPriceSuggest from './pages/vendor/VendorPriceSuggest';
+import VendorOrders from './pages/vendor/VendorOrders';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -123,7 +124,7 @@ function AppContent() {
         <Route path="/vendor" element={<VendorLayout />}>
           <Route index element={<VendorDashboard />} />
           <Route path="products" element={<VendorProducts />} />
-          <Route path="orders" element={<VendorDashboard />} />
+          <Route path="orders" element={<VendorOrders />} />
           <Route path="analytics" element={<VendorDashboard />} />
           <Route path="price-suggest" element={<VendorPriceSuggest />} />
           <Route path="settings" element={<VendorDashboard />} />

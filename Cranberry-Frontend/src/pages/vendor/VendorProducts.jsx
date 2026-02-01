@@ -55,8 +55,12 @@ const VendorProducts = () => {
 
   const loadProducts = async () => {
     try {
-      const data = await vendorApi.getProducts();
-      setProducts(Array.isArray(data) ? data : []);
+      const response = await vendorApi.getProducts();
+      console.log('API response for vendor products:', response);
+      // The axios interceptor already unwraps the response
+      const productsArray = Array.isArray(response) ? response : [];
+      console.log('Products array extracted:', productsArray);
+      setProducts(productsArray);
     } catch (error) {
       console.error('Failed to load products:', error);
       if (error.response && error.response.status === 404) {
@@ -235,7 +239,7 @@ const VendorProducts = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="price">Price ($)</Label>
+                  <Label htmlFor="price">Price (₹)</Label>
                   <Input
                     id="price"
                     name="price"
@@ -341,7 +345,7 @@ const VendorProducts = () => {
                     </div>
                   </TableCell>
                   <TableCell>{product.category}</TableCell>
-                  <TableCell>${product.price.toFixed(2)}</TableCell>
+                  <TableCell>₹{(product.price * 83).toFixed(2)}</TableCell>
                   <TableCell>{product.stock}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(product.status)}>

@@ -140,11 +140,11 @@ const CartPage = () => {
                         {/* Price */}
                         <div className="text-right">
                           <p className="font-display font-bold text-lg text-slate-900">
-                            ${(itemPrice * item.quantity).toFixed(2)}
+                            ₹{(itemPrice * item.quantity * 83).toFixed(2)}
                           </p>
                           {item.quantity > 1 && (
                             <p className="text-sm text-slate-500">
-                              ${itemPrice.toFixed(2)} each
+                              ₹{(itemPrice * 83).toFixed(2)} each
                             </p>
                           )}
                         </div>
@@ -193,22 +193,22 @@ const CartPage = () => {
               <div className="space-y-4">
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>₹{(subtotal * 83).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? 'Free' : `₹${(shipping * 83).toFixed(2)}`}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>₹{(tax * 83).toFixed(2)}</span>
                 </div>
 
                 <Separator />
 
                 <div className="flex justify-between text-lg font-semibold text-slate-900">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>₹{(total * 83).toFixed(2)}</span>
                 </div>
 
                 {shipping === 0 && (

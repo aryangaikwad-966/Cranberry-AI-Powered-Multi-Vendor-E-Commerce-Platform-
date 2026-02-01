@@ -150,7 +150,7 @@ const AISearchBar = ({ variant = 'hero', onSearch }) => {
                       <p className="text-sm text-slate-500">{product.category}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-slate-900">${product.price.toFixed(2)}</p>
+                      <p className="font-semibold text-slate-900">₹{(product.price * 83).toFixed(2)}</p>
                       {product.aiScore && (
                         <span className="text-xs text-[#0071E3]">AI Match</span>
                       )}

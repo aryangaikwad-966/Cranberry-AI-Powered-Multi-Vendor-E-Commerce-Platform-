@@ -124,11 +124,11 @@ const ProductCard = ({ product, showAIBadge = false }) => {
 
         <div className="flex items-center space-x-2">
           <span className="font-display font-bold text-lg text-slate-900">
-            ${product.price.toFixed(2)}
+            ₹{typeof product.price === 'number' ? (product.price * 83).toFixed(2) : 'N/A'}
           </span>
           {product.originalPrice && (
             <span className="text-sm text-slate-400 line-through">
-              ${product.originalPrice.toFixed(2)}
+              ₹{typeof product.originalPrice === 'number' ? (product.originalPrice * 83).toFixed(2) : ''}
             </span>
           )}
         </div>

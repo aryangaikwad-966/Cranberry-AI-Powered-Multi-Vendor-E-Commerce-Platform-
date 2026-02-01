@@ -31,6 +31,7 @@ public class User {
     private String role;
 
     @OneToOne(mappedBy = "user", cascade = jakarta.persistence.CascadeType.ALL)
+    @JsonIgnore
     private Vendor vendor;
 
     public Long getId() {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, CheckCircle, XCircle, Eye, MoreHorizontal, Store } from 'lucide-react';
+import { Search, CheckCircle, XCircle, Eye, MoreHorizontal, Store, Trash2 } from 'lucide-react';
 import { vendorsApi } from '../../services/api';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -61,6 +61,17 @@ const AdminVendors = () => {
       loadVendors();
     } catch (error) {
       console.error('Failed to reject vendor:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this vendor? This action cannot be undone.')) {
+      try {
+        await vendorsApi.delete(id);
+        loadVendors();
+      } catch (error) {
+        console.error('Failed to delete vendor:', error);
+      }
     }
   };
 
@@ -199,6 +210,13 @@ const AdminVendors = () => {
                                 </DropdownMenuItem>
                               </>
                             )}
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(vendor.id)}
+                              className="text-red-600"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Delete
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

@@ -29,7 +29,7 @@ public class CorsConfig {
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("Authorization", "Content-Type"));
+        config.setExposedHeaders(List.of("Authorization", "Content-Type", "x-rtb-fingerprint-id"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L); // Cache preflight for 1 hour
 
@@ -55,7 +55,7 @@ public class CorsConfig {
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("Authorization", "Content-Type"));
+        config.setExposedHeaders(List.of("Authorization", "Content-Type", "x-rtb-fingerprint-id"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 

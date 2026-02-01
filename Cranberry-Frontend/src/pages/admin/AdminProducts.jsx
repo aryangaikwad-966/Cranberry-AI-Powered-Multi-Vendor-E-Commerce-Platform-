@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, CheckCircle, XCircle, Eye, MoreHorizontal } from 'lucide-react';
+import { Search, CheckCircle, XCircle, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
 import { productsApi, adminApi } from '../../services/api';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -55,6 +55,17 @@ const AdminProducts = () => {
       loadProducts();
     } catch (error) {
       console.error('Failed to moderate product:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+      try {
+        await productsApi.delete(id);
+        loadProducts();
+      } catch (error) {
+        console.error('Failed to delete product:', error);
+      }
     }
   };
 
@@ -148,7 +159,7 @@ const AdminProducts = () => {
                       </TableCell>
                       <TableCell>{product.vendorName}</TableCell>
                       <TableCell>{product.category}</TableCell>
-                      <TableCell>${product.price?.toFixed(2)}</TableCell>
+                      <TableCell>₹{(product.price * 83).toFixed(2)}</TableCell>
                       <TableCell>
                         <Badge className={getStatusColor(product.status)}>
                           {product.status}
@@ -184,6 +195,13 @@ const AdminProducts = () => {
                                 </DropdownMenuItem>
                               </>
                             )}
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(product.id)}
+                              className="text-red-600"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Delete
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

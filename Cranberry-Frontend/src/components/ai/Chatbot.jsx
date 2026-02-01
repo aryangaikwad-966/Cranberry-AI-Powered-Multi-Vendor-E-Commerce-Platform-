@@ -27,7 +27,7 @@ const AIChatbot = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!inputValue.trim() || isTyping) return;
-    
+
     const message = inputValue;
     setInputValue('');
     await sendMessage(message);
@@ -54,7 +54,7 @@ const AIChatbot = () => {
 
       {/* Chat window */}
       {isOpen && (
-        <div 
+        <div
           className="fixed bottom-6 right-24 z-[9999] w-[380px] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-200/50 flex flex-col overflow-hidden animate-slideUp"
           data-testid="chatbot-window"
         >
@@ -95,17 +95,16 @@ const AIChatbot = () => {
                 className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] px-4 py-3 rounded-2xl ${
-                    message.role === 'user'
+                  className={`max-w-[85%] px-4 py-3 rounded-2xl ${message.role === 'user'
                       ? 'bg-[#0071E3] text-white rounded-br-md'
                       : 'bg-slate-100 text-slate-900 rounded-bl-md'
-                  }`}
+                    }`}
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
               </div>
             ))}
-            
+
             {/* Streaming response */}
             {isTyping && streamingResponse && (
               <div className="flex justify-start">
@@ -115,7 +114,7 @@ const AIChatbot = () => {
                 </div>
               </div>
             )}
-            
+
             {/* Typing indicator */}
             {isTyping && !streamingResponse && (
               <div className="flex justify-start">
@@ -128,7 +127,7 @@ const AIChatbot = () => {
                 </div>
               </div>
             )}
-            
+
             <div ref={messagesEndRef} />
           </div>
 

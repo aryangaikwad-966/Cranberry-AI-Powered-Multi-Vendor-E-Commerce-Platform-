@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/ai/chat", "/api/ai/search", "/api/ai/recommend/**", 
                                         "/api/ai/health").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/health").permitAll()
                         // Payment config is public (just returns key)
                         .requestMatchers(HttpMethod.GET, "/api/payments/config").permitAll()
                         // Product management - vendors only

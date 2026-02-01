@@ -59,7 +59,7 @@ const AdminDashboard = () => {
   };
 
   const statCards = [
-    { title: 'Total Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, icon: DollarSign, color: 'text-green-600 bg-green-100', change: '+12.5%' },
+    { title: 'Total Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: DollarSign, color: 'text-green-600 bg-green-100', change: '+12.5%' },
     { title: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: 'text-blue-600 bg-blue-100', change: '+8.2%' },
     { title: 'Total Products', value: stats.totalProducts, icon: Package, color: 'text-purple-600 bg-purple-100', change: '+5.1%' },
     { title: 'Total Vendors', value: stats.totalVendors, icon: Store, color: 'text-orange-600 bg-orange-100', change: '+2.4%' },

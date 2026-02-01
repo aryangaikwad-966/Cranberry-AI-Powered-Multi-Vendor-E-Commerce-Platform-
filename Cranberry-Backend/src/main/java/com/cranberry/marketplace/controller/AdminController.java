@@ -53,6 +53,12 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Vendor rejected", vendor));
     }
 
+    @DeleteMapping("/vendors/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteVendor(@PathVariable Long id) {
+        adminService.deleteVendor(id);
+        return ResponseEntity.ok(ApiResponse.success("Vendor deleted"));
+    }
+
     @DeleteMapping("/products/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long id) {
         adminService.deleteProduct(id);

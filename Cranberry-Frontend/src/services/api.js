@@ -163,6 +163,11 @@ export const productsApi = {
     return apiClient.get('/api/products', { params: filters });
   },
 
+  // GET /api/products/approved (Customer Only)
+  getApproved: async () => {
+    return apiClient.get('/api/products/approved');
+  },
+
   // GET /api/products/{id}
   getById: async (id) => {
     return apiClient.get(`/api/products/${id}`);
@@ -435,6 +440,11 @@ export const vendorsApi = {
   // PUT /api/admin/vendors/{id}/reject
   reject: async (id) => {
     return apiClient.put(`/api/admin/vendors/${id}/reject`);
+  },
+
+  // DELETE /api/admin/vendors/{id}
+  delete: async (id) => {
+    return apiClient.delete(`/api/admin/vendors/${id}`);
   },
 };
 

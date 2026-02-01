@@ -115,7 +115,8 @@ public class VendorService {
 
         double totalRevenue = orders.stream()
                 .flatMap(order -> order.getItems().stream())
-                .filter(item -> item.getProduct().getVendor() != null
+                .filter(item -> item.getProduct() != null 
+                        && item.getProduct().getVendor() != null
                         && item.getProduct().getVendor().getId().equals(vendorId))
                 .mapToDouble(item -> item.getPrice())
                 .sum();

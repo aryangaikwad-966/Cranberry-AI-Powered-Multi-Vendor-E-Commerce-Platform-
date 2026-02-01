@@ -68,7 +68,11 @@ public class OrderInsightsService {
             // Generate summary using AI
             String summary;
             try {
-                summary = generateExecutiveSummary(metrics);
+                String aiResponse = generateExecutiveSummary(metrics);
+                if (aiResponse == null || aiResponse.contains("trouble connecting") || aiResponse.isEmpty()) {
+                    throw new RuntimeException("AI returned error message: " + aiResponse);
+                }
+                summary = aiResponse;
                 logger.info("Summary generated");
             } catch (Exception aiEx) {
                 logger.warn("AI summary generation failed, using fallback. Error: {}", aiEx.getMessage());
@@ -146,12 +150,12 @@ public class OrderInsightsService {
         long paidOrders = orders.stream()
                 .filter(o -> isRevenueStatus(o.getStatus()))
                 .count();
-        double conversionRate = orders.size() > 0 ? (double) paidOrders / orders.size() * 100 : 0;
+        double conversionRate = !orders.isEmpty() ? (double) paidOrders / orders.size() * 100 : 0;
         metrics.setConversionRate(Math.round(conversionRate * 10.0) / 10.0);
         
         // Cancellation rate
         long cancelledOrders = statusCounts.getOrDefault(OrderStatus.CANCELLED.name(), 0L);
-        double cancellationRate = orders.size() > 0 ? (double) cancelledOrders / orders.size() * 100 : 0;
+        double cancellationRate = !orders.isEmpty() ? (double) cancelledOrders / orders.size() * 100 : 0;
         metrics.setCancellationRate(Math.round(cancellationRate * 10.0) / 10.0);
         
         return metrics;
@@ -238,6 +242,7 @@ public class OrderInsightsService {
         return insights;
     }
 
+    @SuppressWarnings("unused")
     private List<RecommendationItem> generateRecommendations(OrderMetrics metrics, List<Order> orders) {
         List<RecommendationItem> recommendations = new ArrayList<>();
         
@@ -450,10 +455,10 @@ public class OrderInsightsService {
     }
 
     public static class InsightItem {
-        private String type; // POSITIVE, WARNING, ACTION_REQUIRED, INFO
-        private String title;
-        private String description;
-        private String category;
+        private final String type; // POSITIVE, WARNING, ACTION_REQUIRED, INFO
+        private final String title;
+        private final String description;
+        private final String category;
 
         public InsightItem(String type, String title, String description, String category) {
             this.type = type;
@@ -469,10 +474,10 @@ public class OrderInsightsService {
     }
 
     public static class RecommendationItem {
-        private String priority; // HIGH, MEDIUM, LOW
-        private String title;
-        private String description;
-        private List<String> actionItems;
+        private final String priority; // HIGH, MEDIUM, LOW
+        private final String title;
+        private final String description;
+        private final List<String> actionItems;
 
         public RecommendationItem(String priority, String title, String description, List<String> actionItems) {
             this.priority = priority;
@@ -504,9 +509,9 @@ public class OrderInsightsService {
     }
 
     public static class SalesTrendPoint {
-        private String date;
-        private long orderCount;
-        private double revenue;
+        private final String date;
+        private final long orderCount;
+        private final double revenue;
 
         public SalesTrendPoint(String date, long orderCount, double revenue) {
             this.date = date;

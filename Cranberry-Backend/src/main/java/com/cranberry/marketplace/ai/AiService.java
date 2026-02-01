@@ -1,24 +1,39 @@
 package com.cranberry.marketplace.ai;
 
-import com.cranberry.marketplace.dto.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.cranberry.marketplace.dto.AiChatRequest;
+import com.cranberry.marketplace.dto.AiChatResponse;
+import com.cranberry.marketplace.dto.AiPriceSuggestRequest;
+import com.cranberry.marketplace.dto.AiPriceSuggestResponse;
+import com.cranberry.marketplace.dto.AiRecommendRequest;
+import com.cranberry.marketplace.dto.AiRecommendationResponse;
+import com.cranberry.marketplace.dto.AiSearchRequest;
+import com.cranberry.marketplace.dto.AiSearchResponse;
+import com.cranberry.marketplace.dto.ProductResponse;
 import com.cranberry.marketplace.model.Order;
 import com.cranberry.marketplace.model.OrderItem;
 import com.cranberry.marketplace.model.Product;
 import com.cranberry.marketplace.repository.OrderRepository;
 import com.cranberry.marketplace.repository.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class AiService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AiService.class);
+    // ...existing code...
 
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
@@ -99,6 +114,7 @@ public class AiService {
         List<Product> relevantProducts = filterProducts(allProducts, keywords, minPrice, maxPrice);
 
         if (relevantProducts.isEmpty()) {
+            // Fallback to top rated or random products if no match
             relevantProducts = allProducts.stream().limit(10).collect(Collectors.toList());
         }
 
@@ -111,19 +127,22 @@ public class AiService {
                     p.getDescription() != null ? p.getDescription().substring(0, Math.min(100, p.getDescription().length())) : "N/A"));
         }
 
-        String prompt = String.format("""
+        String systemPrompt = String.format("""
             You are a helpful shopping assistant for Cranberry Marketplace.
             IMPORTANT: Always use the name 'Cranberry' and never 'CranBerry'.
-            User query: "%s"
             
             %s
             
             Based on the user's query and available products, provide a helpful response.
             Recommend 3-5 specific products by mentioning their names and why they would be a good choice.
             Be friendly and concise. Do not include product IDs in your response, just names and key features.
-            """, message, productContext.toString());
+            """, productContext.toString());
 
-        String aiReply = aiClient.generateResponse(prompt);
+        List<Map<String, String>> messages = new ArrayList<>();
+        messages.add(Map.of("role", "system", "content", systemPrompt));
+        messages.add(Map.of("role", "user", "content", message));
+
+        String aiReply = aiClient.generateChatResponse(messages);
 
         // Get products to return with response
         List<ProductResponse> suggestedProducts = relevantProducts.stream()
@@ -252,19 +271,21 @@ public class AiService {
                 .map(p -> String.format("%s ($%.2f)", p.getName(), p.getPrice()))
                 .collect(Collectors.joining(", "));
 
-        String prompt = String.format("""
+        String systemPrompt = String.format("""
             You are a friendly shopping assistant for Cranberry Marketplace, an online store.
             IMPORTANT: Always use the name 'Cranberry' and never 'CranBerry'.
             Available product categories include: Electronics, Clothing, Home & Garden, Sports, etc.
-            Some products we have: %s
-            
-            User message: "%s"
+            Some popular products: %s
             
             Respond helpfully and naturally. If they're looking for products, suggest they search for specific items.
             Keep responses concise and friendly.
-            """, productList, message);
+            """, productList);
 
-        String aiReply = aiClient.generateResponse(prompt);
+        List<Map<String, String>> messages = new ArrayList<>();
+        messages.add(Map.of("role", "system", "content", systemPrompt));
+        messages.add(Map.of("role", "user", "content", message));
+
+        String aiReply = aiClient.generateChatResponse(messages);
 
         return AiChatResponse.builder()
                 .reply(aiReply)

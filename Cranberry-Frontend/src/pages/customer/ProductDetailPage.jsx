@@ -87,6 +87,7 @@ const ProductDetailPage = () => {
     if (product?.imageUrl) {
       return [product.imageUrl];
     }
+    // Fallback if no images found
     return ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800'];
   };
 
@@ -209,11 +210,11 @@ const ProductDetailPage = () => {
             {/* Price */}
             <div className="flex items-baseline space-x-3">
               <span className="font-display text-4xl font-bold text-slate-900">
-                ${product.price.toFixed(2)}
+                ₹{typeof product.price === 'number' ? (product.price * 83).toFixed(2) : 'N/A'}
               </span>
               {product.originalPrice && (
                 <span className="text-xl text-slate-400 line-through">
-                  ${product.originalPrice.toFixed(2)}
+                  ₹{typeof product.originalPrice === 'number' ? (product.originalPrice * 83).toFixed(2) : ''}
                 </span>
               )}
             </div>

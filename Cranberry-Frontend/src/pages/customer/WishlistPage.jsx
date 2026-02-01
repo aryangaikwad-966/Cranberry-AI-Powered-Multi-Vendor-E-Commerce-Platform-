@@ -74,65 +74,65 @@ const WishlistPage = () => {
             }
 
             return (
-            <div
-              key={productId}
-              className="bg-white rounded-2xl overflow-hidden shadow-card"
-              data-testid={`wishlist-item-${productId}`}
-            >
-              {/* Image */}
-              <Link to={`/product/${productId}`}>
-                <div className="aspect-square overflow-hidden bg-slate-50">
-                  <img
-                    src={imageUrl}
-                    alt={name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              </Link>
-
-              {/* Content */}
-              <div className="p-4">
-                <Link
-                  to={`/product/${productId}`}
-                  className="font-medium text-slate-900 hover:text-[#0071E3] transition-colors line-clamp-2"
-                >
-                  {name}
+              <div
+                key={productId}
+                className="bg-white rounded-2xl overflow-hidden shadow-card"
+                data-testid={`wishlist-item-${productId}`}
+              >
+                {/* Image */}
+                <Link to={`/product/${productId}`}>
+                  <div className="aspect-square overflow-hidden bg-slate-50">
+                    <img
+                      src={imageUrl}
+                      alt={name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
                 </Link>
-                <p className="text-sm text-slate-500 mt-1">{vendorName}</p>
 
-                <div className="flex items-center justify-between mt-3">
-                  <span className="font-display font-bold text-lg text-slate-900">
-                    ${price.toFixed(2)}
-                  </span>
-                  {originalPrice && (
-                    <span className="text-sm text-slate-400 line-through">
-                      ${originalPrice.toFixed(2)}
+                {/* Content */}
+                <div className="p-4">
+                  <Link
+                    to={`/product/${productId}`}
+                    className="font-medium text-slate-900 hover:text-[#0071E3] transition-colors line-clamp-2"
+                  >
+                    {name}
+                  </Link>
+                  <p className="text-sm text-slate-500 mt-1">{vendorName}</p>
+
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="font-display font-bold text-lg text-slate-900">
+                      ₹{(price * 83).toFixed(2)}
                     </span>
-                  )}
-                </div>
+                    {originalPrice && (
+                      <span className="text-sm text-slate-400 line-through">
+                        ₹{(originalPrice * 83).toFixed(2)}
+                      </span>
+                    )}
+                  </div>
 
-                {/* Actions */}
-                <div className="flex gap-2 mt-4">
-                  <Button
-                    onClick={() => handleMoveToCart(productId)}
-                    className="flex-1 bg-[#0071E3] hover:bg-[#0077ED] text-white rounded-xl"
-                    data-testid={`move-to-cart-${productId}`}
-                  >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Add to Cart
-                  </Button>
-                  <Button
-                    onClick={() => removeFromWishlist(productId)}
-                    variant="outline"
-                    size="icon"
-                    className="rounded-xl text-slate-500 hover:text-red-500"
-                    data-testid={`remove-wishlist-${productId}`}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  {/* Actions */}
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      onClick={() => handleMoveToCart(productId)}
+                      className="flex-1 bg-[#0071E3] hover:bg-[#0077ED] text-white rounded-xl"
+                      data-testid={`move-to-cart-${productId}`}
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      Add to Cart
+                    </Button>
+                    <Button
+                      onClick={() => removeFromWishlist(productId)}
+                      variant="outline"
+                      size="icon"
+                      className="rounded-xl text-slate-500 hover:text-red-500"
+                      data-testid={`remove-wishlist-${productId}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
             );
           })}
         </div>

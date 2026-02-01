@@ -56,14 +56,10 @@ const ShopPage = () => {
   const loadProducts = async () => {
     setIsLoading(true);
     try {
-      const result = await productsApi.getAll({
-        search: filters.search,
-        category: filters.category,
-        sort: filters.sort,
-        minPrice: filters.minPrice,
-        maxPrice: filters.maxPrice,
-      });
+      // Only show approved products to customers
+      const response = await productsApi.getApproved();
       // Handle both array response and { products, total } response
+      let result = response.data?.data;
       const products = Array.isArray(result) ? result : (result?.products || result || []);
       if (products.length > 0) {
         setProducts(products);
