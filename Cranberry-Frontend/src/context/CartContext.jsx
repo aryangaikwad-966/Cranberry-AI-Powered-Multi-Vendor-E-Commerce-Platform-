@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { cartApi } from '../services/api';
 import { sampleProducts } from '../data/sampleData';
+import { getPriceInINR } from '../lib/utils';
 
 const CartContext = createContext(null);
 
@@ -189,15 +190,17 @@ export const CartProvider = ({ children }) => {
         return true;
     }, [isOffline]);
 
-    // Calculate totals
+    // Calculate totals - prices are normalized to INR using getPriceInINR
     const subtotal = items.reduce((sum, item) => {
         const price = item.product?.price || 0;
-        return sum + price * item.quantity;
+        const priceInINR = getPriceInINR(price);
+        return sum + priceInINR * item.quantity;
     }, 0);
 
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-    const shipping = subtotal > 100 ? 0 : 9.99;
+    // Shipping: Free for orders over ₹5000
+    const shipping = subtotal > 5000 ? 0 : 99;
     const tax = subtotal * 0.08; // 8% tax
     const total = subtotal + shipping + tax;
 

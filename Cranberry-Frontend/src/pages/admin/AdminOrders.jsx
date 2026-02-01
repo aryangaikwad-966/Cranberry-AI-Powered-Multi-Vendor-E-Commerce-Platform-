@@ -26,6 +26,7 @@ import {
 } from '../../components/ui/dialog';
 import { Skeleton } from '../../components/ui/skeleton';
 import { toast } from 'sonner';
+import { formatPrice, getItemImage } from '../../lib/utils';
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -187,7 +188,7 @@ const AdminOrders = () => {
     const statCards = statistics ? [
         {
             title: 'Total Revenue',
-            value: `₹${(statistics.totalRevenue * 83).toFixed(0).toLocaleString()}`,
+            value: `₹${formatPrice(statistics.totalRevenue)}`,
             icon: IndianRupee,
             color: 'text-green-600 bg-green-100'
         },
@@ -305,7 +306,7 @@ const AdminOrders = () => {
                                 <div className="flex flex-wrap gap-2">
                                     {aiInsights.topProducts.map((product, index) => (
                                         <Badge key={index} variant="outline" className="bg-white">
-                                            {product.productName} (₹{(product.revenue * 83).toFixed(0)})
+                                            {product.productName} (₹{formatPrice(product.revenue)})
                                         </Badge>
                                     ))}
                                 </div>
@@ -409,7 +410,7 @@ const AdminOrders = () => {
                                             </td>
                                             <td className="py-4 px-4">
                                                 <span className="font-semibold text-slate-900">
-                                                    ₹{(order.totalAmount * 83).toFixed(0)}
+                                                    ₹{formatPrice(order.totalAmount)}
                                                 </span>
                                             </td>
                                             <td className="py-4 px-4">
@@ -428,13 +429,45 @@ const AdminOrders = () => {
                                                         <Eye className="h-4 w-4 mr-1" />
                                                         View
                                                     </Button>
+                                                    {/* Quick Status Actions for Admin */}
+                                                    {order.status === 'PAID' && (
+                                                        <Button
+                                                            size="sm"
+                                                            className="bg-blue-600 hover:bg-blue-700 h-8 text-xs"
+                                                            onClick={() => handleUpdateStatus(order.id, 'PROCESSING')}
+                                                        >
+                                                            <Package className="h-3 w-3 mr-1" />
+                                                            Process
+                                                        </Button>
+                                                    )}
+                                                    {order.status === 'PROCESSING' && (
+                                                        <Button
+                                                            size="sm"
+                                                            className="bg-purple-600 hover:bg-purple-700 h-8 text-xs"
+                                                            onClick={() => handleUpdateStatus(order.id, 'SHIPPED')}
+                                                        >
+                                                            <Truck className="h-3 w-3 mr-1" />
+                                                            Ship
+                                                        </Button>
+                                                    )}
+                                                    {order.status === 'SHIPPED' && (
+                                                        <Button
+                                                            size="sm"
+                                                            className="bg-green-600 hover:bg-green-700 h-8 text-xs"
+                                                            onClick={() => handleUpdateStatus(order.id, 'DELIVERED')}
+                                                        >
+                                                            <CheckCircle className="h-3 w-3 mr-1" />
+                                                            Deliver
+                                                        </Button>
+                                                    )}
+                                                    {/* Full Status Dropdown for more control */}
                                                     {order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && (
                                                         <Select
                                                             value={order.status}
                                                             onValueChange={(value) => handleUpdateStatus(order.id, value)}
                                                         >
-                                                            <SelectTrigger className="w-32 h-8 text-xs">
-                                                                <SelectValue />
+                                                            <SelectTrigger className="w-8 h-8 p-0">
+                                                                <ChevronDown className="h-4 w-4" />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 {Object.entries(ORDER_STATUS_LABELS).map(([key, label]) => (
@@ -480,7 +513,7 @@ const AdminOrders = () => {
                                     {ORDER_STATUS_LABELS[selectedOrder.status]}
                                 </Badge>
                                 <span className="text-2xl font-bold text-slate-900">
-                                    ₹{(selectedOrder.totalAmount * 83).toFixed(0)}
+                                    ₹{formatPrice(selectedOrder.totalAmount)}
                                 </span>
                             </div>
 
@@ -500,7 +533,7 @@ const AdminOrders = () => {
                                         <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                                             <div className="flex items-center gap-3">
                                                 <img
-                                                    src={item.product?.imageUrl || '/placeholder.png'}
+                                                    src={getItemImage(item)}
                                                     alt={item.product?.name}
                                                     className="w-12 h-12 object-cover rounded-lg"
                                                 />
@@ -509,7 +542,7 @@ const AdminOrders = () => {
                                                     <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
                                                 </div>
                                             </div>
-                                            <span className="font-semibold">₹{(item.price * 83).toFixed(0)}</span>
+                                            <span className="font-semibold">₹{formatPrice(item.price)}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -529,7 +562,7 @@ const AdminOrders = () => {
                                         </div>
                                         <div>
                                             <p className="text-slate-500">Amount</p>
-                                            <p className="font-medium">₹{(orderPayment.amount * 83).toFixed(0)}</p>
+                                            <p className="font-medium">₹{formatPrice(orderPayment.amount)}</p>
                                         </div>
                                         <div>
                                             <p className="text-slate-500">Razorpay Order ID</p>

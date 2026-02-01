@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Search, Edit, Trash2, Eye, MoreHorizontal, Store } from 'lucide-react';
 import { productsApi, vendorApi } from '../../services/api';
+import { formatPrice, getProductImage } from '../../lib/utils';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -347,7 +348,7 @@ const VendorProducts = () => {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <img
-                        src={product.images?.[0] || product.imageUrl || '/placeholder.png'}
+                        src={getProductImage(product)}
                         alt={product.name}
                         className="w-10 h-10 rounded-lg object-cover bg-slate-100"
                       />
@@ -358,7 +359,7 @@ const VendorProducts = () => {
                     </div>
                   </TableCell>
                   <TableCell>{product.category}</TableCell>
-                  <TableCell>₹{(product.price * 83).toFixed(2)}</TableCell>
+                  <TableCell>₹{formatPrice(product.price)}</TableCell>
                   <TableCell>{product.stock}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(product.status)}>

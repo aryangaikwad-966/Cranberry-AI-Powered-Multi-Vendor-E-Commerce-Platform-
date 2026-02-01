@@ -3,6 +3,7 @@ import { Heart, ShoppingCart, Trash2 } from 'lucide-react';
 import { useWishlist } from '../../context/WishlistContext.jsx';
 import { useCart } from '../../context/CartContext.jsx';
 import { Button } from '../../components/ui/button';
+import { formatPrice } from '../../lib/utils';
 
 const WishlistPage = () => {
   const { items, isLoading, removeFromWishlist } = useWishlist();
@@ -102,11 +103,11 @@ const WishlistPage = () => {
 
                   <div className="flex items-center justify-between mt-3">
                     <span className="font-display font-bold text-lg text-slate-900">
-                      ₹{(price * 83).toFixed(2)}
+                      ₹{formatPrice(price)}
                     </span>
                     {originalPrice && (
                       <span className="text-sm text-slate-400 line-through">
-                        ₹{(originalPrice * 83).toFixed(2)}
+                        ₹{formatPrice(originalPrice)}
                       </span>
                     )}
                   </div>

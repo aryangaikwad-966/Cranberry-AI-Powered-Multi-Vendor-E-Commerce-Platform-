@@ -96,12 +96,12 @@ public class AdminService {
         int productCount = (int) productRepository.countByVendorId(vendor.getId());
         return new VendorResponse(
                 vendor.getId(),
-                vendor.getShopName(),
-                vendor.getContactEmail(),
+                vendor.getShopName() != null ? vendor.getShopName() : "Unknown Shop",
+                vendor.getContactEmail() != null ? vendor.getContactEmail() : "",
                 vendor.getLogo() != null ? vendor.getLogo() : "https://via.placeholder.com/150",
                 productCount,
                 4.5, // Default rating for now until Review system is implemented
-                vendor.getStatus(),
+                vendor.getStatus() != null ? vendor.getStatus() : "PENDING",
                 vendor.getJoinedAt() != null ? vendor.getJoinedAt() : java.time.LocalDateTime.now()
         );
     }

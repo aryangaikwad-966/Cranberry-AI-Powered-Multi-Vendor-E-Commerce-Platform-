@@ -4,6 +4,7 @@ import { Heart, ShoppingCart, Star, Sparkles } from 'lucide-react';
 import { useCart } from '../../context/CartContext.jsx';
 import { useWishlist } from '../../context/WishlistContext.jsx';
 import { Button } from '../ui/button';
+import { formatPrice, getProductImage } from '../../lib/utils';
 
 const ProductCard = ({ product, showAIBadge = false }) => {
   const { addToCart } = useCart();
@@ -33,8 +34,8 @@ const ProductCard = ({ product, showAIBadge = false }) => {
 
   const fallbackImage = 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=400';
 
-  // Handle both imageUrl (sample data) and images array (backend data)
-  const productImage = product.imageUrl || product.images?.[0] || fallbackImage;
+  // Use utility function for consistent image handling
+  const productImage = getProductImage(product);
 
   return (
     <Link
@@ -124,11 +125,11 @@ const ProductCard = ({ product, showAIBadge = false }) => {
 
         <div className="flex items-center space-x-2">
           <span className="font-display font-bold text-lg text-slate-900">
-            ₹{typeof product.price === 'number' ? (product.price * 83).toFixed(2) : 'N/A'}
+            ₹{formatPrice(product.price)}
           </span>
           {product.originalPrice && (
             <span className="text-sm text-slate-400 line-through">
-              ₹{typeof product.originalPrice === 'number' ? (product.originalPrice * 83).toFixed(2) : ''}
+              ₹{formatPrice(product.originalPrice)}
             </span>
           )}
         </div>

@@ -6,6 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Progress } from '../../components/ui/progress';
+import { formatPrice } from '../../lib/utils';
 
 const VendorPriceSuggest = () => {
   const { suggestion, getSuggestion, isAnalyzing } = useAIPriceSuggest();
@@ -146,10 +147,10 @@ const VendorPriceSuggest = () => {
                 <CardContent>
                   <div className="text-center py-4">
                     <p className="font-display text-5xl font-bold text-slate-900">
-                      ₹{suggestion.recommendedPrice ? (suggestion.recommendedPrice * 83).toFixed(2) : '0.00'}
+                      ₹{suggestion.recommendedPrice ? formatPrice(suggestion.recommendedPrice) : '0.00'}
                     </p>
                     <p className="text-slate-500 mt-2">
-                      Range: ₹{suggestion.priceRange?.min ? (suggestion.priceRange.min * 83).toFixed(2) : '0.00'} - ₹{suggestion.priceRange?.max ? (suggestion.priceRange.max * 83).toFixed(2) : '0.00'}
+                      Range: ₹{suggestion.priceRange?.min ? formatPrice(suggestion.priceRange.min) : '0.00'} - ₹{suggestion.priceRange?.max ? formatPrice(suggestion.priceRange.max) : '0.00'}
                     </p>
                   </div>
 
@@ -179,7 +180,7 @@ const VendorPriceSuggest = () => {
                     <div className="bg-slate-50 rounded-xl p-4">
                       <p className="text-sm text-slate-500">Cranberry Average</p>
                       <p className="font-display text-xl font-bold text-slate-900">
-                        ₹{suggestion.competitorAnalysis?.averagePrice ? (suggestion.competitorAnalysis.averagePrice * 83).toFixed(2) : '0.00'}
+                        ₹{suggestion.competitorAnalysis?.averagePrice ? formatPrice(suggestion.competitorAnalysis.averagePrice) : '0.00'}
                       </p>
                     </div>
                     <div className="bg-slate-50 rounded-xl p-4">

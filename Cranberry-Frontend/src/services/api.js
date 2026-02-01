@@ -245,12 +245,26 @@ export const ordersApi = {
     return apiClient.post('/api/orders', orderData);
   },
 
-  // GET /api/orders/vendor (Vendor Only)
+  // GET /api/orders/vendor (Vendor Only) - Now uses /api/vendor/orders
   getVendorOrders: async () => {
-    return apiClient.get('/api/orders/vendor');
+    return apiClient.get('/api/vendor/orders');
   },
 
-  // PUT /api/orders/{id}/status?status=VALUE (Vendor/Admin)
+  // PUT /api/vendor/orders/items/{itemId}/status?status=VALUE (Vendor - update individual item status)
+  updateVendorItemStatus: async (itemId, status) => {
+    return apiClient.put(`/api/vendor/orders/items/${itemId}/status`, null, {
+      params: { status },
+    });
+  },
+
+  // PUT /api/vendor/orders/{id}/status?status=VALUE (Vendor - update order status - deprecated)
+  updateVendorOrderStatus: async (orderId, status) => {
+    return apiClient.put(`/api/vendor/orders/${orderId}/status`, null, {
+      params: { status },
+    });
+  },
+
+  // PUT /api/orders/{id}/status?status=VALUE (Admin)
   updateStatus: async (id, status) => {
     return apiClient.put(`/api/orders/${id}/status`, null, {
       params: { status },

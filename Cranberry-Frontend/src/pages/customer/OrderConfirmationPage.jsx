@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { CheckCircle, Package, Truck, ArrowRight, Home, ShoppingBag, Loader2 } from 'lucide-react';
+import { CheckCircle, Package, Truck, ArrowRight, Home, ShoppingBag, Loader2, Store } from 'lucide-react';
 import { ordersApi } from '../../services/api';
 import { Button } from '../../components/ui/button';
 import { Separator } from '../../components/ui/separator';
+import { Badge } from '../../components/ui/badge';
 import confetti from '../../lib/confetti';
+import { formatPrice, getItemImage } from '../../lib/utils';
 
 const OrderConfirmationPage = () => {
   const location = useLocation();
@@ -176,28 +178,75 @@ const OrderConfirmationPage = () => {
 
             <Separator className="my-6" />
 
-            {/* Order Items */}
+            {/* Order Items - Grouped by Vendor */}
             {order?.items && order.items.length > 0 && (
               <div className="mb-6">
                 <h3 className="font-semibold text-slate-900 mb-4">Order Items</h3>
-                <div className="space-y-3">
-                  {order.items.map((item, index) => (
-                    <div key={index} className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl">
-                      <img
-                        src={item.product?.imageUrl || item.product?.images?.[0] || '/placeholder.png'}
-                        alt={item.product?.name}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <p className="font-medium text-slate-900">{item.product?.name}</p>
-                        <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
-                      </div>
-                      <p className="font-semibold text-slate-900">
-                        ₹{(item.price * 83).toFixed(0)}
-                      </p>
+                {(() => {
+                  // Group items by vendor
+                  const itemsByVendor = {};
+                  order.items.forEach(item => {
+                    const vendorName = item.product?.vendor?.shopName || 'Cranberry Marketplace';
+                    const vendorId = item.product?.vendor?.id || 'default';
+                    if (!itemsByVendor[vendorId]) {
+                      itemsByVendor[vendorId] = {
+                        vendorName,
+                        items: []
+                      };
+                    }
+                    itemsByVendor[vendorId].items.push(item);
+                  });
+
+                  const vendorGroups = Object.values(itemsByVendor);
+                  const hasMultipleVendors = vendorGroups.length > 1;
+
+                  return (
+                    <div className="space-y-4">
+                      {hasMultipleVendors && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-2">
+                          <Store className="w-4 h-4 text-blue-600 mt-0.5" />
+                          <p className="text-sm text-blue-700">
+                            Your order contains products from <strong>{vendorGroups.length} different sellers</strong>.
+                            Items may be shipped separately.
+                          </p>
+                        </div>
+                      )}
+                      {vendorGroups.map((group, groupIndex) => (
+                        <div key={groupIndex} className="border border-slate-200 rounded-xl overflow-hidden">
+                          {/* Vendor Header */}
+                          <div className="bg-slate-50 px-4 py-2 flex items-center gap-2">
+                            <Store className="w-4 h-4 text-slate-600" />
+                            <span className="text-sm font-medium text-slate-700">
+                              Sold by: {group.vendorName}
+                            </span>
+                            <Badge variant="outline" className="ml-auto text-xs">
+                              {group.items.length} item{group.items.length > 1 ? 's' : ''}
+                            </Badge>
+                          </div>
+                          {/* Items from this vendor */}
+                          <div className="divide-y divide-slate-100">
+                            {group.items.map((item, index) => (
+                              <div key={index} className="flex items-center gap-4 p-3">
+                                <img
+                                  src={getItemImage(item)}
+                                  alt={item.product?.name}
+                                  className="w-16 h-16 object-cover rounded-lg"
+                                />
+                                <div className="flex-1">
+                                  <p className="font-medium text-slate-900">{item.product?.name}</p>
+                                  <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                                </div>
+                                <p className="font-semibold text-slate-900">
+                                  ₹{formatPrice(item.price)}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  );
+                })()}
               </div>
             )}
 
@@ -214,7 +263,7 @@ const OrderConfirmationPage = () => {
               <div className="text-right">
                 <p className="text-sm text-slate-500">Total Amount</p>
                 <p className="text-2xl font-bold text-[#0071E3]">
-                  ₹{((order?.totalAmount || 0) * 83).toFixed(0)}
+                  ₹{formatPrice(order?.totalAmount || 0)}
                 </p>
               </div>
             </div>
@@ -248,13 +297,19 @@ const OrderConfirmationPage = () => {
               <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-bold text-blue-600">2</span>
               </div>
-              <p>Our team will process your order and prepare it for shipping.</p>
+              <p>Each seller will process their items from your order.</p>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-bold text-blue-600">3</span>
               </div>
-              <p>You'll get tracking details once your order is shipped.</p>
+              <p>Items from different sellers may ship separately with individual tracking.</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-xs font-bold text-blue-600">4</span>
+              </div>
+              <p>You'll get tracking details once each shipment is dispatched.</p>
             </div>
           </div>
         </div>

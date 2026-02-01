@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
+import { formatPrice, getProductImage } from '../../lib/utils';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -83,7 +84,7 @@ const AdminDashboard = () => {
   };
 
   const statCards = [
-    { title: 'Total Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: IndianRupee, color: 'text-green-600 bg-green-100', change: '+12.5%' },
+    { title: 'Total Revenue', value: `₹${formatPrice(stats.totalRevenue)}`, icon: IndianRupee, color: 'text-green-600 bg-green-100', change: '+12.5%' },
     { title: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: 'text-blue-600 bg-blue-100', change: '+8.2%' },
     { title: 'Total Products', value: stats.totalProducts, icon: Package, color: 'text-purple-600 bg-purple-100', change: '+5.1%' },
     { title: 'Total Vendors', value: stats.totalVendors, icon: Store, color: 'text-orange-600 bg-orange-100', change: '+2.4%' },
@@ -226,13 +227,13 @@ const AdminDashboard = () => {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={product.imageUrl || product.images?.[0] || 'https://via.placeholder.com/150'}
+                      src={getProductImage(product)}
                       alt={product.name}
                       className="w-12 h-12 rounded-xl bg-white object-cover"
                     />
                     <div>
                       <p className="font-medium text-slate-900">{product.name}</p>
-                      <p className="text-sm text-slate-500">₹{(product.price * 83).toFixed(2)} • {product.vendorName || 'Unknown Vendor'}</p>
+                      <p className="text-sm text-slate-500">₹{formatPrice(product.price)} • {product.vendorName || 'Unknown Vendor'}</p>
                       <p className="text-xs text-slate-400">{product.category}</p>
                     </div>
                   </div>

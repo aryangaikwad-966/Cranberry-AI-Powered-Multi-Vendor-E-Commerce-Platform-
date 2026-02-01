@@ -26,10 +26,11 @@ public enum OrderStatus {
 
     /**
      * Check if transition from current status to target status is valid
+     * Note: ADMIN has full control - use forceTransitionAllowed() for admin operations
      */
     public boolean canTransitionTo(OrderStatus target) {
         return switch (this) {
-            case CREATED -> target == PAYMENT_PENDING || target == CANCELLED;
+            case CREATED -> target == PAYMENT_PENDING || target == PAID || target == CANCELLED;
             case PAYMENT_PENDING -> target == PAID || target == CANCELLED;
             case PAID -> target == PROCESSING || target == SHIPPED || target == DELIVERED || target == CANCELLED;
             case PROCESSING -> target == SHIPPED || target == DELIVERED;

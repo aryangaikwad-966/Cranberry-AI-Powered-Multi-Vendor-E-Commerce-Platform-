@@ -3,11 +3,10 @@ import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Tag } from 'lucide-react'
 import { useCart } from '../../context/CartContext.jsx';
 import { Button } from '../../components/ui/button';
 import { Separator } from '../../components/ui/separator';
+import { formatPrice, getPriceInINR, getItemImage } from '../../lib/utils';
 
 // Helper functions to safely get item data (handles both backend and local/sample formats)
-const getImage = (item) => {
-  return item.imageUrl || item.product?.imageUrl || item.product?.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400';
-};
+const getImage = (item) => getItemImage(item);
 const getName = (item) => item.productName || item.name || item.product?.name || 'Product';
 const getVendor = (item) => item.vendorName || item.product?.vendorName || 'Vendor';
 const getPrice = (item) => item.price || item.product?.price || 0;
@@ -140,11 +139,11 @@ const CartPage = () => {
                         {/* Price */}
                         <div className="text-right">
                           <p className="font-display font-bold text-lg text-slate-900">
-                            ₹{(itemPrice * item.quantity * 83).toFixed(2)}
+                            ₹{formatPrice(getPriceInINR(itemPrice) * item.quantity, true)}
                           </p>
                           {item.quantity > 1 && (
                             <p className="text-sm text-slate-500">
-                              ₹{(itemPrice * 83).toFixed(2)} each
+                              ₹{formatPrice(itemPrice)} each
                             </p>
                           )}
                         </div>
@@ -193,22 +192,22 @@ const CartPage = () => {
               <div className="space-y-4">
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal</span>
-                  <span>₹{(subtotal * 83).toFixed(2)}</span>
+                  <span>₹{formatPrice(subtotal, true)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `₹${(shipping * 83).toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? 'Free' : `₹${formatPrice(shipping, true)}`}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
-                  <span>Tax</span>
-                  <span>₹{(tax * 83).toFixed(2)}</span>
+                  <span>Tax (18% GST)</span>
+                  <span>₹{formatPrice(tax, true)}</span>
                 </div>
 
                 <Separator />
 
                 <div className="flex justify-between text-lg font-semibold text-slate-900">
                   <span>Total</span>
-                  <span>₹{(total * 83).toFixed(2)}</span>
+                  <span>₹{formatPrice(total, true)}</span>
                 </div>
 
                 {shipping === 0 && (

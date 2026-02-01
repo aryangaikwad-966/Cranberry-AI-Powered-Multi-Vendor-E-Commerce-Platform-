@@ -22,6 +22,7 @@ import { Button } from '../../components/ui/button';
 import { Skeleton } from '../../components/ui/skeleton';
 import { Badge } from '../../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { formatPrice } from '../../lib/utils';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -210,11 +211,11 @@ const ProductDetailPage = () => {
             {/* Price */}
             <div className="flex items-baseline space-x-3">
               <span className="font-display text-4xl font-bold text-slate-900">
-                ₹{typeof product.price === 'number' ? (product.price * 83).toFixed(2) : 'N/A'}
+                ₹{formatPrice(product.price)}
               </span>
               {product.originalPrice && (
                 <span className="text-xl text-slate-400 line-through">
-                  ₹{typeof product.originalPrice === 'number' ? (product.originalPrice * 83).toFixed(2) : ''}
+                  ₹{formatPrice(product.originalPrice)}
                 </span>
               )}
             </div>

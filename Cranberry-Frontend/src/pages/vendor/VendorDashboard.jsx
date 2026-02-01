@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
+import { formatPrice, getProductImage } from '../../lib/utils';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -86,7 +87,7 @@ const VendorDashboard = () => {
   const statCards = [
     { title: 'Total Products', value: stats.totalProducts, icon: Package, color: 'text-blue-600 bg-blue-100' },
     { title: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: 'text-green-600 bg-green-100' },
-    { title: 'Revenue', value: `₹${(stats.totalRevenue * 83).toFixed(2)}`, icon: IndianRupee, color: 'text-purple-600 bg-purple-100' },
+    { title: 'Revenue', value: `₹${formatPrice(stats.totalRevenue)}`, icon: IndianRupee, color: 'text-purple-600 bg-purple-100' },
     { title: 'Pending Orders', value: stats.pendingOrders, icon: TrendingUp, color: 'text-orange-600 bg-orange-100' },
   ];
 
@@ -138,8 +139,8 @@ const VendorDashboard = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((stat) => (
-          <Card key={stat.title}>
+        {statCards.map((stat, index) => (
+          <Card key={`stat-${stat.title}-${index}`}>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -171,18 +172,18 @@ const VendorDashboard = () => {
               {recentOrders.length === 0 ? (
                 <p className="text-slate-500 text-center py-8">No orders yet</p>
               ) : (
-                recentOrders.map((order) => (
-                  <div key={order.id} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">
+                recentOrders.map((order, index) => (
+                  <div key={order.id || order.orderId || `order-${index}`} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">
                     <div>
-                      <p className="font-medium text-slate-900">{order.id}</p>
+                      <p className="font-medium text-slate-900">#{order.id || order.orderId}</p>
                       <p className="text-sm text-slate-500">
-                        {new Date(order.createdAt).toLocaleDateString()}
+                        {new Date(order.createdAt || order.orderDate).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-slate-900">₹{order.totalAmount ? (order.totalAmount * 83).toFixed(2) : '0.00'}</p>
-                      <Badge className={getStatusColor(order.status)}>
-                        {order.status}
+                      <p className="font-medium text-slate-900">₹{formatPrice(order.totalAmount || order.vendorSubtotal || 0)}</p>
+                      <Badge className={getStatusColor(order.status || order.orderStatus)}>
+                        {order.status || order.orderStatus}
                       </Badge>
                     </div>
                   </div>
@@ -208,7 +209,7 @@ const VendorDashboard = () => {
                 topProducts.map((product) => (
                   <div key={product.id} className="flex items-center gap-4 py-3 border-b border-slate-100 last:border-0">
                     <img
-                      src={product.images?.[0] || product.imageUrl || '/placeholder.png'}
+                      src={getProductImage(product)}
                       alt={product.name}
                       className="w-12 h-12 rounded-lg object-cover bg-slate-100"
                     />
@@ -217,7 +218,7 @@ const VendorDashboard = () => {
                       <p className="text-sm text-slate-500">{product.stock} in stock</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-slate-900">₹{(product.price * 83).toFixed(2)}</p>
+                      <p className="font-medium text-slate-900">₹{formatPrice(product.price)}</p>
                       <div className="flex items-center text-sm text-yellow-600">
                         <span>★ {product.rating}</span>
                       </div>

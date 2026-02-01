@@ -9,6 +9,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Separator } from '../../components/ui/separator';
 import { toast } from 'sonner';
+import { formatPrice, getItemImage, getPriceInINR } from '../../lib/utils';
 
 // Load Razorpay script dynamically
 const loadRazorpayScript = () => {
@@ -494,7 +495,7 @@ const CheckoutPage = () => {
                       Processing...
                     </span>
                   ) : (
-                    `Pay ₹${(total * 83).toFixed(0)}`
+                    `Pay ₹${formatPrice(total)}`
                   )}
                 </Button>
               </div>
@@ -514,7 +515,7 @@ const CheckoutPage = () => {
                   <div key={item.productId || item.product?.id || item.id} className="flex gap-3">
                     <div className="relative">
                       <img
-                        src={item.product?.images?.[0] || item.product?.imageUrl || '/placeholder.png'}
+                        src={getItemImage(item)}
                         alt={item.product?.name || item.productName}
                         className="w-16 h-16 object-cover rounded-lg bg-slate-50"
                       />
@@ -527,7 +528,7 @@ const CheckoutPage = () => {
                         {item.product?.name || item.productName}
                       </p>
                       <p className="text-sm text-slate-500">
-                        ₹{(((item.product?.price ?? item.price ?? 0) * 83 * item.quantity).toFixed(0))}
+                        ₹{formatPrice(getPriceInINR(item.product?.price ?? item.price ?? 0) * item.quantity, true)}
                       </p>
                     </div>
                   </div>
@@ -540,20 +541,20 @@ const CheckoutPage = () => {
               <div className="space-y-3">
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal</span>
-                  <span>₹{(subtotal * 83).toFixed(0)}</span>
+                  <span>₹{formatPrice(subtotal, true)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `₹${(shipping * 83).toFixed(0)}`}</span>
+                  <span>{shipping === 0 ? 'Free' : `₹${formatPrice(shipping, true)}`}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
-                  <span>Tax (GST)</span>
-                  <span>₹{(tax * 83).toFixed(0)}</span>
+                  <span>Tax (18% GST)</span>
+                  <span>₹{formatPrice(tax, true)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-semibold text-slate-900">
                   <span>Total</span>
-                  <span>₹{(total * 83).toFixed(0)}</span>
+                  <span>₹{formatPrice(total, true)}</span>
                 </div>
               </div>
 

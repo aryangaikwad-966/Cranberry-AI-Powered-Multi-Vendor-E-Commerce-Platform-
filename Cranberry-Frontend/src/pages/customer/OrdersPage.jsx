@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Package, ChevronRight, Clock, Truck, CheckCircle, XCircle,
-  CreditCard, RefreshCw, Loader2, Eye, AlertCircle
+  CreditCard, RefreshCw, Loader2, Eye, AlertCircle, Store
 } from 'lucide-react';
 import { ordersApi, paymentsApi, ORDER_STATUS_LABELS } from '../../services/api';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -18,6 +18,7 @@ import {
 } from '../../components/ui/dialog';
 import { Separator } from '../../components/ui/separator';
 import { toast } from 'sonner';
+import { formatPrice, getItemImage } from '../../lib/utils';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
@@ -239,7 +240,7 @@ const OrdersPage = () => {
                   <div>
                     <p className="text-sm text-slate-500">Total</p>
                     <p className="font-display font-bold text-slate-900">
-                      ₹{((order.totalAmount || 0) * 83).toFixed(0)}
+                      ₹{formatPrice(order.totalAmount || 0)}
                     </p>
                   </div>
                   <div>
@@ -259,7 +260,7 @@ const OrdersPage = () => {
                       <div key={index} className="flex items-center gap-4">
                         <Link to={`/product/${item.product?.id}`}>
                           <img
-                            src={item.product?.imageUrl || item.product?.images?.[0] || '/placeholder.png'}
+                            src={getItemImage(item)}
                             alt={item.product?.name}
                             className="w-16 h-16 object-cover rounded-lg bg-slate-50"
                           />
@@ -272,11 +273,17 @@ const OrdersPage = () => {
                             {item.product?.name}
                           </Link>
                           <p className="text-sm text-slate-500">
-                            Qty: {item.quantity} × ₹{((item.price / item.quantity) * 83).toFixed(0)}
+                            Qty: {item.quantity} × ₹{formatPrice(item.price / item.quantity)}
                           </p>
+                          {item.product?.vendor && (
+                            <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                              <Store className="w-3 h-3" />
+                              Sold by: {item.product.vendor.shopName || 'Cranberry Seller'}
+                            </p>
+                          )}
                         </div>
                         <p className="font-medium text-slate-900">
-                          ₹{(item.price * 83).toFixed(0)}
+                          ₹{formatPrice(item.price)}
                         </p>
                       </div>
                     ))}
@@ -365,7 +372,7 @@ const OrdersPage = () => {
                   {ORDER_STATUS_LABELS[selectedOrder.status] || selectedOrder.status}
                 </Badge>
                 <span className="text-2xl font-bold text-slate-900">
-                  ₹{((selectedOrder.totalAmount || 0) * 83).toFixed(0)}
+                  ₹{formatPrice(selectedOrder.totalAmount || 0)}
                 </span>
               </div>
 
@@ -402,25 +409,72 @@ const OrdersPage = () => {
 
               <Separator />
 
-              {/* Order Items */}
+              {/* Order Items - Grouped by Vendor */}
               <div>
                 <h4 className="font-semibold text-slate-900 mb-3">Order Items</h4>
-                <div className="space-y-3">
-                  {selectedOrder.items?.map((item, index) => (
-                    <div key={index} className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl">
-                      <img
-                        src={item.product?.imageUrl || item.product?.images?.[0] || '/placeholder.png'}
-                        alt={item.product?.name}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <p className="font-medium text-slate-900">{item.product?.name}</p>
-                        <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
-                      </div>
-                      <span className="font-semibold">₹{(item.price * 83).toFixed(0)}</span>
+                {(() => {
+                  // Group items by vendor
+                  const itemsByVendor = {};
+                  selectedOrder.items?.forEach(item => {
+                    const vendorName = item.product?.vendor?.shopName || 'Cranberry Marketplace';
+                    const vendorId = item.product?.vendor?.id || 'default';
+                    if (!itemsByVendor[vendorId]) {
+                      itemsByVendor[vendorId] = {
+                        vendorName,
+                        items: []
+                      };
+                    }
+                    itemsByVendor[vendorId].items.push(item);
+                  });
+
+                  const vendorGroups = Object.values(itemsByVendor);
+                  const hasMultipleVendors = vendorGroups.length > 1;
+
+                  return (
+                    <div className="space-y-4">
+                      {hasMultipleVendors && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-2">
+                          <Store className="w-4 h-4 text-blue-600 mt-0.5" />
+                          <p className="text-sm text-blue-700">
+                            This order contains products from <strong>{vendorGroups.length} different sellers</strong>.
+                            Each seller will fulfill their items separately.
+                          </p>
+                        </div>
+                      )}
+                      {vendorGroups.map((group, groupIndex) => (
+                        <div key={groupIndex} className="border border-slate-200 rounded-xl overflow-hidden">
+                          {/* Vendor Header */}
+                          <div className="bg-slate-100 px-4 py-2 flex items-center gap-2">
+                            <Store className="w-4 h-4 text-slate-600" />
+                            <span className="text-sm font-medium text-slate-700">
+                              Sold by: {group.vendorName}
+                            </span>
+                            <Badge variant="outline" className="ml-auto text-xs">
+                              {group.items.length} item{group.items.length > 1 ? 's' : ''}
+                            </Badge>
+                          </div>
+                          {/* Items from this vendor */}
+                          <div className="divide-y divide-slate-100">
+                            {group.items.map((item, index) => (
+                              <div key={index} className="flex items-center gap-4 p-3">
+                                <img
+                                  src={getItemImage(item)}
+                                  alt={item.product?.name}
+                                  className="w-16 h-16 object-cover rounded-lg"
+                                />
+                                <div className="flex-1">
+                                  <p className="font-medium text-slate-900">{item.product?.name}</p>
+                                  <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                                </div>
+                                <span className="font-semibold">₹{formatPrice(item.price)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  );
+                })()}
               </div>
 
               {/* Payment Info */}
@@ -449,7 +503,7 @@ const OrdersPage = () => {
                       </div>
                       <div>
                         <p className="text-slate-500">Amount</p>
-                        <p className="font-medium">₹{(orderPayment.amount * 83).toFixed(0)}</p>
+                        <p className="font-medium">₹{formatPrice(orderPayment.amount)}</p>
                       </div>
                       {orderPayment.razorpayPaymentId && (
                         <div className="col-span-2">

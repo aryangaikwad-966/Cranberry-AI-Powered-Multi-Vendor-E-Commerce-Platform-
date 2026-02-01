@@ -1,27 +1,39 @@
 package com.cranberry.marketplace.controller;
 
-import com.cranberry.marketplace.dto.ApiResponse;
-import com.cranberry.marketplace.dto.OrderRequest;
-import com.cranberry.marketplace.model.Order;
-import com.cranberry.marketplace.model.OrderItem;
-import com.cranberry.marketplace.model.Payment;
-import com.cranberry.marketplace.model.Vendor;
-import com.cranberry.marketplace.security.JwtUtil;
-import com.cranberry.marketplace.service.AuthService;
-import com.cranberry.marketplace.service.OrderService;
-import com.cranberry.marketplace.service.PaymentService;
-import com.cranberry.marketplace.service.VendorService;
-import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cranberry.marketplace.dto.ApiResponse;
+import com.cranberry.marketplace.dto.OrderRequest;
+import com.cranberry.marketplace.model.Order;
+import com.cranberry.marketplace.model.OrderItem;
+import com.cranberry.marketplace.model.Payment;
+import com.cranberry.marketplace.model.Product;
+import com.cranberry.marketplace.model.Vendor;
+import com.cranberry.marketplace.security.JwtUtil;
+import com.cranberry.marketplace.service.AuthService;
+import com.cranberry.marketplace.service.OrderService;
+import com.cranberry.marketplace.service.PaymentService;
+import com.cranberry.marketplace.service.VendorService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -57,18 +69,32 @@ public class OrderController {
             map.put("totalAmount", order.getTotalAmount());
             map.put("createdAt", order.getCreatedAt());
             
-            // Map items for thumbnails
-            List<Map<String, Object>> items = order.getItems().stream().map(item -> {
-                Map<String, Object> itemMap = new HashMap<>();
-                Map<String, Object> productMap = new HashMap<>();
-                productMap.put("id", item.getProduct().getId());
-                productMap.put("name", item.getProduct().getName());
-                productMap.put("imageUrl", item.getProduct().getImageUrl());
-                itemMap.put("product", productMap);
-                itemMap.put("quantity", item.getQuantity());
-                itemMap.put("price", item.getPrice());
-                return itemMap;
-            }).toList();
+            // Map items for thumbnails with null safety
+            List<Map<String, Object>> items = order.getItems().stream()
+                .filter(item -> item.getProduct() != null)
+                .map(item -> {
+                    Map<String, Object> itemMap = new HashMap<>();
+                    Map<String, Object> productMap = new HashMap<>();
+                    Product product = item.getProduct();
+                    productMap.put("id", product.getId());
+                    productMap.put("name", product.getName());
+                    productMap.put("imageUrl", product.getImageUrl());
+                    
+                    // Include vendor info for multi-vendor display
+                    if (product.getVendor() != null) {
+                        Map<String, Object> vendorMap = new HashMap<>();
+                        vendorMap.put("id", product.getVendor().getId());
+                        vendorMap.put("shopName", product.getVendor().getShopName());
+                        productMap.put("vendor", vendorMap);
+                    }
+                    
+                    itemMap.put("product", productMap);
+                    itemMap.put("quantity", item.getQuantity());
+                    itemMap.put("price", item.getPrice());
+                    itemMap.put("itemId", item.getId());
+                    itemMap.put("itemStatus", item.getStatus() != null ? item.getStatus() : "PENDING");
+                    return itemMap;
+                }).toList();
             
             map.put("items", items);
             map.put("itemCount", items.size());
@@ -107,16 +133,29 @@ public class OrderController {
         orderMap.put("estimatedDeliveryDate", order.getEstimatedDeliveryDate());
         orderMap.put("createdAt", order.getCreatedAt());
         
-        // Map items
-        List<Map<String, Object>> items = order.getItems().stream().map(item -> {
-            Map<String, Object> itemMap = new HashMap<>();
-            itemMap.put("productId", item.getProduct().getId());
-            itemMap.put("productName", item.getProduct().getName());
-            itemMap.put("quantity", item.getQuantity());
-            itemMap.put("price", item.getPrice());
-            itemMap.put("imageUrl", item.getProduct().getImageUrl());
-            return itemMap;
-        }).toList();
+        // Map items with null safety and item-level status
+        List<Map<String, Object>> items = order.getItems().stream()
+            .filter(item -> item.getProduct() != null)
+            .map(item -> {
+                Map<String, Object> itemMap = new HashMap<>();
+                Product product = item.getProduct();
+                itemMap.put("itemId", item.getId());
+                itemMap.put("productId", product.getId());
+                itemMap.put("productName", product.getName());
+                itemMap.put("quantity", item.getQuantity());
+                itemMap.put("price", item.getPrice());
+                itemMap.put("imageUrl", product.getImageUrl());
+                itemMap.put("itemStatus", item.getStatus() != null ? item.getStatus() : "PENDING");
+                
+                // Include vendor info
+                if (product.getVendor() != null) {
+                    Map<String, Object> vendorMap = new HashMap<>();
+                    vendorMap.put("id", product.getVendor().getId());
+                    vendorMap.put("shopName", product.getVendor().getShopName());
+                    itemMap.put("vendor", vendorMap);
+                }
+                return itemMap;
+            }).toList();
         orderMap.put("items", items);
         
         Map<String, Object> response = new HashMap<>();

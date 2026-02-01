@@ -1,7 +1,13 @@
 package com.cranberry.marketplace.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class OrderItem {
@@ -12,6 +18,13 @@ public class OrderItem {
 
     private int quantity;
     private double price;
+    
+    /**
+     * Item-level status for multi-vendor orders.
+     * Each item can have its own fulfillment status independent of other items.
+     * Values: PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED
+     */
+    private String status = "PENDING";
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -45,6 +58,14 @@ public class OrderItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Order getOrder() {

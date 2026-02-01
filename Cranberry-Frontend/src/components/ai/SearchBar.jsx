@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Sparkles, ArrowRight, X } from 'lucide-react';
 import { useAISearch } from '../../hooks/useAI';
+import { formatPrice, getProductImage } from '../../lib/utils';
 
 const AISearchBar = ({ variant = 'hero', onSearch }) => {
   const navigate = useNavigate();
@@ -141,7 +142,7 @@ const AISearchBar = ({ variant = 'hero', onSearch }) => {
                     data-testid={`search-result-${product.id}`}
                   >
                     <img
-                      src={product.images?.[0] || product.imageUrl || '/placeholder.png'}
+                      src={getProductImage(product)}
                       alt={product.name}
                       className="w-12 h-12 object-cover rounded-lg bg-slate-100"
                     />
@@ -150,7 +151,7 @@ const AISearchBar = ({ variant = 'hero', onSearch }) => {
                       <p className="text-sm text-slate-500">{product.category}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-slate-900">₹{(product.price * 83).toFixed(2)}</p>
+                      <p className="font-semibold text-slate-900">₹{formatPrice(product.price)}</p>
                       {product.aiScore && (
                         <span className="text-xs text-[#0071E3]">AI Match</span>
                       )}
