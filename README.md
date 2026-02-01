@@ -126,4 +126,4 @@ Cranberry-Backend/
 
 ---
 
-> This project is ideal for demonstrating engineering maturity, modern stack proficiency, and readiness for Big Tech or advanced internship roles. 
+> This project is ideal for demonstrating engineering maturity, modern stack proficiency, and readiness for job ready or advanced internship roles. 
