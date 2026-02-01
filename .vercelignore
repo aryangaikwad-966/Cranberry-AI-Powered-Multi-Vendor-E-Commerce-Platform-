@@ -1,7 +1,18 @@
-Cranberry-Backend
+# Ignore backend and development files
+Cranberry-Backend/
 *.md
-.git
+!VERCEL_DEPLOYMENT.md
+.git/
 .gitignore
-node_modules
+node_modules/
 .DS_Store
 *.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vscode/
+.idea/
+coverage/
+build/
+target/
