@@ -141,6 +141,12 @@ Railway/Vercel    →  Cloud Deployment
 
 ## 🏗 Architecture
 
+### System Architecture Diagram
+
+<p align="center">
+  <img src="architecture-diagram.svg" alt="Cranberry System Architecture" width="100%" />
+</p>
+
 ### High-Level System Design
 
 ```
