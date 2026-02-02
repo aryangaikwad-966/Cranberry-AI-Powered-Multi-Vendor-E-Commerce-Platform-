@@ -5,28 +5,18 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 /**
- * Format price in INR
- * Backend stores prices in base currency (USD for sample products, INR for vendor-added products)
- * This function detects the likely currency and formats appropriately
+ * Format price in INR (Indian Rupees)
+ * All prices in the system are stored in INR
  * 
- * @param {number} price - The price value
- * @param {boolean} forceINR - If true, assumes price is already in INR
- * @returns {string} Formatted price string
+ * @param {number} price - The price value in INR
+ * @returns {string} Formatted price string with Indian number formatting
  */
-export function formatPrice(price, forceINR = false) {
+export function formatPrice(price) {
   if (price === null || price === undefined || isNaN(price)) {
-    return '0.00';
+    return '0';
   }
 
-  // If price is already likely in INR (>= 500 and reasonable consumer range)
-  // or if explicitly marked as INR, don't convert
-  // Sample products are typically < $5000 USD = ~415,000 INR
-  // If price > 500 and < 500,000, it's probably already in INR
-  const isLikelyINR = forceINR || (price >= 500 && price < 500000);
-
-  const inrPrice = isLikelyINR ? price : price * 83;
-
-  return inrPrice.toLocaleString('en-IN', {
+  return price.toLocaleString('en-IN', {
     maximumFractionDigits: 0,
     minimumFractionDigits: 0
   });
@@ -34,17 +24,14 @@ export function formatPrice(price, forceINR = false) {
 
 /**
  * Get the raw price in INR for calculations
- * @param {number} price - The price value
- * @param {boolean} forceINR - If true, assumes price is already in INR
+ * @param {number} price - The price value in INR
  * @returns {number} Price in INR
  */
-export function getPriceInINR(price, forceINR = false) {
+export function getPriceInINR(price) {
   if (price === null || price === undefined || isNaN(price)) {
     return 0;
   }
-
-  const isLikelyINR = forceINR || (price >= 500 && price < 500000);
-  return isLikelyINR ? price : price * 83;
+  return price;
 }
 
 /**

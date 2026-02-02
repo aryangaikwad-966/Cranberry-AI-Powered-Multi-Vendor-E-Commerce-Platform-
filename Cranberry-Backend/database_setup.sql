@@ -360,36 +360,37 @@ INSERT INTO vendor (user_id, shop_name, contact_email, contact_phone, address, s
 
 -- ============================================================
 -- PRODUCTS (Vendor IDs: 1=TechVista, 2=UrbanStyle, 3=HomeEssentials, 4=GlowBeauty)
+-- Prices in INR (Indian Rupees) - Realistic market prices
 -- ============================================================
 
 INSERT INTO product (name, description, price, stock, image_url, category, vendor_id, status) VALUES
 -- TechVista Electronics (vendor_id = 1)
-('MacBook Pro 16" M3 Max', 'The most powerful MacBook Pro ever. Features the M3 Max chip with 14-core CPU and 30-core GPU.', 3499.00, 25, 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'Electronics', 1, 'approved'),
-('Sony WH-1000XM5 Headphones', 'Industry-leading noise cancellation with exceptional sound quality.', 399.00, 50, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800', 'Electronics', 1, 'approved'),
-('iPhone 15 Pro Max', 'Titanium design. A17 Pro chip. 5x optical zoom.', 1199.00, 40, 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800', 'Electronics', 1, 'approved'),
-('Samsung 65" QLED 4K TV', 'Quantum Dot technology for incredible color and clarity.', 1299.00, 15, 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800', 'Electronics', 1, 'approved'),
-('Apple Watch Ultra 2', 'The most rugged and capable Apple Watch.', 799.00, 35, 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=800', 'Electronics', 1, 'approved'),
+('MacBook Pro 16" M3 Max', 'The most powerful MacBook Pro ever. Features the M3 Max chip with 14-core CPU and 30-core GPU.', 289900.00, 25, 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'Electronics', 1, 'approved'),
+('Sony WH-1000XM5 Headphones', 'Industry-leading noise cancellation with exceptional sound quality.', 29990.00, 50, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800', 'Electronics', 1, 'approved'),
+('iPhone 15 Pro Max', 'Titanium design. A17 Pro chip. 5x optical zoom.', 159900.00, 40, 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800', 'Electronics', 1, 'approved'),
+('Samsung 65" QLED 4K TV', 'Quantum Dot technology for incredible color and clarity.', 124990.00, 15, 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800', 'Electronics', 1, 'approved'),
+('Apple Watch Ultra 2', 'The most rugged and capable Apple Watch.', 89900.00, 35, 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=800', 'Electronics', 1, 'approved'),
 
 -- UrbanStyle Co. (vendor_id = 2)
-('Nike Air Max 270 React', 'Comfort meets style with React foam and Max Air cushioning.', 150.00, 100, 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800', 'Fashion', 2, 'approved'),
-('Levi''s 501 Original Jeans', 'The original blue jean since 1873. Straight leg, button fly.', 89.00, 75, 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800', 'Fashion', 2, 'approved'),
-('Ray-Ban Aviator Sunglasses', 'Classic aviator style with crystal green lenses.', 161.00, 60, 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800', 'Fashion', 2, 'approved'),
-('North Face Puffer Jacket', 'Lightweight warmth with responsibly sourced down.', 249.00, 45, 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800', 'Fashion', 2, 'approved'),
-('Adidas Ultraboost 23', 'Energy-returning BOOST midsole for endless comfort.', 190.00, 80, 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800', 'Fashion', 2, 'approved'),
+('Nike Air Max 270 React', 'Comfort meets style with React foam and Max Air cushioning.', 13995.00, 100, 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800', 'Fashion', 2, 'approved'),
+('Levi''s 501 Original Jeans', 'The original blue jean since 1873. Straight leg, button fly.', 4999.00, 75, 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800', 'Fashion', 2, 'approved'),
+('Ray-Ban Aviator Sunglasses', 'Classic aviator style with crystal green lenses.', 15490.00, 60, 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800', 'Fashion', 2, 'approved'),
+('North Face Puffer Jacket', 'Lightweight warmth with responsibly sourced down.', 22990.00, 45, 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800', 'Fashion', 2, 'approved'),
+('Adidas Ultraboost 23', 'Energy-returning BOOST midsole for endless comfort.', 16999.00, 80, 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800', 'Fashion', 2, 'approved'),
 
 -- HomeEssentials Plus (vendor_id = 3)
-('Dyson V15 Detect Vacuum', 'Intelligently optimizes suction power with laser dust detection.', 749.00, 30, 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800', 'Home & Living', 3, 'approved'),
-('KitchenAid Stand Mixer', 'Iconic design with 10 speeds and 5-quart bowl.', 449.00, 25, 'https://images.unsplash.com/photo-1594385208974-2e75f8d7bb48?w=800', 'Home & Living', 3, 'approved'),
-('Nespresso Vertuo Plus', 'Barista-grade coffee at the touch of a button.', 199.00, 55, 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=800', 'Home & Living', 3, 'approved'),
-('Herman Miller Aeron Chair', 'Ergonomic design for all-day comfort.', 1395.00, 10, 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800', 'Home & Living', 3, 'approved'),
-('Philips Hue Starter Kit', 'Smart lighting that sets the mood.', 199.00, 40, 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800', 'Home & Living', 3, 'approved'),
+('Dyson V15 Detect Vacuum', 'Intelligently optimizes suction power with laser dust detection.', 62900.00, 30, 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800', 'Home & Living', 3, 'approved'),
+('KitchenAid Stand Mixer', 'Iconic design with 10 speeds and 5-quart bowl.', 42990.00, 25, 'https://images.unsplash.com/photo-1594385208974-2e75f8d7bb48?w=800', 'Home & Living', 3, 'approved'),
+('Nespresso Vertuo Plus', 'Barista-grade coffee at the touch of a button.', 16900.00, 55, 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=800', 'Home & Living', 3, 'approved'),
+('Herman Miller Aeron Chair', 'Ergonomic design for all-day comfort.', 149900.00, 10, 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800', 'Home & Living', 3, 'approved'),
+('Philips Hue Starter Kit', 'Smart lighting that sets the mood.', 13990.00, 40, 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800', 'Home & Living', 3, 'approved'),
 
 -- GlowBeauty (vendor_id = 4)
-('La Mer Crème de la Mer', 'Legendary moisturizer with Miracle Broth.', 380.00, 45, 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800', 'Beauty', 4, 'approved'),
-('Dyson Airwrap Complete', 'Style with air, not extreme heat.', 599.00, 20, 'https://images.unsplash.com/photo-1522338242042-2d1c40dc41e0?w=800', 'Beauty', 4, 'approved'),
-('Charlotte Tilbury Pillow Talk Set', 'Iconic lip and cheek essentials.', 79.00, 90, 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800', 'Beauty', 4, 'approved'),
-('SK-II Facial Treatment Essence', 'The miracle water for crystal clear skin.', 185.00, 35, 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800', 'Beauty', 4, 'approved'),
-('Tom Ford Black Orchid', 'A luxurious and sensual fragrance.', 150.00, 50, 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=800', 'Beauty', 4, 'approved');
+('La Mer Crème de la Mer', 'Legendary moisturizer with Miracle Broth.', 32500.00, 45, 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800', 'Beauty', 4, 'approved'),
+('Dyson Airwrap Complete', 'Style with air, not extreme heat.', 45900.00, 20, 'https://images.unsplash.com/photo-1522338242042-2d1c40dc41e0?w=800', 'Beauty', 4, 'approved'),
+('Charlotte Tilbury Pillow Talk Set', 'Iconic lip and cheek essentials.', 6500.00, 90, 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800', 'Beauty', 4, 'approved'),
+('SK-II Facial Treatment Essence', 'The miracle water for crystal clear skin.', 15900.00, 35, 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800', 'Beauty', 4, 'approved'),
+('Tom Ford Black Orchid', 'A luxurious and sensual fragrance.', 12500.00, 50, 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=800', 'Beauty', 4, 'approved');
 
 -- ============================================================
 -- CREATE CARTS FOR CUSTOMERS
@@ -433,55 +434,55 @@ INSERT INTO wishlist_items (wishlist_id, product_id) VALUES
 (3, 12);  -- Mike: KitchenAid Mixer
 
 -- ============================================================
--- SAMPLE ORDERS
+-- SAMPLE ORDERS (Prices in INR)
 -- ============================================================
 
 INSERT INTO orders (user_id, total_amount, status, shipping_address, tracking_number, estimated_delivery_date, created_at) VALUES
 -- John's orders
-(6, 3898.00, 'DELIVERED', '123 Main St, Apt 4B, New York, NY 10001', 'TRK-001-2026-A1B2C3', '2026-01-25', '2026-01-15 10:30:00'),
-(6, 489.00, 'SHIPPED', '123 Main St, Apt 4B, New York, NY 10001', 'TRK-002-2026-D4E5F6', '2026-02-05', '2026-01-28 14:20:00'),
+(6, 319890.00, 'DELIVERED', '123 Main St, Apt 4B, Mumbai, MH 400001', 'TRK-001-2026-A1B2C3', '2026-01-25', '2026-01-15 10:30:00'),
+(6, 37483.00, 'SHIPPED', '123 Main St, Apt 4B, Mumbai, MH 400001', 'TRK-002-2026-D4E5F6', '2026-02-05', '2026-01-28 14:20:00'),
 
 -- Jane's orders
-(7, 979.00, 'PROCESSING', '456 Oak Ave, Suite 100, Los Angeles, CA 90001', NULL, NULL, '2026-01-30 09:15:00'),
-(7, 150.00, 'PAID', '456 Oak Ave, Suite 100, Los Angeles, CA 90001', NULL, NULL, '2026-02-01 11:45:00'),
+(7, 78400.00, 'PROCESSING', '456 Oak Ave, Suite 100, Bangalore, KA 560001', NULL, NULL, '2026-01-30 09:15:00'),
+(7, 13995.00, 'PAID', '456 Oak Ave, Suite 100, Bangalore, KA 560001', NULL, NULL, '2026-02-01 11:45:00'),
 
 -- Mike's order
-(8, 749.00, 'CREATED', '789 Pine Rd, Chicago, IL 60601', NULL, NULL, '2026-02-01 16:00:00');
+(8, 62900.00, 'CREATED', '789 Pine Rd, Delhi, DL 110001', NULL, NULL, '2026-02-01 16:00:00');
 
 -- ============================================================
--- SAMPLE ORDER ITEMS
+-- SAMPLE ORDER ITEMS (Prices in INR)
 -- ============================================================
 
 INSERT INTO order_item (order_id, product_id, quantity, price, status) VALUES
--- Order 1 (John - Delivered)
-(1, 1, 1, 3499.00, 'DELIVERED'),  -- MacBook Pro
-(1, 2, 1, 399.00, 'DELIVERED'),   -- Sony Headphones
+-- Order 1 (John - Delivered): MacBook Pro + Sony Headphones
+(1, 1, 1, 289900.00, 'DELIVERED'),  -- MacBook Pro 16" M3 Max
+(1, 2, 1, 29990.00, 'DELIVERED'),   -- Sony WH-1000XM5 Headphones
 
--- Order 2 (John - Shipped)
-(2, 6, 2, 150.00, 'SHIPPED'),     -- Nike Air Max x2
-(2, 7, 1, 89.00, 'SHIPPED'),      -- Levi's Jeans
-(2, 8, 1, 100.00, 'PROCESSING'),  -- Ray-Ban (different vendor, still processing)
+-- Order 2 (John - Shipped): Fashion items
+(2, 6, 2, 13995.00, 'SHIPPED'),     -- Nike Air Max 270 React x2
+(2, 7, 1, 4999.00, 'SHIPPED'),      -- Levi's 501 Original Jeans
+(2, 8, 1, 15490.00, 'PROCESSING'),  -- Ray-Ban Aviator (different vendor, still processing)
 
--- Order 3 (Jane - Processing)
-(3, 16, 1, 380.00, 'PROCESSING'), -- La Mer Crème
-(3, 17, 1, 599.00, 'PENDING'),    -- Dyson Airwrap
+-- Order 3 (Jane - Processing): Beauty products
+(3, 16, 1, 32500.00, 'PROCESSING'), -- La Mer Crème de la Mer
+(3, 17, 1, 45900.00, 'PENDING'),    -- Dyson Airwrap Complete
 
 -- Order 4 (Jane - Paid, waiting to ship)
-(4, 6, 1, 150.00, 'PENDING'),     -- Nike Air Max
+(4, 6, 1, 13995.00, 'PENDING'),     -- Nike Air Max 270 React
 
 -- Order 5 (Mike - Just created)
-(5, 11, 1, 749.00, 'PENDING');    -- Dyson Vacuum
+(5, 11, 1, 62900.00, 'PENDING');    -- Dyson V15 Detect Vacuum
 
 -- ============================================================
--- SAMPLE PAYMENTS
+-- SAMPLE PAYMENTS (Amounts in INR)
 -- ============================================================
 
 INSERT INTO payments (order_id, razorpay_order_id, razorpay_payment_id, razorpay_signature, amount, currency, status, created_at) VALUES
-(1, 'order_JohnOrder1ABC', 'pay_JohnPay1XYZ', 'sig_john1signature', 3898.00, 'INR', 'PAID', '2026-01-15 10:35:00'),
-(2, 'order_JohnOrder2DEF', 'pay_JohnPay2XYZ', 'sig_john2signature', 489.00, 'INR', 'PAID', '2026-01-28 14:25:00'),
-(3, 'order_JaneOrder1GHI', 'pay_JanePay1XYZ', 'sig_jane1signature', 979.00, 'INR', 'PAID', '2026-01-30 09:20:00'),
-(4, 'order_JaneOrder2JKL', 'pay_JanePay2XYZ', 'sig_jane2signature', 150.00, 'INR', 'PAID', '2026-02-01 11:50:00'),
-(5, 'order_MikeOrder1MNO', NULL, NULL, 749.00, 'INR', 'CREATED', '2026-02-01 16:05:00');
+(1, 'order_JohnOrder1ABC', 'pay_JohnPay1XYZ', 'sig_john1signature', 319890.00, 'INR', 'PAID', '2026-01-15 10:35:00'),
+(2, 'order_JohnOrder2DEF', 'pay_JohnPay2XYZ', 'sig_john2signature', 37483.00, 'INR', 'PAID', '2026-01-28 14:25:00'),
+(3, 'order_JaneOrder1GHI', 'pay_JanePay1XYZ', 'sig_jane1signature', 78400.00, 'INR', 'PAID', '2026-01-30 09:20:00'),
+(4, 'order_JaneOrder2JKL', 'pay_JanePay2XYZ', 'sig_jane2signature', 13995.00, 'INR', 'PAID', '2026-02-01 11:50:00'),
+(5, 'order_MikeOrder1MNO', NULL, NULL, 62900.00, 'INR', 'CREATED', '2026-02-01 16:05:00');
 
 
 -- ============================================================
