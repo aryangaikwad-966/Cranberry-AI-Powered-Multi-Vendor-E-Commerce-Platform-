@@ -67,8 +67,9 @@
 
   <!-- Header -->
   <rect x="0" y="0" width="1400" height="80" fill="url(#headerGradient)"/>
+  
   <text x="700" y="35" text-anchor="middle" fill="#ffffff" font-family="Inter, -apple-system, sans-serif" font-size="24" font-weight="700">
-    🍒 CRANBERRY — System Architecture
+    Cranberry — System Architecture
   </text>
   <text x="700" y="58" text-anchor="middle" fill="#94a3b8" font-family="Inter, -apple-system, sans-serif" font-size="13">
     AI-Powered Multi-Vendor E-Commerce Platform • Spring Boot 3.4 • React 18 • Ollama (Gemma 3 4B) • Razorpay
