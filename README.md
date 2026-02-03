@@ -1,4 +1,5 @@
-# Cranberry - AI-Powered Multi-Vendor E-Commerce Marketplace
+# Cranberry
+### AI-Powered Multi-Vendor E-Commerce Platform
 
 > **Empowering Small Businesses with AI-Driven Commerce Solutions**
 
