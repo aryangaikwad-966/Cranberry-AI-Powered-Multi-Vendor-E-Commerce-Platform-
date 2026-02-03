@@ -2,139 +2,211 @@
   <img src="Cranberry-Frontend/public/images/cranberry-logo.png" alt="Cranberry Logo" width="120" height="120" />
 </p>
 
-<h1 align="center">C Cranberry</h1>
+<h1 align="center">🍒 Cranberry</h1>
 <h3 align="center">AI-Powered Multi-Vendor E-Commerce Marketplace</h3>
 
 <p align="center">
-  <strong>A production-ready, full-stack marketplace platform with AI-powered features</strong>
+  <strong>Empowering Small Businesses with AI-Driven Commerce Solutions</strong>
 </p>
 
 <p align="center">
-  <a href="#-features"><img src="https://img.shields.io/badge/Features-40+-blue?style=for-the-badge" alt="Features"></a>
-  <a href="#-tech-stack"><img src="https://img.shields.io/badge/Stack-React%20%2B%20Spring%20Boot-green?style=for-the-badge" alt="Tech Stack"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License"></a>
-  <a href="#-quick-start"><img src="https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge" alt="Status"></a>
+  <a href="https://cranberry-ai-multivendor-e-commerce.vercel.app">
+    <img src="https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blue?style=for-the-badge" alt="Live Demo">
+  </a>
+  <a href="https://youtu.be/your-demo-video">
+    <img src="https://img.shields.io/badge/📺_Demo_Video-YouTube-red?style=for-the-badge" alt="Demo Video">
+  </a>
 </p>
 
 <p align="center">
-  <a href="#-quick-start">Quick Start</a> •
+  <img src="https://img.shields.io/badge/React-18.3-61DAFB?style=flat-square&logo=react" alt="React">
+  <img src="https://img.shields.io/badge/Spring_Boot-3.4-6DB33F?style=flat-square&logo=spring" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/AI-Ollama_LLM-FF6F00?style=flat-square" alt="AI">
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License">
+</p>
+
+<p align="center">
+  <a href="#-live-deployment">Live Demo</a> •
+  <a href="#-problem-statement">Problem</a> •
+  <a href="#-solution">Solution</a> •
   <a href="#-features">Features</a> •
   <a href="#-architecture">Architecture</a> •
-  <a href="#-api-documentation">API Docs</a> •
-  <a href="#-deployment">Deployment</a> •
-  <a href="#-contributing">Contributing</a>
+  <a href="#-tech-stack">Tech Stack</a> •
+  <a href="#-setup">Setup</a>
 </p>
 
 ---
 
-## 📋 Table of Contents
+## 🌐 Live Deployment
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Quick Start](#-quick-start)
-- [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
-- [Environment Variables](#-environment-variables)
-- [Deployment](#-deployment)
-- [Screenshots](#-screenshots)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Author](#-author)
+| Service | URL | Status |
+|---------|-----|--------|
+| **Frontend** | [cranberry-ai-multivendor-e-commerce.vercel.app](https://cranberry-ai-multivendor-e-commerce.vercel.app) | ✅ Live |
+| **Backend API** | [cranberry-ai-powered-multi-vendor-e.onrender.com](https://cranberry-ai-powered-multi-vendor-e.onrender.com) | ✅ Live |
+| **API Health** | [/api/health](https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health) | ✅ Active |
+
+### Quick Test
+```bash
+# Test API Health
+curl https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health
+```
 
 ---
 
-## 🎯 Overview
+## 🎯 Problem Statement
 
-**Cranberry** is a comprehensive, AI-powered multi-vendor e-commerce marketplace built with modern technologies. It provides a complete solution for online marketplaces with separate dashboards for customers, vendors, and administrators.
+### The Challenge: Small Businesses Struggle in Digital Commerce
 
-### Why Cranberry?
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        CHALLENGES FOR SMALL VENDORS                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  💰 HIGH COSTS           🤖 NO AI ACCESS          📊 LIMITED ANALYTICS     │
+│  ┌─────────────┐        ┌─────────────┐          ┌─────────────┐           │
+│  │ Platform    │        │ Enterprise  │          │ No insights │           │
+│  │ fees eat    │        │ AI tools    │          │ on customer │           │
+│  │ into thin   │        │ are too     │          │ behavior or │           │
+│  │ margins     │        │ expensive   │          │ pricing     │           │
+│  └─────────────┘        └─────────────┘          └─────────────┘           │
+│                                                                             │
+│  🛒 POOR DISCOVERY       😤 CUSTOMER FRICTION     📱 TECH BARRIERS         │
+│  ┌─────────────┐        ┌─────────────┐          ┌─────────────┐           │
+│  │ Products    │        │ Complex     │          │ Building    │           │
+│  │ lost in     │        │ checkout    │          │ online      │           │
+│  │ crowded     │        │ causes cart │          │ presence is │           │
+│  │ marketplaces│        │ abandonment │          │ overwhelming│           │
+│  └─────────────┘        └─────────────┘          └─────────────┘           │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-- 🤖 **AI-First Approach**: Integrated AI chatbot, semantic search, personalized recommendations, and smart analytics
-- 🏪 **Multi-Vendor Architecture**: Support for unlimited vendors with approval workflows and item-level order tracking
-- 🔒 **Enterprise Security**: JWT authentication, role-based access control, OAuth integration
-- 💳 **Payment Ready**: Razorpay integration with retry mechanisms and payment verification
-- 📱 **Modern UI/UX**: Responsive design with 46+ reusable UI components
-- 🚀 **Production Ready**: Docker support, comprehensive error handling, offline capabilities
+### Real-World Impact
+- **60%** of small businesses struggle with digital transformation
+- **$4.6 trillion** worth of merchandise abandoned in carts annually
+- **73%** of customers expect personalized experiences but SMBs can't afford AI
+
+---
+
+## 💡 Solution
+
+### Cranberry: Democratizing AI-Powered E-Commerce
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CRANBERRY SOLUTION                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│                    ┌─────────────────────────────┐                          │
+│                    │      🍒 CRANBERRY           │                          │
+│                    │   AI-Powered Marketplace    │                          │
+│                    └──────────────┬──────────────┘                          │
+│                                   │                                          │
+│         ┌─────────────────────────┼─────────────────────────┐               │
+│         │                         │                         │               │
+│         ▼                         ▼                         ▼               │
+│  ┌─────────────┐          ┌─────────────┐          ┌─────────────┐         │
+│  │  🤖 AI FOR  │          │ 🏪 VENDOR   │          │ 🛒 CUSTOMER │         │
+│  │   EVERYONE  │          │ EMPOWERMENT │          │ DELIGHT     │         │
+│  ├─────────────┤          ├─────────────┤          ├─────────────┤         │
+│  │• Smart      │          │• Zero       │          │• AI Chatbot │         │
+│  │  Search     │          │  Platform   │          │  Assistant  │         │
+│  │• Price      │          │  Fees       │          │• Personalized│        │
+│  │  Intelligence│         │• AI Price   │          │  Recommendations│     │
+│  │• Auto       │          │  Suggestions│          │• Seamless   │         │
+│  │  Recommendations│      │• Analytics  │          │  Checkout   │         │
+│  └─────────────┘          └─────────────┘          └─────────────┘         │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### UN Sustainable Development Goals Addressed
+
+| SDG | Goal | How Cranberry Contributes |
+|-----|------|---------------------------|
+| 🎯 **SDG 8** | Decent Work & Economic Growth | Empowers small vendors with AI tools previously only available to large enterprises |
+| 🎯 **SDG 9** | Industry, Innovation & Infrastructure | Provides AI infrastructure accessible to all businesses regardless of size |
+| 🎯 **SDG 10** | Reduced Inequalities | Levels the playing field between small vendors and large corporations |
+| 🎯 **SDG 12** | Responsible Consumption | AI-powered recommendations reduce wasteful purchases |
 
 ---
 
 ## ✨ Features
 
-### 🛒 Customer Features
-| Feature | Description |
-|---------|-------------|
-| **AI Chatbot** | Intelligent assistant for product queries, order tracking, and support |
-| **Smart Search** | Semantic search with AI-powered insights and suggestions |
-| **Personalized Recommendations** | ML-based product recommendations based on browsing history |
-| **Shopping Cart** | Persistent cart with offline support and real-time sync |
-| **Wishlist** | Save products for later with one-click add to cart |
-| **Order Tracking** | Real-time order status with item-level tracking |
-| **Payment Integration** | Secure checkout with Razorpay |
-| **Google OAuth** | One-click social login |
+### 🛒 For Customers
 
-### 🏪 Vendor Features
-| Feature | Description |
-|---------|-------------|
-| **Vendor Dashboard** | Analytics overview with revenue, orders, and top products |
-| **Product Management** | Full CRUD operations with image upload and status tracking |
-| **Order Management** | Item-level order status updates (Processing → Shipped → Delivered) |
-| **AI Price Suggestions** | Get AI-powered pricing recommendations based on market data |
-| **Approval Workflow** | Vendor verification system with admin approval |
-
-### 👨‍💼 Admin Features
-| Feature | Description |
-|---------|-------------|
-| **Platform Dashboard** | Comprehensive analytics with platform-wide statistics |
-| **Vendor Management** | Approve, reject, or suspend vendors |
-| **Product Moderation** | Review and moderate vendor products |
-| **Order Analytics** | AI-powered insights on order patterns and trends |
-| **User Management** | Manage all platform users |
-
-### 🤖 AI Capabilities
-| Feature | Technology |
-|---------|------------|
-| **Conversational AI** | Ollama LLM with intent detection and context awareness |
-| **Semantic Search** | Vector-based product search for better relevancy |
-| **Recommendations** | Collaborative filtering + content-based hybrid approach |
-| **Price Intelligence** | Market-aware price suggestions for vendors |
-| **Analytics Insights** | AI-generated business intelligence reports |
-
----
-
-## 🛠 Tech Stack
-
-### Frontend
 ```
-React 18          →  UI Framework with Hooks
-Vite              →  Build Tool & Dev Server
-TailwindCSS       →  Utility-First Styling
-Radix UI          →  Accessible UI Primitives
-React Router v7   →  Client-Side Routing
-Axios             →  HTTP Client
-Zod               →  Schema Validation
-Lucide React      →  Icon Library
+┌─────────────────────────────────────────────────────────────────┐
+│                    CUSTOMER EXPERIENCE                           │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
+│  │  🤖 AI       │    │  🔍 Smart    │    │  💳 Secure   │      │
+│  │  Chatbot     │    │  Search      │    │  Payments    │      │
+│  │              │    │              │    │              │      │
+│  │ "Find me a   │    │ Semantic     │    │ Razorpay     │      │
+│  │  laptop      │    │ understanding│    │ Integration  │      │
+│  │  under 50k"  │    │ of queries   │    │ with retry   │      │
+│  └──────────────┘    └──────────────┘    └──────────────┘      │
+│                                                                 │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
+│  │  🎯 Personal │    │  📦 Order    │    │  ❤️ Wishlist │      │
+│  │  Recommendations│ │  Tracking    │    │              │      │
+│  │              │    │              │    │              │      │
+│  │ AI learns    │    │ Real-time    │    │ Save for     │      │
+│  │ your taste   │    │ item-level   │    │ later with   │      │
+│  │              │    │ updates      │    │ sync         │      │
+│  └──────────────┘    └──────────────┘    └──────────────┘      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### Backend
+### 🏪 For Vendors
+
 ```
-Spring Boot 3.4   →  Java Framework
-Spring Security   →  Authentication & Authorization
-Spring Data JPA   →  Database ORM
-MySQL 8           →  Relational Database
-JWT               →  Token-Based Auth
-Ollama            →  Local LLM Integration
-Razorpay SDK      →  Payment Processing
+┌─────────────────────────────────────────────────────────────────┐
+│                     VENDOR DASHBOARD                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    REVENUE ANALYTICS                      │   │
+│  │  ┌────────────────────────────────────────────────────┐  │   │
+│  │  │    📊 ₹45,000                                      │  │   │
+│  │  │    ████████████████████░░░░░░░░                    │  │   │
+│  │  │    Jan  Feb  Mar  Apr  May  Jun                    │  │   │
+│  │  └────────────────────────────────────────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                                                                 │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
+│  │  📦 Product  │    │  🤖 AI Price │    │  📋 Order    │      │
+│  │  Management  │    │  Suggestions │    │  Management  │      │
+│  │              │    │              │    │              │      │
+│  │ Full CRUD    │    │ "Price your  │    │ Update       │      │
+│  │ with image   │    │  iPhone case │    │ status:      │      │
+│  │ upload       │    │  at ₹499"    │    │ Ship/Deliver │      │
+│  └──────────────┘    └──────────────┘    └──────────────┘      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### DevOps & Tools
+### 👨‍💼 For Admins
+
 ```
-Docker            →  Containerization
-Maven             →  Build Automation
-Git               →  Version Control
-Railway/Vercel    →  Cloud Deployment
+┌─────────────────────────────────────────────────────────────────┐
+│                     ADMIN CONTROL CENTER                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  📊 Platform Stats          🏪 Vendors           📦 Products   │
+│  ┌───────────────┐         ┌───────────────┐    ┌───────────┐  │
+│  │ Users: 1,234  │         │ Pending: 5    │    │ Review: 12│  │
+│  │ Orders: 456   │         │ Approved: 23  │    │ Active: 89│  │
+│  │ Revenue: ₹2.3M│         │ Suspended: 2  │    │           │  │
+│  └───────────────┘         └───────────────┘    └───────────┘  │
+│                                                                 │
+│  Actions: [Approve Vendor] [Moderate Product] [View Analytics] │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -143,186 +215,263 @@ Railway/Vercel    →  Cloud Deployment
 
 ### System Architecture Diagram
 
-<p align="center">
-  <img src="architecture-diagram.svg" alt="Cranberry System Architecture" width="100%" />
-</p>
+```
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                                 CLIENTS                                       │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐   │
+│  │  👤 Customer │    │  🏪 Vendor  │    │  👨‍💼 Admin  │    │  📱 Mobile  │   │
+│  │    Web App  │    │  Dashboard  │    │  Dashboard  │    │   (Future)  │   │
+│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘    └──────┬──────┘   │
+└─────────┼──────────────────┼──────────────────┼──────────────────┼──────────┘
+          │                  │                  │                  │
+          └──────────────────┴────────┬─────────┴──────────────────┘
+                                      │
+                              ┌───────▼───────┐
+                              │   VERCEL CDN  │
+                              │  (Frontend)   │
+                              │  React + Vite │
+                              └───────┬───────┘
+                                      │ HTTPS
+                                      ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                              RENDER CLOUD                                     │
+│  ┌────────────────────────────────────────────────────────────────────────┐  │
+│  │                         API GATEWAY LAYER                               │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │  │
+│  │  │    CORS     │  │    Rate     │  │   Request   │  │    JWT      │   │  │
+│  │  │   Filter    │  │  Limiting   │  │  Validation │  │   Filter    │   │  │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘   │  │
+│  └────────────────────────────────────────────────────────────────────────┘  │
+│                                      │                                        │
+│  ┌────────────────────────────────────────────────────────────────────────┐  │
+│  │                      SPRING BOOT APPLICATION                            │  │
+│  │                                                                         │  │
+│  │  ┌─────────────────────────────────────────────────────────────────┐   │  │
+│  │  │                     CONTROLLER LAYER                             │   │  │
+│  │  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐│   │  │
+│  │  │  │   Auth   │ │ Product  │ │  Order   │ │  Vendor  │ │   AI   ││   │  │
+│  │  │  │Controller│ │Controller│ │Controller│ │Controller│ │Controller│  │  │
+│  │  │  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘ └───┬────┘│   │  │
+│  │  └───────┼────────────┼────────────┼────────────┼───────────┼─────┘   │  │
+│  │          │            │            │            │           │          │  │
+│  │  ┌───────▼────────────▼────────────▼────────────▼───────────▼─────┐   │  │
+│  │  │                      SERVICE LAYER                              │   │  │
+│  │  │  AuthService │ ProductService │ OrderService │ AIService       │   │  │
+│  │  └───────┬────────────┬────────────┬────────────────────┬─────────┘   │  │
+│  │          │            │            │                    │              │  │
+│  │  ┌───────▼────────────▼────────────▼────────────────────┼─────────┐   │  │
+│  │  │                   REPOSITORY LAYER                    │         │   │  │
+│  │  │         Spring Data JPA (Hibernate ORM)               │         │   │  │
+│  │  └───────────────────────┬───────────────────────────────┼─────────┘   │  │
+│  └──────────────────────────┼───────────────────────────────┼─────────────┘  │
+│                             │                               │                 │
+│  ┌──────────────────────────▼───────────────────────────────▼─────────────┐  │
+│  │                        EXTERNAL SERVICES                                │  │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐         │  │
+│  │  │   PostgreSQL    │  │     Ollama      │  │    Razorpay     │         │  │
+│  │  │   (Render)      │  │   (AI/LLM)      │  │   (Payments)    │         │  │
+│  │  │                 │  │                 │  │                 │         │  │
+│  │  │  • Users        │  │  • Chat         │  │  • Orders       │         │  │
+│  │  │  • Products     │  │  • Search       │  │  • Payments     │         │  │
+│  │  │  • Orders       │  │  • Recommend    │  │  • Refunds      │         │  │
+│  │  │  • Vendors      │  │  • Price AI     │  │                 │         │  │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────┘         │  │
+│  └────────────────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
 
-### High-Level System Design
+### Database Schema (Entity Relationship Diagram)
 
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                              FRONTEND                                    │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
-│  │   Customer  │  │   Vendor    │  │    Admin    │  │  AI Features │    │
-│  │  Dashboard  │  │  Dashboard  │  │  Dashboard  │  │   (Chatbot)  │    │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘    │
-│         └─────────────────┴─────────────────┴─────────────────┘          │
-│                                    │                                      │
-│                           React + TailwindCSS                            │
-└────────────────────────────────────┼────────────────────────────────────┘
-                                     │ HTTPS/REST
-                                     ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                              BACKEND                                     │
-│  ┌─────────────────────────────────────────────────────────────────┐    │
-│  │                     Spring Security (JWT)                        │    │
-│  └─────────────────────────────────────────────────────────────────┘    │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────┐    │
-│  │     Auth     │  │   Product    │  │    Order     │  │    AI    │    │
-│  │  Controller  │  │  Controller  │  │  Controller  │  │Controller│    │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └────┬─────┘    │
-│         │                  │                  │               │          │
-│  ┌──────▼───────┐  ┌──────▼───────┐  ┌──────▼───────┐  ┌────▼─────┐    │
-│  │   Services   │  │   Services   │  │   Services   │  │    AI    │    │
-│  │              │  │              │  │              │  │ Service  │    │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └────┬─────┘    │
-│         └─────────────────┴─────────────────┴───────────────┘          │
-│                                    │                                      │
-│                         Spring Data JPA                                  │
-└────────────────────────────────────┼────────────────────────────────────┘
-                                     │
-         ┌───────────────────────────┼───────────────────────────┐
-         │                           │                           │
-         ▼                           ▼                           ▼
-┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
-│     MySQL       │       │     Ollama      │       │    Razorpay     │
-│    Database     │       │    (AI/LLM)     │       │    (Payments)   │
-└─────────────────┘       └─────────────────┘       └─────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          DATABASE SCHEMA (PostgreSQL)                        │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌──────────────────┐         ┌──────────────────┐                         │
+│  │      USERS       │         │      VENDOR      │                         │
+│  ├──────────────────┤         ├──────────────────┤                         │
+│  │ PK id            │────┐    │ PK id            │                         │
+│  │    name          │    │    │    shop_name     │                         │
+│  │    email (UNIQUE)│    │    │    contact_email │                         │
+│  │    password      │    │    │    contact_phone │                         │
+│  │    role          │    │    │    address       │                         │
+│  │    google_id     │    └───▶│ FK user_id       │                         │
+│  │    avatar        │         │    status        │──┐                      │
+│  │    created_at    │         │    logo_url      │  │                      │
+│  └────────┬─────────┘         │    joined_at     │  │                      │
+│           │                   └──────────────────┘  │                      │
+│           │                                         │                      │
+│           │    ┌──────────────────┐                │                      │
+│           │    │     PRODUCT      │                │                      │
+│           │    ├──────────────────┤                │                      │
+│           │    │ PK id            │◀───────────────┘                      │
+│           │    │    name          │                                        │
+│           │    │    description   │                                        │
+│           │    │    price (INR)   │                                        │
+│           │    │    stock         │                                        │
+│           │    │    image_url     │                                        │
+│           │    │    category      │                                        │
+│           │    │    status        │                                        │
+│           │    │ FK vendor_id     │                                        │
+│           │    │    created_at    │                                        │
+│           │    └────────┬─────────┘                                        │
+│           │             │                                                   │
+│           │             │         ┌──────────────────┐                     │
+│           │             │         │    ORDER_ITEM    │                     │
+│           │             │         ├──────────────────┤                     │
+│           │             └────────▶│ PK id            │                     │
+│           │                       │    quantity      │                     │
+│           │                       │    price         │                     │
+│           │                       │    status        │                     │
+│           │                       │ FK order_id      │◀──┐                 │
+│           │                       │ FK product_id    │   │                 │
+│           │                       └──────────────────┘   │                 │
+│           │                                              │                 │
+│           │    ┌──────────────────┐                      │                 │
+│           │    │      ORDER       │                      │                 │
+│           │    ├──────────────────┤                      │                 │
+│           └───▶│ PK id            │──────────────────────┘                 │
+│                │    total_amount  │                                        │
+│                │    status        │         ┌──────────────────┐           │
+│                │    shipping_addr │         │     PAYMENT      │           │
+│                │    tracking_no   │         ├──────────────────┤           │
+│                │    est_delivery  │◀────────│ PK id            │           │
+│                │ FK user_id       │         │    razorpay_id   │           │
+│                │    created_at    │         │    amount        │           │
+│                └──────────────────┘         │    status        │           │
+│                                             │ FK order_id      │           │
+│  ┌──────────────────┐  ┌──────────────────┐ └──────────────────┘           │
+│  │       CART       │  │     WISHLIST     │                                │
+│  ├──────────────────┤  ├──────────────────┤                                │
+│  │ PK id            │  │ PK id            │                                │
+│  │ FK user_id       │  │ FK user_id       │                                │
+│  │    items[]       │  │    items[]       │                                │
+│  └──────────────────┘  └──────────────────┘                                │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Database Schema
+### AI Integration Flow
 
 ```
-┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
-│      User        │       │     Vendor       │       │     Product      │
-├──────────────────┤       ├──────────────────┤       ├──────────────────┤
-│ id               │──────▶│ id               │◀──────│ id               │
-│ name             │       │ shop_name        │       │ name             │
-│ email            │       │ contact_email    │       │ description      │
-│ password         │       │ contact_phone    │       │ price            │
-│ role             │       │ address          │       │ stock            │
-│ google_id        │       │ status           │       │ image_url        │
-│ avatar           │       │ logo             │       │ category         │
-│ vendor_id (FK)   │       │ joined_at        │       │ status           │
-└──────────────────┘       │ user_id (FK)     │       │ vendor_id (FK)   │
-                           └──────────────────┘       └──────────────────┘
-                                                               │
-┌──────────────────┐       ┌──────────────────┐               │
-│     Order        │       │   OrderItem      │               │
-├──────────────────┤       ├──────────────────┤               │
-│ id               │◀──────│ id               │───────────────┘
-│ total_amount     │       │ quantity         │
-│ status           │       │ price            │
-│ shipping_address │       │ status           │
-│ tracking_number  │       │ order_id (FK)    │
-│ est_delivery     │       │ product_id (FK)  │
-│ user_id (FK)     │       └──────────────────┘
-└──────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          AI FEATURE ARCHITECTURE                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  USER INPUT                        PROCESSING                    OUTPUT     │
+│  ──────────                        ──────────                    ──────     │
+│                                                                             │
+│  ┌─────────────┐     ┌─────────────────────────────────┐    ┌───────────┐  │
+│  │ "Find me a  │     │         AI SERVICE               │    │ Relevant  │  │
+│  │  wireless   │────▶│  ┌─────────────────────────┐    │───▶│ Products  │  │
+│  │  headphone  │     │  │    Intent Detection     │    │    │ List      │  │
+│  │  under 5000"│     │  │  ┌─────────┐ ┌────────┐ │    │    └───────────┘  │
+│  └─────────────┘     │  │  │ Product │ │ Price  │ │    │                   │
+│                      │  │  │ Search  │ │ Filter │ │    │                   │
+│                      │  │  └─────────┘ └────────┘ │    │                   │
+│                      │  └─────────────────────────┘    │                   │
+│  ┌─────────────┐     │                                 │    ┌───────────┐  │
+│  │ Product     │     │  ┌─────────────────────────┐    │    │ Similar   │  │
+│  │ Page View   │────▶│  │  Recommendation Engine  │    │───▶│ Products  │  │
+│  │             │     │  │  ┌─────────┐ ┌────────┐ │    │    │ "You may  │  │
+│  └─────────────┘     │  │  │ Content │ │ Collab │ │    │    │  also     │  │
+│                      │  │  │ Based   │ │ Filter │ │    │    │  like..." │  │
+│                      │  │  └─────────┘ └────────┘ │    │    └───────────┘  │
+│                      │  └─────────────────────────┘    │                   │
+│  ┌─────────────┐     │                                 │    ┌───────────┐  │
+│  │ Vendor:     │     │  ┌─────────────────────────┐    │    │ "Price    │  │
+│  │ "Price my   │────▶│  │   Price Intelligence    │    │───▶│  this at  │  │
+│  │  iPhone     │     │  │  ┌─────────┐ ┌────────┐ │    │    │  ₹499-    │  │
+│  │  case"      │     │  │  │ Market  │ │ Demand │ │    │    │  ₹599"    │  │
+│  └─────────────┘     │  │  │ Analysis│ │ Predict│ │    │    └───────────┘  │
+│                      │  │  └─────────┘ └────────┘ │    │                   │
+│                      │  └─────────────────────────┘    │                   │
+│                      └─────────────────────────────────┘                   │
+│                                      │                                      │
+│                                      ▼                                      │
+│                      ┌─────────────────────────────────┐                   │
+│                      │         OLLAMA LLM              │                   │
+│                      │      (Local AI Model)           │                   │
+│                      │                                 │                   │
+│                      │  Model: llama3.2 / gemma3      │                   │
+│                      │  Context: Product catalog,      │                   │
+│                      │           User history,         │                   │
+│                      │           Market data           │                   │
+│                      └─────────────────────────────────┘                   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-┌──────────────────┐       ┌──────────────────┐
-│     Payment      │       │  Cart/Wishlist   │
-├──────────────────┤       ├──────────────────┤
-│ id               │       │ id               │
-│ razorpay_order_id│       │ user_id (FK)     │
-│ razorpay_payment │       │ items[]          │
-│ amount           │       │   - product_id   │
-│ status           │       │   - quantity     │
-│ order_id (FK)    │       └──────────────────┘
-└──────────────────┘
+### User Journey Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           USER JOURNEY MAP                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  CUSTOMER JOURNEY                                                           │
+│  ────────────────                                                           │
+│                                                                             │
+│  ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐    │
+│  │Visit │    │Search│    │ View │    │ Add  │    │Check │    │Track │    │
+│  │ Site │───▶│  or  │───▶│Product───▶│  to  │───▶│ out  │───▶│Order │    │
+│  │      │    │Browse│    │      │    │ Cart │    │      │    │      │    │
+│  └──────┘    └──────┘    └──────┘    └──────┘    └──────┘    └──────┘    │
+│     │            │            │           │          │           │         │
+│     │         🤖 AI        🎯 AI        ❤️        💳         📦          │
+│     │         Search     Recommend    Wishlist   Razorpay   Real-time    │
+│     │                                                                     │
+│                                                                             │
+│  VENDOR JOURNEY                                                             │
+│  ──────────────                                                             │
+│                                                                             │
+│  ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐    │
+│  │Sign  │    │Submit│    │ Wait │    │ Add  │    │ Set  │    │Manage│    │
+│  │ Up   │───▶│Vendor│───▶│Admin │───▶│Products──▶│Prices│───▶│Orders│    │
+│  │      │    │ Info │    │Approve    │      │    │      │    │      │    │
+│  └──────┘    └──────┘    └──────┘    └──────┘    └──────┘    └──────┘    │
+│                             │                        │                     │
+│                          ⏳ 24hr                  🤖 AI                    │
+│                          Review                   Price                    │
+│                                                  Suggest                   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🛠 Tech Stack
 
-### Prerequisites
+### Frontend
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| React | 18.3 | UI Framework with Hooks |
+| Vite | 6.0 | Build Tool & Dev Server |
+| TailwindCSS | 3.4 | Utility-First Styling |
+| Radix UI | Latest | Accessible UI Primitives |
+| React Router | 7.0 | Client-Side Routing |
+| Axios | 1.7 | HTTP Client |
+| Zod | 3.23 | Schema Validation |
+| Lucide React | Latest | Icon Library |
 
-- **Java 17+** - [Download](https://adoptium.net/)
-- **Node.js 18+** - [Download](https://nodejs.org/)
-- **MySQL 8+** - [Download](https://dev.mysql.com/downloads/)
-- **Maven 3.9+** - [Download](https://maven.apache.org/)
-- **Ollama** (for AI features) - [Download](https://ollama.ai/)
+### Backend
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Spring Boot | 3.4.2 | Java Framework |
+| Spring Security | 6.2 | Authentication & Authorization |
+| Spring Data JPA | 3.4 | Database ORM |
+| PostgreSQL | 16 | Production Database (Render) |
+| MySQL | 8 | Local Development Database |
+| JWT | 0.11.5 | Token-Based Auth |
+| Ollama | Latest | Local LLM Integration |
+| Razorpay SDK | 1.4.7 | Payment Processing |
 
-### Installation
-
-#### 1. Clone the Repository
-```bash
-git clone https://github.com/aryangaikwad-966/Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-.git
-cd Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform
-```
-
-#### 2. Database Setup
-```bash
-# Login to MySQL
-mysql -u root -p
-
-# Create database
-CREATE DATABASE cranberry_db;
-CREATE USER 'cranberry'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON cranberry_db.* TO 'cranberry'@'localhost';
-FLUSH PRIVILEGES;
-```
-
-#### 3. Backend Setup
-```bash
-cd Cranberry-Backend
-
-# Create environment file
-cp .env.example .env
-
-# Edit .env with your credentials
-# DATABASE_URL=jdbc:mysql://localhost:3306/cranberry_db
-# DATABASE_USER=cranberry
-# DATABASE_PASSWORD=your_password
-# JWT_SECRET=your-256-bit-secret
-# RAZORPAY_KEY_ID=your_razorpay_key
-# RAZORPAY_KEY_SECRET=your_razorpay_secret
-
-# Run the backend
-mvn spring-boot:run
-```
-
-#### 4. Frontend Setup
-```bash
-cd Cranberry-Frontend
-
-# Install dependencies
-npm install
-
-# Create environment file
-cp .env.example .env.development
-
-# Edit with your API URL
-# VITE_API_BASE_URL=http://localhost:8080/api
-
-# Run the frontend
-npm run dev
-```
-
-#### 5. Start Ollama (for AI features)
-```bash
-# Install and run Ollama
-ollama serve
-
-# Pull the model
-ollama pull llama3
-```
-
-### Access the Application
-
-| Service | URL |
-|---------|-----|
-| Frontend | http://localhost:5173 |
-| Backend API | http://localhost:8080/api |
-| API Health | http://localhost:8080/api/health |
-
-### Demo Accounts
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@cranberry.com | admin123 |
-| Vendor | vendor@demo.com | vendor123 |
-| Customer | user@demo.com | user123 |
+### Deployment
+| Service | Purpose |
+|---------|---------|
+| Vercel | Frontend Hosting (CDN) |
+| Render | Backend Hosting + PostgreSQL |
+| GitHub | Version Control + CI/CD |
 
 ---
 
@@ -333,49 +482,20 @@ Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform/
 │
 ├── 📂 Cranberry-Backend/
 │   ├── 📂 src/main/java/com/cranberry/marketplace/
-│   │   ├── 📂 controller/          # REST API endpoints (10 files)
-│   │   │   ├── AuthController.java
-│   │   │   ├── ProductController.java
-│   │   │   ├── OrderController.java
-│   │   │   ├── VendorController.java
-│   │   │   ├── AdminController.java
-│   │   │   ├── CartController.java
-│   │   │   ├── WishlistController.java
-│   │   │   └── PaymentController.java
-│   │   │
-│   │   ├── 📂 service/             # Business logic (10 files)
-│   │   │   ├── AuthService.java
-│   │   │   ├── ProductService.java
-│   │   │   ├── OrderService.java
-│   │   │   ├── VendorService.java
-│   │   │   ├── AdminService.java
-│   │   │   └── PaymentService.java
-│   │   │
-│   │   ├── 📂 model/               # JPA entities (11 files)
-│   │   │   ├── User.java
-│   │   │   ├── Vendor.java
-│   │   │   ├── Product.java
-│   │   │   ├── Order.java
-│   │   │   ├── OrderItem.java
-│   │   │   ├── Cart.java
-│   │   │   ├── Wishlist.java
-│   │   │   └── Payment.java
-│   │   │
-│   │   ├── 📂 repository/          # Data access layer (10 files)
-│   │   ├── 📂 dto/                 # Data transfer objects (28 files)
-│   │   ├── 📂 ai/                  # AI integration (5 files)
-│   │   │   ├── AIController.java
-│   │   │   ├── AIService.java
-│   │   │   ├── OllamaClient.java
-│   │   │   └── RecommendationEngine.java
-│   │   │
+│   │   ├── 📂 controller/          # REST API endpoints
+│   │   ├── 📂 service/             # Business logic
+│   │   ├── 📂 model/               # JPA entities
+│   │   ├── 📂 repository/          # Data access layer
+│   │   ├── 📂 dto/                 # Data transfer objects
+│   │   ├── 📂 ai/                  # AI integration
 │   │   ├── 📂 security/            # JWT & Spring Security
+│   │   ├── 📂 config/              # Configuration classes
 │   │   └── 📂 exception/           # Global exception handling
 │   │
 │   ├── 📂 src/main/resources/
-│   │   ├── application.yml
-│   │   ├── application-dev.yml
-│   │   └── application-prod.yml
+│   │   ├── application.yml         # Default config
+│   │   ├── application-dev.yml     # Development (MySQL)
+│   │   └── application-prod.yml    # Production (PostgreSQL)
 │   │
 │   ├── Dockerfile
 │   ├── docker-compose.yaml
@@ -383,246 +503,154 @@ Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform/
 │
 ├── 📂 Cranberry-Frontend/
 │   ├── 📂 src/
-│   │   ├── 📂 components/
-│   │   │   ├── 📂 ai/              # AI components
-│   │   │   │   ├── Chatbot.jsx
-│   │   │   │   ├── SearchBar.jsx
-│   │   │   │   └── Recommendations.jsx
-│   │   │   │
-│   │   │   ├── 📂 layout/          # Layout components
-│   │   │   │   ├── Header.jsx
-│   │   │   │   ├── Footer.jsx
-│   │   │   │   ├── MainLayout.jsx
-│   │   │   │   └── DashboardLayout.jsx
-│   │   │   │
-│   │   │   ├── 📂 product/         # Product components
-│   │   │   └── 📂 ui/              # 46+ shadcn/ui components
-│   │   │
-│   │   ├── 📂 pages/
+│   │   ├── 📂 components/          # Reusable components
+│   │   │   ├── 📂 ai/              # AI Chatbot, Search
+│   │   │   ├── 📂 layout/          # Header, Footer
+│   │   │   ├── 📂 product/         # Product cards
+│   │   │   └── 📂 ui/              # 46+ shadcn components
+│   │   ├── 📂 pages/               # Route pages
 │   │   │   ├── 📂 customer/        # Customer pages
-│   │   │   │   ├── HomePage.jsx
-│   │   │   │   ├── ShopPage.jsx
-│   │   │   │   ├── ProductDetailPage.jsx
-│   │   │   │   ├── CartPage.jsx
-│   │   │   │   ├── CheckoutPage.jsx
-│   │   │   │   ├── OrdersPage.jsx
-│   │   │   │   └── WishlistPage.jsx
-│   │   │   │
-│   │   │   ├── 📂 vendor/          # Vendor pages
-│   │   │   │   ├── VendorDashboard.jsx
-│   │   │   │   ├── VendorProducts.jsx
-│   │   │   │   ├── VendorOrders.jsx
-│   │   │   │   └── VendorPriceSuggest.jsx
-│   │   │   │
-│   │   │   ├── 📂 admin/           # Admin pages
-│   │   │   │   ├── AdminDashboard.jsx
-│   │   │   │   ├── AdminVendors.jsx
-│   │   │   │   ├── AdminProducts.jsx
-│   │   │   │   └── AdminOrders.jsx
-│   │   │   │
-│   │   │   └── 📂 auth/            # Auth pages
-│   │   │       ├── LoginPage.jsx
-│   │   │       ├── RegisterPage.jsx
-│   │   │       └── VendorRegisterPage.jsx
-│   │   │
+│   │   │   ├── 📂 vendor/          # Vendor dashboard
+│   │   │   ├── 📂 admin/           # Admin dashboard
+│   │   │   └── 📂 auth/            # Login/Register
 │   │   ├── 📂 context/             # React Context
-│   │   │   ├── AuthContext.jsx
-│   │   │   ├── CartContext.jsx
-│   │   │   └── WishlistContext.jsx
-│   │   │
 │   │   ├── 📂 services/            # API services
-│   │   │   └── api.js
-│   │   │
 │   │   └── 📂 lib/                 # Utilities
 │   │
-│   ├── index.html
 │   ├── vite.config.js
 │   ├── tailwind.config.js
 │   └── package.json
 │
-├── build.sh
-├── package.json
 └── README.md
 ```
 
 ---
 
-## 📚 API Documentation
+## 🚀 Quick Start
 
-### Authentication Endpoints
+### Prerequisites
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/auth/register` | Register new user | No |
-| POST | `/api/auth/login` | Login user | No |
-| POST | `/api/auth/google` | Google OAuth login | No |
-| GET | `/api/auth/me` | Get current user | Yes |
+- **Java 17+** - [Download](https://adoptium.net/)
+- **Node.js 18+** - [Download](https://nodejs.org/)
+- **MySQL 8+** - [Download](https://dev.mysql.com/downloads/) (for local dev)
+- **Maven 3.9+** - [Download](https://maven.apache.org/)
+- **Ollama** (optional, for AI) - [Download](https://ollama.ai/)
 
-### Product Endpoints
+### Local Development Setup
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/products` | Get all products | No |
-| GET | `/api/products/{id}` | Get product by ID | No |
-| GET | `/api/products/category/{cat}` | Get by category | No |
-| GET | `/api/products/search?q=` | Search products | No |
-| POST | `/api/products` | Create product | Vendor |
-| PUT | `/api/products/{id}` | Update product | Vendor |
-| DELETE | `/api/products/{id}` | Delete product | Vendor |
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/aryangaikwad-966/Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-.git
+cd "Cranberry- AI Powered Multivendor Ecommerce Marketplace"
+```
 
-### Order Endpoints
+#### 2. Database Setup (MySQL - Local)
+```bash
+mysql -u root -p
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/orders` | Get user orders | Yes |
-| GET | `/api/orders/{id}` | Get order details | Yes |
-| POST | `/api/orders` | Create order | Yes |
-| PUT | `/api/orders/{id}/cancel` | Cancel order | Yes |
+CREATE DATABASE cranberry_db;
+USE cranberry_db;
+SOURCE Cranberry-Backend/database_setup.sql;
+```
 
-### AI Endpoints
+#### 3. Backend Setup
+```bash
+cd Cranberry-Backend
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/ai/chat` | AI chatbot | No |
-| POST | `/api/ai/search` | Semantic search | No |
-| GET | `/api/ai/recommend/{productId}` | Product recommendations | No |
-| GET | `/api/ai/recommend/user` | Personalized recommendations | Yes |
-| POST | `/api/ai/price-suggest` | Price suggestions | Vendor |
+# Create .env file
+cat > .env << EOF
+DB_USERNAME=root
+DB_PASSWORD=your_password
+JWT_SECRET=your-super-secret-jwt-key-min-32-characters
+RAZORPAY_KEY=rzp_test_xxxxx
+RAZORPAY_SECRET=your_secret
+GOOGLE_CLIENT_ID=your_google_client_id
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2
+EOF
 
-> 📖 **Full API Documentation**: See [API_DOCUMENTATION.md](./Cranberry-Backend/API_DOCUMENTATION.md)
+# Run backend
+mvn spring-boot:run
+```
+
+#### 4. Frontend Setup
+```bash
+cd Cranberry-Frontend
+
+# Install dependencies
+npm install
+
+# Run frontend
+npm run dev
+```
+
+#### 5. (Optional) Start Ollama for AI Features
+```bash
+ollama serve
+ollama pull llama3.2
+```
+
+### Access Points
+
+| Service | Local URL | Production URL |
+|---------|-----------|----------------|
+| Frontend | http://localhost:5173 | https://cranberry-ai-multivendor-e-commerce.vercel.app |
+| Backend | http://localhost:8080 | https://cranberry-ai-powered-multi-vendor-e.onrender.com |
+| API Health | http://localhost:8080/api/health | https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health |
+
+### Demo Credentials (Local Only)
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@cranberry.com | password |
+| Vendor | techvista@cranberry.com | password |
+| Customer | aryan@example.com | password |
+
+> **Note**: Production database is empty. Register new accounts on the live site.
 
 ---
 
 ## 🔐 Environment Variables
 
-### Backend (.env)
-
+### Backend (Render)
 ```env
-# Database
-DATABASE_URL=jdbc:mysql://localhost:3306/cranberry_db
-DATABASE_USER=cranberry
-DATABASE_PASSWORD=your_password
-
-# JWT
-JWT_SECRET=your-256-bit-secret-key-here
-
-# Razorpay
-RAZORPAY_KEY_ID=rzp_test_xxxxx
-RAZORPAY_KEY_SECRET=your_secret
-
-# Google OAuth
+DATABASE_URL=jdbc:postgresql://host:5432/database
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+JWT_SECRET=your-super-secret-jwt-key-min-32-characters
+RAZORPAY_KEY=rzp_test_xxxxx
+RAZORPAY_SECRET=your_secret
 GOOGLE_CLIENT_ID=your_google_client_id
-
-# Ollama
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3
 ```
 
-### Frontend (.env)
-
+### Frontend (Vercel)
 ```env
-VITE_API_BASE_URL=http://localhost:8080/api
-VITE_APP_NAME=Cranberry Marketplace
-VITE_RAZORPAY_KEY_ID=rzp_test_xxxxx
-VITE_GOOGLE_CLIENT_ID=your_google_client_id
+VITE_API_BASE_URL=https://cranberry-ai-powered-multi-vendor-e.onrender.com
 ```
 
 ---
 
-## 🚢 Deployment
+## 📊 API Documentation
 
-### Docker Deployment
+### Core Endpoints
 
-```bash
-# Build and run with Docker Compose
-cd Cranberry-Backend
-docker-compose up -d
-```
+| Category | Method | Endpoint | Auth | Description |
+|----------|--------|----------|------|-------------|
+| **Auth** | POST | `/api/auth/register` | ❌ | Register user |
+| | POST | `/api/auth/login` | ❌ | Login user |
+| | POST | `/api/auth/google` | ❌ | Google OAuth |
+| **Products** | GET | `/api/products` | ❌ | List products |
+| | GET | `/api/products/{id}` | ❌ | Get product |
+| | POST | `/api/products` | 🏪 | Create product |
+| **Orders** | GET | `/api/orders` | ✅ | Get user orders |
+| | POST | `/api/orders` | ✅ | Create order |
+| **AI** | POST | `/api/ai/chat` | ❌ | AI chatbot |
+| | POST | `/api/ai/search` | ❌ | Smart search |
+| | GET | `/api/ai/recommend/{id}` | ❌ | Recommendations |
+| **Payments** | POST | `/api/payments/create` | ✅ | Create payment |
+| | POST | `/api/payments/verify` | ✅ | Verify payment |
 
-### Railway (Backend)
-
-1. Connect your GitHub repository
-2. Set environment variables in Railway dashboard
-3. Deploy with:
-   - Build Command: `mvn clean package -DskipTests`
-   - Start Command: `java -jar target/marketplace-0.0.1-SNAPSHOT.jar`
-
-### Vercel (Frontend)
-
-1. Import project to Vercel
-2. Set root directory to `Cranberry-Frontend`
-3. Set environment variables
-4. Deploy
-
-### Build Commands
-
-```bash
-# Backend
-cd Cranberry-Backend
-mvn clean package -DskipTests
-
-# Frontend
-cd Cranberry-Frontend
-npm run build
-```
-
----
-
-## 📸 Screenshots
-
-<details>
-<summary>Click to view screenshots</summary>
-
-### Home Page
-- Hero section with AI-powered search
-- Featured products and categories
-- Personalized recommendations
-
-### Product Page
-- Product details with images
-- Add to cart and wishlist
-- Similar product recommendations
-
-### Vendor Dashboard
-- Revenue analytics
-- Order management
-- Product inventory
-
-### Admin Dashboard
-- Platform statistics
-- Vendor approvals
-- Product moderation
-
-</details>
-
----
-
-## 🗺 Roadmap
-
-### ✅ Completed (v1.0)
-- [x] Multi-vendor architecture
-- [x] JWT authentication with Google OAuth
-- [x] AI chatbot with intent detection
-- [x] Semantic product search
-- [x] Personalized recommendations
-- [x] Razorpay payment integration
-- [x] Order tracking with item-level status
-- [x] Vendor & Admin dashboards
-- [x] Responsive UI with 46+ components
-
-### 🔄 In Progress (v1.1)
-- [ ] Product reviews and ratings
-- [ ] Email notifications
-- [ ] Advanced vendor analytics
-
-### 📋 Planned (v2.0)
-- [ ] Multi-currency support
-- [ ] Inventory alerts
-- [ ] Coupon/Discount system
-- [ ] Shipping provider integration
-- [ ] Mobile app (React Native)
-- [ ] Real-time chat between vendor & customer
-- [ ] Advanced AI analytics dashboard
+> 📖 Full API documentation: [API_DOCUMENTATION.md](./Cranberry-Backend/API_DOCUMENTATION.md)
 
 ---
 
@@ -633,32 +661,54 @@ npm run build
 cd Cranberry-Backend
 mvn test
 
-# Frontend tests (coming soon)
-cd Cranberry-Frontend
-npm test
+# API Health Check
+curl https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health
+
+# Test Login API
+curl -X POST https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your@email.com","password":"yourpassword"}'
 ```
 
 ---
 
-## 🤝 Contributing
+## 📈 Impact & Metrics
 
-Contributions are welcome! Please follow these steps:
+### Expected Outcomes
 
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Code Style
-- Frontend: ESLint + Prettier
-- Backend: Google Java Style Guide
+| Metric | Target | Impact |
+|--------|--------|--------|
+| Small Vendor Onboarding | 100+ | Enable digital presence |
+| AI-Assisted Searches | 70% accuracy | Better product discovery |
+| Cart Abandonment Reduction | -25% | Streamlined checkout |
+| Vendor Revenue Increase | +15% | AI pricing optimization |
 
 ---
 
-## 📄 License
+## 🗺 Roadmap
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### ✅ Phase 1: MVP (Completed)
+- [x] Multi-vendor architecture
+- [x] JWT + Google OAuth authentication
+- [x] AI chatbot with intent detection
+- [x] Product catalog with search
+- [x] Cart, Wishlist, Orders
+- [x] Razorpay payment integration
+- [x] Vendor & Admin dashboards
+- [x] Production deployment (Vercel + Render)
+
+### 🔄 Phase 2: Enhancement (In Progress)
+- [ ] Product reviews & ratings
+- [ ] Email notifications
+- [ ] Advanced analytics dashboard
+- [ ] Image upload to cloud storage
+
+### 📋 Phase 3: Scale (Planned)
+- [ ] Multi-currency support
+- [ ] Mobile app (React Native)
+- [ ] Real-time vendor-customer chat
+- [ ] Inventory management
+- [ ] Coupon/Discount system
 
 ---
 
@@ -669,7 +719,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 </p>
 
 <p align="center">
-  <strong>Aryan Gaikwad</strong>
+  <strong>Aryan Gaikwad</strong><br>
+  Full Stack Developer | AI Enthusiast
 </p>
 
 <p align="center">
@@ -686,6 +737,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
 ## 🙏 Acknowledgments
 
 - [Spring Boot](https://spring.io/projects/spring-boot) - Backend framework
@@ -694,6 +751,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [shadcn/ui](https://ui.shadcn.com/) - UI components
 - [Ollama](https://ollama.ai/) - Local AI/LLM
 - [Razorpay](https://razorpay.com/) - Payment gateway
+- [Vercel](https://vercel.com/) - Frontend hosting
+- [Render](https://render.com/) - Backend hosting
 
 ---
 
@@ -702,5 +761,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 </p>
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/aryangaikwad-966">Aryan Gaikwad</a>
+  Made with ❤️ for Google Solution Challenge 2026
 </p>
