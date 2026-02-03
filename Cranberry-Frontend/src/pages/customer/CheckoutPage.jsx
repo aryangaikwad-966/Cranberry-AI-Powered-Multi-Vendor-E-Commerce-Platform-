@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Truck, ChevronLeft, Shield, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import { CreditCard, Truck, ChevronLeft, Shield, Loader2, AlertCircle, CheckCircle, Store } from 'lucide-react';
 import { useCart } from '../../context/CartContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { ordersApi, paymentsApi } from '../../services/api';
@@ -8,6 +8,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Separator } from '../../components/ui/separator';
+import { Badge } from '../../components/ui/badge';
 import { toast } from 'sonner';
 import { formatPrice, getItemImage, getPriceInINR } from '../../lib/utils';
 
@@ -509,52 +510,98 @@ const CheckoutPage = () => {
                 Order Summary
               </h2>
 
-              {/* Items */}
-              <div className="space-y-4 max-h-64 overflow-y-auto mb-6">
-                {items.map((item) => (
-                  <div key={item.productId || item.product?.id || item.id} className="flex gap-3">
-                    <div className="relative">
-                      <img
-                        src={getItemImage(item)}
-                        alt={item.product?.name || item.productName}
-                        className="w-16 h-16 object-cover rounded-lg bg-slate-50"
-                      />
-                      <span className="absolute -top-2 -right-2 w-5 h-5 bg-slate-500 text-white text-xs rounded-full flex items-center justify-center">
-                        {item.quantity}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-900 line-clamp-2">
-                        {item.product?.name || item.productName}
-                      </p>
-                      <p className="text-sm text-slate-500">
-                        ₹{formatPrice(getPriceInINR(item.product?.price ?? item.price ?? 0) * item.quantity, true)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+              {/* Items grouped by vendor */}
+              <div className="space-y-4 max-h-80 overflow-y-auto mb-6">
+                {(() => {
+                  // Group items by vendor
+                  const itemsByVendor = {};
+                  items.forEach(item => {
+                    const vendorName = item.vendorName || item.product?.vendor?.shopName || item.product?.vendorName || 'Cranberry Marketplace';
+                    const vendorId = item.product?.vendor?.id || item.vendorId || 'default';
+                    if (!itemsByVendor[vendorId]) {
+                      itemsByVendor[vendorId] = { vendorName, items: [] };
+                    }
+                    itemsByVendor[vendorId].items.push(item);
+                  });
+
+                  const vendorGroups = Object.values(itemsByVendor);
+                  const hasMultipleVendors = vendorGroups.length > 1;
+
+                  return (
+                    <>
+                      {hasMultipleVendors && (
+                        <div className="bg-blue-50 border border-blue-100 rounded-lg p-2.5 mb-3 flex items-start gap-2">
+                          <Store className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                          <p className="text-xs text-blue-700">
+                            Items from <strong>{vendorGroups.length} sellers</strong> will be shipped separately
+                          </p>
+                        </div>
+                      )}
+                      {vendorGroups.map((group, groupIndex) => (
+                        <div key={groupIndex} className="space-y-3">
+                          {/* Vendor header */}
+                          <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                            <Store className="w-3 h-3" />
+                            <span className="font-medium">{group.vendorName}</span>
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 ml-auto">
+                              {group.items.length} item{group.items.length > 1 ? 's' : ''}
+                            </Badge>
+                          </div>
+                          {/* Items from this vendor */}
+                          {group.items.map((item) => (
+                            <div key={item.productId || item.product?.id || item.id} className="flex gap-3 pl-4">
+                              <div className="relative">
+                                <img
+                                  src={getItemImage(item)}
+                                  alt={item.product?.name || item.productName}
+                                  className="w-14 h-14 object-cover rounded-lg bg-slate-50"
+                                />
+                                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-slate-600 text-white text-[10px] rounded-full flex items-center justify-center">
+                                  {item.quantity}
+                                </span>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-slate-900 line-clamp-1">
+                                  {item.product?.name || item.productName}
+                                </p>
+                                <p className="text-sm text-slate-500">
+                                  ₹{formatPrice(getPriceInINR(item.product?.price ?? item.price ?? 0) * item.quantity, true)}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                          {groupIndex < vendorGroups.length - 1 && (
+                            <Separator className="my-2" />
+                          )}
+                        </div>
+                      ))}
+                    </>
+                  );
+                })()}
               </div>
 
               <Separator className="my-4" />
 
               {/* Totals */}
-              <div className="space-y-3">
-                <div className="flex justify-between text-slate-600">
-                  <span>Subtotal</span>
+              <div className="space-y-2.5">
+                <div className="flex justify-between text-sm text-slate-600">
+                  <span>Subtotal ({items.reduce((sum, item) => sum + item.quantity, 0)} items)</span>
                   <span>₹{formatPrice(subtotal, true)}</span>
                 </div>
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-sm text-slate-600">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `₹${formatPrice(shipping, true)}`}</span>
+                  <span className={shipping === 0 ? 'text-green-600 font-medium' : ''}>
+                    {shipping === 0 ? 'FREE' : `₹${formatPrice(shipping, true)}`}
+                  </span>
                 </div>
-                <div className="flex justify-between text-slate-600">
-                  <span>Tax (18% GST)</span>
+                <div className="flex justify-between text-sm text-slate-600">
+                  <span>GST (18%)</span>
                   <span>₹{formatPrice(tax, true)}</span>
                 </div>
                 <Separator />
-                <div className="flex justify-between text-lg font-semibold text-slate-900">
+                <div className="flex justify-between font-semibold text-slate-900">
                   <span>Total</span>
-                  <span>₹{formatPrice(total, true)}</span>
+                  <span className="text-lg text-[#0071E3]">₹{formatPrice(total, true)}</span>
                 </div>
               </div>
 

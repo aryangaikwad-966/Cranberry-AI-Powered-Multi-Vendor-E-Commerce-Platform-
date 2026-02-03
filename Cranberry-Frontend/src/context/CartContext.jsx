@@ -190,18 +190,24 @@ export const CartProvider = ({ children }) => {
         return true;
     }, [isOffline]);
 
-    // Calculate totals - prices are normalized to INR using getPriceInINR
+    // Calculate totals
+    // For backend items: price is in item.product.price (per unit)
+    // For offline items: price is in item.product.price (we store product object)
     const subtotal = items.reduce((sum, item) => {
-        const price = item.product?.price || 0;
-        const priceInINR = getPriceInINR(price);
-        return sum + priceInINR * item.quantity;
+        // Get per-unit price from product
+        const unitPrice = item.product?.price || item.price || 0;
+        return sum + (unitPrice * item.quantity);
     }, 0);
 
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-    // Shipping: Free for orders over ₹5000
-    const shipping = subtotal > 5000 ? 0 : 99;
-    const tax = subtotal * 0.08; // 8% tax
+    // Shipping: Free for orders over ₹5,000, otherwise ₹99
+    const shipping = subtotal >= 5000 ? 0 : 99;
+
+    // Tax: 18% GST (standard Indian GST rate)
+    const tax = Math.round(subtotal * 0.18);
+
+    // Total = Subtotal + Shipping + Tax
     const total = subtotal + shipping + tax;
 
     const value = {

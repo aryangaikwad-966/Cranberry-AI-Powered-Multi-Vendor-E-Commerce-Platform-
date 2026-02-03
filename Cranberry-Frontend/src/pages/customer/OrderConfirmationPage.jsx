@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { CheckCircle, Package, Truck, ArrowRight, Home, ShoppingBag, Loader2, Store } from 'lucide-react';
+import { CheckCircle, Package, Truck, ArrowRight, Home, ShoppingBag, Loader2, Store, Clock, XCircle } from 'lucide-react';
 import { ordersApi } from '../../services/api';
 import { Button } from '../../components/ui/button';
 import { Separator } from '../../components/ui/separator';
@@ -226,7 +226,7 @@ const OrderConfirmationPage = () => {
                           {/* Items from this vendor */}
                           <div className="divide-y divide-slate-100">
                             {group.items.map((item, index) => (
-                              <div key={index} className="flex items-center gap-4 p-3">
+                              <div key={index} className="flex items-center gap-4 p-4">
                                 <img
                                   src={getItemImage(item)}
                                   alt={item.product?.name}
@@ -235,6 +235,25 @@ const OrderConfirmationPage = () => {
                                 <div className="flex-1">
                                   <p className="font-medium text-slate-900">{item.product?.name}</p>
                                   <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                                  {/* Item-level status */}
+                                  {(item.status || item.itemStatus) && (
+                                    <Badge className={`mt-1 text-xs flex items-center gap-1 w-fit ${(item.status || item.itemStatus) === 'PENDING' ? 'bg-amber-100 text-amber-700 border border-amber-200' :
+                                        (item.status || item.itemStatus) === 'PROCESSING' ? 'bg-blue-100 text-blue-700 border border-blue-200' :
+                                          (item.status || item.itemStatus) === 'SHIPPED' ? 'bg-purple-100 text-purple-700 border border-purple-200' :
+                                            (item.status || item.itemStatus) === 'DELIVERED' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
+                                              'bg-slate-100 text-slate-600 border border-slate-200'
+                                      }`}>
+                                      {(item.status || item.itemStatus) === 'PENDING' && <Clock className="h-3 w-3" />}
+                                      {(item.status || item.itemStatus) === 'PROCESSING' && <Package className="h-3 w-3" />}
+                                      {(item.status || item.itemStatus) === 'SHIPPED' && <Truck className="h-3 w-3" />}
+                                      {(item.status || item.itemStatus) === 'DELIVERED' && <CheckCircle className="h-3 w-3" />}
+                                      {(item.status || item.itemStatus) === 'PENDING' ? 'Awaiting shipment' :
+                                        (item.status || item.itemStatus) === 'PROCESSING' ? 'Processing' :
+                                          (item.status || item.itemStatus) === 'SHIPPED' ? 'Shipped' :
+                                            (item.status || item.itemStatus) === 'DELIVERED' ? 'Delivered' :
+                                              (item.status || item.itemStatus)}
+                                    </Badge>
+                                  )}
                                 </div>
                                 <p className="font-semibold text-slate-900">
                                   ₹{formatPrice(item.price)}

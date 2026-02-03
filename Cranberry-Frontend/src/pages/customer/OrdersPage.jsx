@@ -165,6 +165,58 @@ const OrdersPage = () => {
     }
   };
 
+  // Item-level status helpers for multi-vendor order tracking
+  const getItemStatusColor = (status) => {
+    switch (status) {
+      case 'PENDING':
+        return 'bg-amber-100 text-amber-700 border border-amber-200';
+      case 'PROCESSING':
+        return 'bg-blue-100 text-blue-700 border border-blue-200';
+      case 'SHIPPED':
+        return 'bg-purple-100 text-purple-700 border border-purple-200';
+      case 'DELIVERED':
+        return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
+      case 'CANCELLED':
+        return 'bg-red-100 text-red-700 border border-red-200';
+      default:
+        return 'bg-slate-100 text-slate-600 border border-slate-200';
+    }
+  };
+
+  const getItemStatusIcon = (status) => {
+    switch (status) {
+      case 'PENDING':
+        return <Clock className="h-3 w-3" />;
+      case 'PROCESSING':
+        return <Package className="h-3 w-3" />;
+      case 'SHIPPED':
+        return <Truck className="h-3 w-3" />;
+      case 'DELIVERED':
+        return <CheckCircle className="h-3 w-3" />;
+      case 'CANCELLED':
+        return <XCircle className="h-3 w-3" />;
+      default:
+        return <Clock className="h-3 w-3" />;
+    }
+  };
+
+  const getItemStatusLabel = (status) => {
+    switch (status) {
+      case 'PENDING':
+        return 'Awaiting shipment';
+      case 'PROCESSING':
+        return 'Processing';
+      case 'SHIPPED':
+        return 'Shipped';
+      case 'DELIVERED':
+        return 'Delivered';
+      case 'CANCELLED':
+        return 'Cancelled';
+      default:
+        return status;
+    }
+  };
+
   const canRetryPayment = (status) => {
     return status === 'CREATED' || status === 'PAYMENT_PENDING';
   };
@@ -275,12 +327,21 @@ const OrdersPage = () => {
                           <p className="text-sm text-slate-500">
                             Qty: {item.quantity} × ₹{formatPrice(item.price / item.quantity)}
                           </p>
-                          {item.product?.vendor && (
-                            <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                              <Store className="w-3 h-3" />
-                              Sold by: {item.product.vendor.shopName || 'Cranberry Seller'}
-                            </p>
-                          )}
+                          <div className="flex items-center gap-2 mt-1">
+                            {item.product?.vendor && (
+                              <span className="text-xs text-slate-400 flex items-center gap-1">
+                                <Store className="w-3 h-3" />
+                                {item.product.vendor.shopName || 'Cranberry Seller'}
+                              </span>
+                            )}
+                            {/* Item-level status badge */}
+                            {item.itemStatus && (
+                              <Badge className={`${getItemStatusColor(item.itemStatus)} text-xs py-0 px-1.5 flex items-center gap-0.5`}>
+                                {getItemStatusIcon(item.itemStatus)}
+                                <span className="ml-0.5">{getItemStatusLabel(item.itemStatus)}</span>
+                              </Badge>
+                            )}
+                          </div>
                         </div>
                         <p className="font-medium text-slate-900">
                           ₹{formatPrice(item.price)}
@@ -456,7 +517,7 @@ const OrdersPage = () => {
                           {/* Items from this vendor */}
                           <div className="divide-y divide-slate-100">
                             {group.items.map((item, index) => (
-                              <div key={index} className="flex items-center gap-4 p-3">
+                              <div key={index} className="flex items-center gap-4 p-4">
                                 <img
                                   src={getItemImage(item)}
                                   alt={item.product?.name}
@@ -465,6 +526,15 @@ const OrdersPage = () => {
                                 <div className="flex-1">
                                   <p className="font-medium text-slate-900">{item.product?.name}</p>
                                   <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                                  {/* Item-level status for multi-vendor tracking */}
+                                  {item.itemStatus && (
+                                    <div className="flex items-center gap-1.5 mt-1">
+                                      <Badge className={`${getItemStatusColor(item.itemStatus)} text-xs flex items-center gap-1`}>
+                                        {getItemStatusIcon(item.itemStatus)}
+                                        {getItemStatusLabel(item.itemStatus)}
+                                      </Badge>
+                                    </div>
+                                  )}
                                 </div>
                                 <span className="font-semibold">₹{formatPrice(item.price)}</span>
                               </div>

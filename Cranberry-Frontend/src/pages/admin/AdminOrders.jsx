@@ -3,7 +3,7 @@ import {
     Package, Clock, Truck, CheckCircle, XCircle,
     Filter, Search, RefreshCw, ChevronDown, Eye,
     IndianRupee, TrendingUp, AlertCircle, Loader2,
-    CreditCard, Sparkles
+    CreditCard, Sparkles, Store
 } from 'lucide-react';
 import { ordersApi, paymentsApi, aiApi, ORDER_STATUSES, ORDER_STATUS_LABELS } from '../../services/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
@@ -170,6 +170,58 @@ const AdminOrders = () => {
                 return 'bg-red-100 text-red-700';
             default:
                 return 'bg-slate-100 text-slate-700';
+        }
+    };
+
+    // Item-level status helpers for multi-vendor order tracking
+    const getItemStatusColor = (status) => {
+        switch (status) {
+            case 'PENDING':
+                return 'bg-amber-100 text-amber-700 border border-amber-200';
+            case 'PROCESSING':
+                return 'bg-blue-100 text-blue-700 border border-blue-200';
+            case 'SHIPPED':
+                return 'bg-purple-100 text-purple-700 border border-purple-200';
+            case 'DELIVERED':
+                return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
+            case 'CANCELLED':
+                return 'bg-red-100 text-red-700 border border-red-200';
+            default:
+                return 'bg-slate-100 text-slate-600 border border-slate-200';
+        }
+    };
+
+    const getItemStatusIcon = (status) => {
+        switch (status) {
+            case 'PENDING':
+                return <Clock className="h-3 w-3" />;
+            case 'PROCESSING':
+                return <Package className="h-3 w-3" />;
+            case 'SHIPPED':
+                return <Truck className="h-3 w-3" />;
+            case 'DELIVERED':
+                return <CheckCircle className="h-3 w-3" />;
+            case 'CANCELLED':
+                return <XCircle className="h-3 w-3" />;
+            default:
+                return <Clock className="h-3 w-3" />;
+        }
+    };
+
+    const getItemStatusLabel = (status) => {
+        switch (status) {
+            case 'PENDING':
+                return 'Awaiting shipment';
+            case 'PROCESSING':
+                return 'Processing';
+            case 'SHIPPED':
+                return 'Shipped';
+            case 'DELIVERED':
+                return 'Delivered';
+            case 'CANCELLED':
+                return 'Cancelled';
+            default:
+                return status || 'Pending';
         }
     };
 
@@ -525,27 +577,79 @@ const AdminOrders = () => {
                                 <p className="text-sm text-slate-500 mt-2">{selectedOrder.shippingAddress}</p>
                             </div>
 
-                            {/* Order Items */}
+                            {/* Order Items - Grouped by Vendor with Item-Level Status */}
                             <div>
                                 <h4 className="font-semibold text-slate-900 mb-3">Order Items</h4>
-                                <div className="space-y-2">
-                                    {selectedOrder.items?.map((item, index) => (
-                                        <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                                            <div className="flex items-center gap-3">
-                                                <img
-                                                    src={getItemImage(item)}
-                                                    alt={item.product?.name}
-                                                    className="w-12 h-12 object-cover rounded-lg"
-                                                />
-                                                <div>
-                                                    <p className="font-medium text-slate-900">{item.product?.name}</p>
-                                                    <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
+                                {(() => {
+                                    // Group items by vendor for multi-vendor display
+                                    const itemsByVendor = {};
+                                    selectedOrder.items?.forEach(item => {
+                                        const vendorName = item.product?.vendor?.shopName || 'Cranberry Marketplace';
+                                        const vendorId = item.product?.vendor?.id || 'default';
+                                        if (!itemsByVendor[vendorId]) {
+                                            itemsByVendor[vendorId] = {
+                                                vendorName,
+                                                items: []
+                                            };
+                                        }
+                                        itemsByVendor[vendorId].items.push(item);
+                                    });
+
+                                    const vendorGroups = Object.values(itemsByVendor);
+                                    const hasMultipleVendors = vendorGroups.length > 1;
+
+                                    return (
+                                        <div className="space-y-4">
+                                            {hasMultipleVendors && (
+                                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-2">
+                                                    <Store className="w-4 h-4 text-blue-600 mt-0.5" />
+                                                    <p className="text-sm text-blue-700">
+                                                        This order contains products from <strong>{vendorGroups.length} different vendors</strong>.
+                                                        Each vendor fulfills their items independently.
+                                                    </p>
                                                 </div>
-                                            </div>
-                                            <span className="font-semibold">₹{formatPrice(item.price)}</span>
+                                            )}
+                                            {vendorGroups.map((group, groupIndex) => (
+                                                <div key={groupIndex} className="border border-slate-200 rounded-xl overflow-hidden">
+                                                    {/* Vendor Header */}
+                                                    <div className="bg-slate-100 px-4 py-2 flex items-center gap-2">
+                                                        <Store className="w-4 h-4 text-slate-600" />
+                                                        <span className="text-sm font-medium text-slate-700">
+                                                            {group.vendorName}
+                                                        </span>
+                                                        <Badge variant="outline" className="ml-auto text-xs">
+                                                            {group.items.length} item{group.items.length > 1 ? 's' : ''}
+                                                        </Badge>
+                                                    </div>
+                                                    {/* Items from this vendor */}
+                                                    <div className="divide-y divide-slate-100">
+                                                        {group.items.map((item, index) => (
+                                                            <div key={index} className="flex items-center justify-between p-4 hover:bg-slate-50">
+                                                                <div className="flex items-center gap-3">
+                                                                    <img
+                                                                        src={getItemImage(item)}
+                                                                        alt={item.product?.name}
+                                                                        className="w-12 h-12 object-cover rounded-lg"
+                                                                    />
+                                                                    <div>
+                                                                        <p className="font-medium text-slate-900">{item.product?.name}</p>
+                                                                        <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
+                                                                        {/* Item-level status badge */}
+                                                                        <Badge className={`${getItemStatusColor(item.itemStatus || item.status)} text-xs mt-1 flex items-center gap-1 w-fit`}>
+                                                                            {getItemStatusIcon(item.itemStatus || item.status)}
+                                                                            {getItemStatusLabel(item.itemStatus || item.status)}
+                                                                        </Badge>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="font-semibold">₹{formatPrice(item.price)}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
-                                </div>
+                                    );
+                                })()}
                             </div>
 
                             {/* Payment Info */}

@@ -1,15 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Tag } from 'lucide-react';
+import { Trash2, Minus, Plus, ShoppingBag, ArrowRight, Tag, Store } from 'lucide-react';
 import { useCart } from '../../context/CartContext.jsx';
 import { Button } from '../../components/ui/button';
 import { Separator } from '../../components/ui/separator';
-import { formatPrice, getPriceInINR, getItemImage } from '../../lib/utils';
+import { Badge } from '../../components/ui/badge';
+import { formatPrice, getItemImage } from '../../lib/utils';
 
 // Helper functions to safely get item data (handles both backend and local/sample formats)
 const getImage = (item) => getItemImage(item);
 const getName = (item) => item.productName || item.name || item.product?.name || 'Product';
-const getVendor = (item) => item.vendorName || item.product?.vendorName || 'Vendor';
-const getPrice = (item) => item.price || item.product?.price || 0;
+const getVendor = (item) => item.vendorName || item.product?.vendorName || item.product?.vendor?.shopName || 'Seller';
+const getPrice = (item) => item.product?.price || item.price || 0; // Per-unit price
 const getStock = (item) => item.stock || item.product?.stock || 99;
 const getId = (item) => item.productId || item.product?.id || item.id;
 
@@ -139,7 +140,7 @@ const CartPage = () => {
                         {/* Price */}
                         <div className="text-right">
                           <p className="font-display font-bold text-lg text-slate-900">
-                            ₹{formatPrice(getPriceInINR(itemPrice) * item.quantity, true)}
+                            ₹{formatPrice(itemPrice * item.quantity)}
                           </p>
                           {item.quantity > 1 && (
                             <p className="text-sm text-slate-500">
@@ -171,6 +172,26 @@ const CartPage = () => {
                 Order Summary
               </h2>
 
+              {/* Multi-vendor info */}
+              {(() => {
+                const uniqueVendors = [...new Set(items.map(item =>
+                  item.vendorName || item.product?.vendorName || 'Seller'
+                ))];
+                const hasMultipleVendors = uniqueVendors.length > 1;
+
+                return hasMultipleVendors ? (
+                  <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-6 flex items-start gap-2">
+                    <Store className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-blue-800">Multi-vendor Order</p>
+                      <p className="text-xs text-blue-600 mt-0.5">
+                        Items from {uniqueVendors.length} sellers will ship separately
+                      </p>
+                    </div>
+                  </div>
+                ) : null;
+              })()}
+
               {/* Promo code */}
               <div className="mb-6">
                 <div className="flex gap-2">
@@ -189,33 +210,52 @@ const CartPage = () => {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
+                {/* Item count & subtotal */}
                 <div className="flex justify-between text-slate-600">
-                  <span>Subtotal</span>
-                  <span>₹{formatPrice(subtotal, true)}</span>
+                  <span>Subtotal ({items.reduce((sum, item) => sum + item.quantity, 0)} items)</span>
+                  <span>₹{formatPrice(subtotal)}</span>
                 </div>
+
+                {/* Shipping */}
                 <div className="flex justify-between text-slate-600">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `₹${formatPrice(shipping, true)}`}</span>
+                  <span className={shipping === 0 ? 'text-green-600 font-medium' : ''}>
+                    {shipping === 0 ? 'FREE' : `₹${formatPrice(shipping)}`}
+                  </span>
                 </div>
+
+                {/* GST Tax breakdown */}
                 <div className="flex justify-between text-slate-600">
-                  <span>Tax (18% GST)</span>
-                  <span>₹{formatPrice(tax, true)}</span>
+                  <div className="flex items-center gap-1">
+                    <span>GST (18%)</span>
+                    <span className="text-xs text-slate-400">(CGST 9% + SGST 9%)</span>
+                  </div>
+                  <span>₹{formatPrice(tax)}</span>
                 </div>
 
                 <Separator />
 
+                {/* Total */}
                 <div className="flex justify-between text-lg font-semibold text-slate-900">
                   <span>Total</span>
-                  <span>₹{formatPrice(total, true)}</span>
+                  <span className="text-[#0071E3]">₹{formatPrice(total)}</span>
                 </div>
 
+                {/* Savings indicator */}
                 {shipping === 0 && (
-                  <p className="text-sm text-green-600 flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <p className="text-sm text-green-600 flex items-center bg-green-50 p-2 rounded-lg">
+                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    You qualify for free shipping!
+                    You saved ₹99 on shipping!
+                  </p>
+                )}
+
+                {/* Free shipping threshold hint */}
+                {shipping > 0 && subtotal < 5000 && (
+                  <p className="text-xs text-slate-500">
+                    Add ₹{formatPrice(5000 - subtotal)} more for free shipping
                   </p>
                 )}
               </div>
