@@ -1,0 +1,59 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/cranberry}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 30000
+      initialization-fail-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+# ---------- AI CONFIG ----------
+ai:
+  provider: ollama
+  ollama:
+    baseUrl: ${OLLAMA_BASE_URL:http://localhost:11434}
+    model: ${OLLAMA_MODEL:llama3.2}
+    timeout: 60000
+
+# ---------- RAZORPAY CONFIG ----------
+razorpay:
+  key: ${RAZORPAY_KEY}
+  secret: ${RAZORPAY_SECRET}
+
+# ---------- JWT CONFIG ----------
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+# ---------- GOOGLE OAUTH CONFIG ----------
+google:
+  client-id: ${GOOGLE_CLIENT_ID:}
+
+# ---------- SERVER CONFIG ----------
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: always
