@@ -1,15 +1,24 @@
 package com.cranberry.marketplace.config;
 
-import com.cranberry.marketplace.model.*;
-import com.cranberry.marketplace.repository.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.cranberry.marketplace.model.Cart;
+import com.cranberry.marketplace.model.Product;
+import com.cranberry.marketplace.model.User;
+import com.cranberry.marketplace.model.Vendor;
+import com.cranberry.marketplace.model.Wishlist;
+import com.cranberry.marketplace.repository.CartRepository;
+import com.cranberry.marketplace.repository.ProductRepository;
+import com.cranberry.marketplace.repository.UserRepository;
+import com.cranberry.marketplace.repository.VendorRepository;
+import com.cranberry.marketplace.repository.WishlistRepository;
 
 /**
  * Data Initializer - Seeds the database with sample data on startup
@@ -105,7 +114,7 @@ public class DataInitializer {
             vendor1.setContactPhone("+91-98765-43210");
             vendor1.setAddress("Electronic City, Bengaluru, Karnataka 560100");
             vendor1.setStatus("APPROVED");
-            vendor1.setLogoUrl("https://images.unsplash.com/photo-1518770660439-4636190af475?w=200");
+            vendor1.setLogo("https://images.unsplash.com/photo-1518770660439-4636190af475?w=200");
             vendor1.setJoinedAt(LocalDateTime.now());
             vendor1 = vendorRepository.save(vendor1);
 
@@ -116,7 +125,7 @@ public class DataInitializer {
             vendor2.setContactPhone("+91-98765-43211");
             vendor2.setAddress("Linking Road, Bandra, Mumbai 400050");
             vendor2.setStatus("APPROVED");
-            vendor2.setLogoUrl("https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200");
+            vendor2.setLogo("https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200");
             vendor2.setJoinedAt(LocalDateTime.now());
             vendor2 = vendorRepository.save(vendor2);
 
@@ -127,7 +136,7 @@ public class DataInitializer {
             vendor3.setContactPhone("+91-98765-43212");
             vendor3.setAddress("Connaught Place, New Delhi 110001");
             vendor3.setStatus("APPROVED");
-            vendor3.setLogoUrl("https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200");
+            vendor3.setLogo("https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200");
             vendor3.setJoinedAt(LocalDateTime.now());
             vendor3 = vendorRepository.save(vendor3);
 
@@ -138,7 +147,7 @@ public class DataInitializer {
             vendor4.setContactPhone("+91-98765-43213");
             vendor4.setAddress("Phoenix Mall, Pune, Maharashtra 411014");
             vendor4.setStatus("APPROVED");
-            vendor4.setLogoUrl("https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200");
+            vendor4.setLogo("https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200");
             vendor4.setJoinedAt(LocalDateTime.now());
             vendor4 = vendorRepository.save(vendor4);
 
