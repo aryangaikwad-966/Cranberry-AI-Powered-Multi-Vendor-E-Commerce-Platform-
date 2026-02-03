@@ -861,7 +861,7 @@ curl -X POST https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/ai/cha
 </table>
 
 [![GitHub](https://img.shields.io/badge/GitHub-aryangaikwad--966-black?style=flat-square&logo=github)](https://github.com/aryangaikwad-966)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat-square&logo=linkedin)](https://linkedin.com/in/aryangaikwad)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/aryan-gaikwad-943474334/)
 [![Email](https://img.shields.io/badge/Email-Contact-red?style=flat-square&logo=gmail)](mailto:aryangaikwad966@gmail.com)
 
 ---
@@ -884,11 +884,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Render](https://render.com/) - Backend Hosting
 
 ---
-
-<p align="center">
-  <strong>Built for Google Solution Challenge 2026</strong>
-</p>
-
 <p align="center">
   ⭐ Star this repository if you found it helpful!
 </p>
