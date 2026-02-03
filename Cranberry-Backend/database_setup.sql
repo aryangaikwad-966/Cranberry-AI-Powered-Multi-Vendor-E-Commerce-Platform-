@@ -219,23 +219,23 @@ CREATE TABLE wishlist_items (
 -- ============================================================
 
 -- ============================================================
--- USERS (Password: password123 for all - BCrypt encoded)
+-- USERS (Password: password for all - BCrypt encoded)
 -- ============================================================
 
 INSERT INTO users (name, email, password, role, avatar) VALUES
 -- Admin
-('Admin User', 'admin@cranberry.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'ADMIN', 'https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff'),
+('Admin User', 'admin@cranberry.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', 'https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff'),
 
 -- Vendors
-('TechVista Electronics', 'techvista@cranberry.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'VENDOR', 'https://ui-avatars.com/api/?name=TechVista&background=2563eb&color=fff'),
-('UrbanStyle Co.', 'urbanstyle@cranberry.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'VENDOR', 'https://ui-avatars.com/api/?name=UrbanStyle&background=7c3aed&color=fff'),
-('HomeEssentials Plus', 'homeessentials@cranberry.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'VENDOR', 'https://ui-avatars.com/api/?name=HomeEssentials&background=059669&color=fff'),
-('GlowBeauty', 'glowbeauty@cranberry.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'VENDOR', 'https://ui-avatars.com/api/?name=GlowBeauty&background=db2777&color=fff'),
+('TechVista Electronics', 'techvista@cranberry.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'VENDOR', 'https://ui-avatars.com/api/?name=TechVista&background=2563eb&color=fff'),
+('UrbanStyle Co.', 'urbanstyle@cranberry.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'VENDOR', 'https://ui-avatars.com/api/?name=UrbanStyle&background=7c3aed&color=fff'),
+('HomeEssentials Plus', 'homeessentials@cranberry.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'VENDOR', 'https://ui-avatars.com/api/?name=HomeEssentials&background=059669&color=fff'),
+('GlowBeauty', 'glowbeauty@cranberry.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'VENDOR', 'https://ui-avatars.com/api/?name=GlowBeauty&background=db2777&color=fff'),
 
 -- Customers
-('Aryan Gaikwad', 'aryan@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'CUSTOMER', 'https://ui-avatars.com/api/?name=Aryan+Gaikwad&background=6366f1&color=fff'),
-('Priya Sharma', 'priya@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'CUSTOMER', 'https://ui-avatars.com/api/?name=Priya+Sharma&background=ec4899&color=fff'),
-('Rahul Verma', 'rahul@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZRGdjGj/n3.nL4X4xFQFg8v9mQdCm', 'CUSTOMER', 'https://ui-avatars.com/api/?name=Rahul+Verma&background=14b8a6&color=fff');
+('Aryan Gaikwad', 'aryan@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'CUSTOMER', 'https://ui-avatars.com/api/?name=Aryan+Gaikwad&background=6366f1&color=fff'),
+('Priya Sharma', 'priya@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'CUSTOMER', 'https://ui-avatars.com/api/?name=Priya+Sharma&background=ec4899&color=fff'),
+('Rahul Verma', 'rahul@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'CUSTOMER', 'https://ui-avatars.com/api/?name=Rahul+Verma&background=14b8a6&color=fff');
 
 -- ============================================================
 -- VENDORS (Linked to VENDOR users)
