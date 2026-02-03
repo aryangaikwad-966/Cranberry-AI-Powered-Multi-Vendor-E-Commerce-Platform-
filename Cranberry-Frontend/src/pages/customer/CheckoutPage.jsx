@@ -86,15 +86,42 @@ const CheckoutPage = () => {
       // Step 1: Create Order in Backend
       const shippingAddress = `${formData.firstName} ${formData.lastName}, ${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}, ${formData.country}`;
 
+      // Extract product IDs properly - handle different item structures
+      const orderItems = items.map(item => {
+        // Try multiple ways to get productId
+        const productId = item.productId || item.product?.id || item.id;
+        if (!productId) {
+          console.error('Missing productId for item:', item);
+        }
+        return {
+          productId: Number(productId), // Ensure it's a number
+          quantity: item.quantity || 1,
+        };
+      }).filter(item => item.productId && !isNaN(item.productId)); // Remove invalid items
+
+      if (orderItems.length === 0) {
+        throw new Error('No valid products in cart. Please clear your cart and add products again.');
+      }
+
       const orderData = {
-        items: items.map(item => ({
-          productId: item.productId || item.product?.id,
-          quantity: item.quantity,
-        })),
+        items: orderItems,
         shippingAddress,
       };
 
-      const order = await ordersApi.create(orderData);
+      console.log('Creating order with data:', orderData);
+
+      let order;
+      try {
+        order = await ordersApi.create(orderData);
+      } catch (orderError) {
+        console.error('Order creation failed:', orderError);
+        // If product not found, suggest clearing cart
+        if (orderError.message?.includes('not found') || orderError.status === 404) {
+          throw new Error('Some products in your cart are no longer available. Please clear your cart from the Cart page and add products again.');
+        }
+        throw orderError;
+      }
+
       setCreatedOrder(order);
 
       // Step 2: Create Razorpay Payment
@@ -307,14 +334,29 @@ const CheckoutPage = () => {
             <div className="flex-1">
               <p className="font-medium text-red-800">Payment Failed</p>
               <p className="text-sm text-red-600 mt-1">{error}</p>
+              {error.includes('cart') && (
+                <Button
+                  onClick={() => {
+                    clearCart();
+                    navigate('/shop');
+                  }}
+                  size="sm"
+                  variant="outline"
+                  className="mt-2 text-red-600 border-red-300 hover:bg-red-50"
+                >
+                  Clear Cart & Shop Again
+                </Button>
+              )}
             </div>
-            <Button
-              onClick={handleRetryPayment}
-              size="sm"
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
-              Retry Payment
-            </Button>
+            {!error.includes('cart') && (
+              <Button
+                onClick={handleRetryPayment}
+                size="sm"
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                Retry Payment
+              </Button>
+            )}
           </div>
         )}
 

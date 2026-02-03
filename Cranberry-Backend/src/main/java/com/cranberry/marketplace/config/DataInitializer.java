@@ -22,7 +22,7 @@ import com.cranberry.marketplace.repository.WishlistRepository;
 
 /**
  * Data Initializer - Seeds the database with sample data on startup
- * Only runs in production profile when database is empty
+ * Runs in production profile when database is empty (no products)
  */
 @Configuration
 public class DataInitializer {
@@ -38,9 +38,9 @@ public class DataInitializer {
             PasswordEncoder passwordEncoder
     ) {
         return args -> {
-            // Only seed if database is empty
-            if (userRepository.count() > 0) {
-                System.out.println("📦 Database already has data, skipping seed...");
+            // Check if products exist (more specific than users)
+            if (productRepository.count() > 0) {
+                System.out.println("📦 Database already has " + productRepository.count() + " products, skipping seed...");
                 return;
             }
 
