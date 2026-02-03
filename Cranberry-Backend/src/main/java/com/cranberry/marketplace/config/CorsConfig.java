@@ -15,7 +15,7 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        // Support multiple React dev server ports
+        // Support multiple React dev server ports + Production URLs
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://localhost:3001",
@@ -25,7 +25,9 @@ public class CorsConfig {
                 "http://127.0.0.1:3000",
                 "http://127.0.0.1:3001",
                 "http://127.0.0.1:3002",
-                "http://127.0.0.1:5173"
+                "http://127.0.0.1:5173",
+                "https://cranberry-ai-multivendor-e-commerce.vercel.app",
+                "https://cranberry-ai-powered-multi-vendor-e.onrender.com"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
@@ -51,7 +53,9 @@ public class CorsConfig {
                 "http://127.0.0.1:3000",
                 "http://127.0.0.1:3001",
                 "http://127.0.0.1:3002",
-                "http://127.0.0.1:5173"
+                "http://127.0.0.1:5173",
+                "https://cranberry-ai-multivendor-e-commerce.vercel.app",
+                "https://cranberry-ai-powered-multi-vendor-e.onrender.com"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
