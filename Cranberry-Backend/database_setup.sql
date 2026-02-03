@@ -365,10 +365,10 @@ INSERT INTO vendor (user_id, shop_name, contact_email, contact_phone, address, s
 
 INSERT INTO product (name, description, price, stock, image_url, category, vendor_id, status) VALUES
 -- TechVista Electronics (vendor_id = 1)
-('MacBook Pro 16" M3 Max', 'The most powerful MacBook Pro ever. Features the M3 Max chip with 14-core CPU and 30-core GPU.', 289900.00, 25, 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'Electronics', 1, 'approved'),
+('MacBook Pro 16" M3 Max', 'The most powerful MacBook Pro ever. Features the M3 Max chip with 14-core CPU and 30-core GPU.', 349900.00, 25, 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800', 'Electronics', 1, 'approved'),
 ('Sony WH-1000XM5 Headphones', 'Industry-leading noise cancellation with exceptional sound quality.', 29990.00, 50, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800', 'Electronics', 1, 'approved'),
 ('iPhone 15 Pro Max', 'Titanium design. A17 Pro chip. 5x optical zoom.', 159900.00, 40, 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800', 'Electronics', 1, 'approved'),
-('Samsung 65" QLED 4K TV', 'Quantum Dot technology for incredible color and clarity.', 124990.00, 15, 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800', 'Electronics', 1, 'approved'),
+('Samsung 65" QLED 4K TV', 'Quantum Dot technology for incredible color and clarity.', 109990.00, 15, 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800', 'Electronics', 1, 'approved'),
 ('Apple Watch Ultra 2', 'The most rugged and capable Apple Watch.', 89900.00, 35, 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=800', 'Electronics', 1, 'approved'),
 
 -- UrbanStyle Co. (vendor_id = 2)
@@ -382,7 +382,7 @@ INSERT INTO product (name, description, price, stock, image_url, category, vendo
 ('Dyson V15 Detect Vacuum', 'Intelligently optimizes suction power with laser dust detection.', 62900.00, 30, 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800', 'Home & Living', 3, 'approved'),
 ('KitchenAid Stand Mixer', 'Iconic design with 10 speeds and 5-quart bowl.', 42990.00, 25, 'https://images.unsplash.com/photo-1594385208974-2e75f8d7bb48?w=800', 'Home & Living', 3, 'approved'),
 ('Nespresso Vertuo Plus', 'Barista-grade coffee at the touch of a button.', 16900.00, 55, 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=800', 'Home & Living', 3, 'approved'),
-('Herman Miller Aeron Chair', 'Ergonomic design for all-day comfort.', 149900.00, 10, 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800', 'Home & Living', 3, 'approved'),
+('Herman Miller Aeron Chair', 'Ergonomic design for all-day comfort.', 169900.00, 10, 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800', 'Home & Living', 3, 'approved'),
 ('Philips Hue Starter Kit', 'Smart lighting that sets the mood.', 13990.00, 40, 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800', 'Home & Living', 3, 'approved'),
 
 -- GlowBeauty (vendor_id = 4)
