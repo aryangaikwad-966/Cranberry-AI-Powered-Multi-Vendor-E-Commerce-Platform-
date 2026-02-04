@@ -149,19 +149,23 @@ public class AiProviderClient {
             }
         }
 
+        // Handle greetings FIRST (before product search)
+        if (lastUserMessage.matches("^(hi+|hey|hello|hola)\\s*$") || 
+            lastUserMessage.equals("hi") || lastUserMessage.equals("hii") || 
+            lastUserMessage.equals("hello") || lastUserMessage.equals("hey")) {
+            return "Hello! 👋 Welcome to Cranberry! I'm your AI shopping assistant.\n\nI can help you:\n• Find products by category (Electronics, Fashion, Beauty, Home)\n• Search by budget (e.g., 'laptops under ₹50,000')\n• Get recommendations based on your needs\n\nWhat are you looking for today?";
+        }
+        
+        if (lastUserMessage.contains("thank")) {
+            return "You're welcome! 😊 Happy to help. Feel free to ask if you need anything else. Happy shopping at Cranberry!";
+        }
+
         // Extract REAL products from system context (includes name, category, price)
         List<ProductInfo> products = extractProductsFromContext(systemContext);
         
         // If we have real products from database, use them for dynamic responses
         if (!products.isEmpty()) {
             return buildDynamicResponse(lastUserMessage, products);
-        }
-        
-        // Fallback for greetings when no product context
-        if (lastUserMessage.contains("hello") || lastUserMessage.contains("hi") || lastUserMessage.contains("hey") || lastUserMessage.contains("hii")) {
-            return "Hello! 👋 Welcome to Cranberry! I'm your AI shopping assistant.\n\nI can help you:\n• Find products by category (Electronics, Fashion, Beauty, Home)\n• Search by budget (e.g., 'laptops under ₹50,000')\n• Get recommendations based on your needs\n\nWhat are you looking for today?";
-        } else if (lastUserMessage.contains("thank")) {
-            return "You're welcome! 😊 Happy to help. Feel free to ask if you need anything else. Happy shopping at Cranberry!";
         }
         
         return "Welcome to Cranberry! 🛍️ I can help you find:\n\n• **Electronics** - Laptops, phones, headphones, TVs\n• **Fashion** - Shoes, jeans, jackets, sunglasses\n• **Beauty** - Skincare, makeup, haircare\n• **Home & Living** - Appliances, furniture, decor\n\nJust tell me what you're looking for, or ask for recommendations!";
