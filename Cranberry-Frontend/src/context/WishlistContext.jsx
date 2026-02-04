@@ -125,19 +125,26 @@ export const WishlistProvider = ({ children }) => {
     }, [isOffline]);
 
     const removeFromWishlist = useCallback(async (productId) => {
+        const idToRemove = Number(productId);
+
         if (!isOffline) {
             try {
                 await wishlistApi.removeFromWishlist(productId);
                 await loadWishlist();
                 return true;
             } catch (error) {
+                console.error('Failed to remove from wishlist:', error);
                 setIsOffline(true);
             }
         }
 
-        // Offline mode
+        // Offline mode - filter by both productId and id
         setItems(prevItems => {
-            const newItems = prevItems.filter(item => item.id !== productId);
+            const newItems = prevItems.filter(item => {
+                const itemProductId = item.productId != null ? Number(item.productId) : null;
+                const itemId = item.id != null ? Number(item.id) : null;
+                return itemProductId !== idToRemove && itemId !== idToRemove;
+            });
             saveWishlistToStorage(newItems);
             return newItems;
         });

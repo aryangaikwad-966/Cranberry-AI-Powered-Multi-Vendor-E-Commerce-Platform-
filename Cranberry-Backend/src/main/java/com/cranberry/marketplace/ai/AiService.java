@@ -122,7 +122,7 @@ public class AiService {
         StringBuilder productContext = new StringBuilder();
         productContext.append("Available products in Cranberry store:\n");
         for (Product p : relevantProducts) {
-            productContext.append(String.format("- ID:%d, Name: %s, Category: %s, Price: $%.2f, Description: %s\n",
+            productContext.append(String.format("- ID:%d, Name: %s, Category: %s, Price: ₹%.0f, Description: %s\n",
                     p.getId(), p.getName(), p.getCategory(), p.getPrice(),
                     p.getDescription() != null ? p.getDescription().substring(0, Math.min(100, p.getDescription().length())) : "N/A"));
         }
@@ -180,7 +180,7 @@ public class AiService {
         StringBuilder trackingInfoBuilder = new StringBuilder();
         trackingInfoBuilder.append(String.format("📦 **Your Latest Order (Order #%d)**\n", latestOrder.getId()));
         trackingInfoBuilder.append(String.format("Status: %s\n", latestOrder.getStatus()));
-        trackingInfoBuilder.append(String.format("Total Amount: $%.2f\n", latestOrder.getTotalAmount()));
+        trackingInfoBuilder.append(String.format("Total Amount: ₹%.0f\n", latestOrder.getTotalAmount()));
         
         if (latestOrder.getTrackingNumber() != null) {
             trackingInfoBuilder.append(String.format("Tracking ID: %s\n", latestOrder.getTrackingNumber()));
@@ -222,7 +222,7 @@ public class AiService {
         StringBuilder dealsInfo = new StringBuilder();
         dealsInfo.append("🔥 **Today's Best Deals:**\n\n");
         for (Product p : deals) {
-            dealsInfo.append(String.format("• **%s** - $%.2f (%s)\n",
+            dealsInfo.append(String.format("• **%s** - ₹%.0f (%s)\n",
                     p.getName(), p.getPrice(), p.getCategory() != null ? p.getCategory() : "General"));
         }
 
@@ -242,7 +242,7 @@ public class AiService {
             👋 **Welcome to Cranberry Marketplace!** I'm your AI shopping assistant. Here's what I can help you with:
             
             🛍️ **Product Search**
-            - "Show me best laptops under $1000"
+            - "Show me best laptops under ₹50000"
             - "Find wireless headphones"
             - "Recommend gaming accessories"
             
@@ -268,7 +268,7 @@ public class AiService {
 
         String productList = products.stream()
                 .limit(20)
-                .map(p -> String.format("%s ($%.2f)", p.getName(), p.getPrice()))
+                .map(p -> String.format("%s (₹%.0f)", p.getName(), p.getPrice()))
                 .collect(Collectors.joining(", "));
 
         String systemPrompt = String.format("""
@@ -651,9 +651,9 @@ public class AiService {
             double diff = intendedPrice - recommendedPrice;
             if (Math.abs(diff) > 10) {
                 if (diff > 0) {
-                    insights.add(String.format("Our analysis suggests a price $%.2f lower than your intended price.", Math.abs(diff)));
+                    insights.add(String.format("Our analysis suggests a price ₹%.0f lower than your intended price.", Math.abs(diff)));
                 } else {
-                    insights.add(String.format("You could potentially price $%.2f higher based on market data.", Math.abs(diff)));
+                    insights.add(String.format("You could potentially price ₹%.0f higher based on market data.", Math.abs(diff)));
                 }
             }
         }
@@ -664,8 +664,8 @@ public class AiService {
     // ========================= HELPER METHODS =========================
 
     private Double extractMaxPrice(String text) {
-        // Pattern for "under $X", "less than $X", "below $X", "max $X"
-        Pattern pattern = Pattern.compile("(?:under|less than|below|max|maximum)\\s*\\$?([\\d,]+)", Pattern.CASE_INSENSITIVE);
+        // Pattern for "under ₹X", "less than ₹X", "below ₹X", "max ₹X" (supports both $ and ₹)
+        Pattern pattern = Pattern.compile("(?:under|less than|below|max|maximum)\\s*[₹$]?([\\d,]+)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
             return Double.parseDouble(matcher.group(1).replace(",", ""));
@@ -674,8 +674,8 @@ public class AiService {
     }
 
     private Double extractMinPrice(String text) {
-        // Pattern for "over $X", "more than $X", "above $X", "min $X"
-        Pattern pattern = Pattern.compile("(?:over|more than|above|min|minimum)\\s*\\$?([\\d,]+)", Pattern.CASE_INSENSITIVE);
+        // Pattern for "over ₹X", "more than ₹X", "above ₹X", "min ₹X" (supports both $ and ₹)
+        Pattern pattern = Pattern.compile("(?:over|more than|above|min|minimum)\\s*[₹$]?([\\d,]+)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
             return Double.parseDouble(matcher.group(1).replace(",", ""));
@@ -684,8 +684,8 @@ public class AiService {
     }
 
     private String extractKeywords(String text) {
-        // Remove price-related phrases
-        String cleaned = text.replaceAll("(?i)(under|less than|below|over|more than|above|max|min|maximum|minimum)\\s*\\$?[\\d,]+", "");
+        // Remove price-related phrases (supports both $ and ₹)
+        String cleaned = text.replaceAll("(?i)(under|less than|below|over|more than|above|max|min|maximum|minimum)\\s*[₹$]?[\\d,]+", "");
         // Remove common filler words
         cleaned = cleaned.replaceAll("(?i)\\b(show me|find me|find|search for|looking for|i want|i need|please|the|a|an|some|best|top|good)\\b", "");
         return cleaned.trim().replaceAll("\\s+", " ");

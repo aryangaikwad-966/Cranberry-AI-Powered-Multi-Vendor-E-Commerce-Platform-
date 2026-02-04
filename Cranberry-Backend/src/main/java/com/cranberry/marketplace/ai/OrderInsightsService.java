@@ -77,9 +77,9 @@ public class OrderInsightsService {
             } catch (Exception aiEx) {
                 logger.warn("AI summary generation failed, using fallback. Error: {}", aiEx.getMessage());
                 summary = String.format(
-                        "Your store has processed %d orders with total revenue of $%.2f. " +
-                        "Average order value is $%.2f with a %.1f%% conversion rate. " +
-                        "Last 7 days saw %d orders generating $%.2f in revenue.",
+                        "Your store has processed %d orders with total revenue of ₹%.0f. " +
+                        "Average order value is ₹%.0f with a %.1f%% conversion rate. " +
+                        "Last 7 days saw %d orders generating ₹%.0f in revenue.",
                         metrics.getTotalOrders(),
                         metrics.getTotalRevenue(),
                         metrics.getAverageOrderValue(),
@@ -172,7 +172,7 @@ public class OrderInsightsService {
             insights.add(new InsightItem(
                     isAboveAvg ? "POSITIVE" : "NEUTRAL",
                     "Revenue Trend",
-                    String.format("Last 7 days revenue: $%.2f (%s weekly average)", 
+                    String.format("Last 7 days revenue: ₹%.0f (%s weekly average)", 
                             metrics.getRevenueLast7Days(),
                             isAboveAvg ? "above" : "below"),
                     "revenue"
@@ -272,7 +272,7 @@ public class OrderInsightsService {
             recommendations.add(new RecommendationItem(
                     "MEDIUM",
                     "Increase Average Order Value",
-                    String.format("Current AOV is $%.2f. Consider upselling strategies.", metrics.getAverageOrderValue()),
+                    String.format("Current AOV is ₹%.0f. Consider upselling strategies.", metrics.getAverageOrderValue()),
                     Arrays.asList("Add product bundles", "Offer free shipping threshold", "Implement cross-selling")
             ));
         }
@@ -293,13 +293,13 @@ public class OrderInsightsService {
             Generate a brief executive summary (2-3 sentences) for an e-commerce admin dashboard based on these metrics:
             IMPORTANT: Always use the name 'Cranberry' and never 'CranBerry'.
             - Total Orders: %d
-            - Total Revenue: $%.2f
-            - Average Order Value: $%.2f
+            - Total Revenue: ₹%.0f
+            - Average Order Value: ₹%.0f
             - Conversion Rate: %.1f%%
             - Orders in last 7 days: %d
-            - Revenue in last 7 days: $%.2f
+            - Revenue in last 7 days: ₹%.0f
             
-            Be concise, professional, and highlight the most important insight.
+            Be concise, professional, and highlight the most important insight. Use ₹ (INR) for all currency values.
             """,
                 metrics.getTotalOrders(),
                 metrics.getTotalRevenue(),
@@ -314,9 +314,9 @@ public class OrderInsightsService {
         } catch (Exception e) {
             logger.warn("Failed to generate AI summary, using fallback: {}", e.getMessage());
             return String.format(
-                    "Your store has processed %d orders with total revenue of $%.2f. " +
-                    "Average order value is $%.2f with a %.1f%% conversion rate. " +
-                    "Last 7 days saw %d orders generating $%.2f in revenue.",
+                    "Your store has processed %d orders with total revenue of ₹%.0f. " +
+                    "Average order value is ₹%.0f with a %.1f%% conversion rate. " +
+                    "Last 7 days saw %d orders generating ₹%.0f in revenue.",
                     metrics.getTotalOrders(),
                     metrics.getTotalRevenue(),
                     metrics.getAverageOrderValue(),
