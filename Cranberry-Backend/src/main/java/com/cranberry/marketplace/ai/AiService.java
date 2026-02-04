@@ -88,11 +88,28 @@ public class AiService {
             return "HELP";
         }
 
+        // Product search intents - EXPANDED to catch more patterns
         if (lowerMessage.contains("find") || lowerMessage.contains("search") ||
             lowerMessage.contains("show me") || lowerMessage.contains("looking for") ||
             lowerMessage.contains("recommend") || lowerMessage.contains("suggest") ||
-            lowerMessage.contains("best") || lowerMessage.contains("laptop") ||
-            lowerMessage.contains("phone") || lowerMessage.contains("buy")) {
+            lowerMessage.contains("best") || lowerMessage.contains("buy") ||
+            lowerMessage.contains("need") || lowerMessage.contains("want") ||
+            lowerMessage.contains("under") || lowerMessage.contains("below") ||
+            lowerMessage.contains("above") || lowerMessage.contains("budget") ||
+            lowerMessage.contains("cheap") || lowerMessage.contains("affordable") ||
+            lowerMessage.contains("₹") || lowerMessage.contains("rupee") ||
+            lowerMessage.matches(".*\\d+.*") || // contains numbers (likely price)
+            // Product category keywords
+            lowerMessage.contains("laptop") || lowerMessage.contains("phone") ||
+            lowerMessage.contains("headphone") || lowerMessage.contains("earphone") ||
+            lowerMessage.contains("watch") || lowerMessage.contains("tv") ||
+            lowerMessage.contains("shoe") || lowerMessage.contains("jeans") ||
+            lowerMessage.contains("fashion") || lowerMessage.contains("electronic") ||
+            lowerMessage.contains("beauty") || lowerMessage.contains("home") ||
+            lowerMessage.contains("kitchen") || lowerMessage.contains("camera") ||
+            lowerMessage.contains("speaker") || lowerMessage.contains("tablet") ||
+            lowerMessage.contains("shirt") || lowerMessage.contains("dress") ||
+            lowerMessage.contains("jacket") || lowerMessage.contains("bag")) {
             return "PRODUCT_SEARCH";
         }
 
