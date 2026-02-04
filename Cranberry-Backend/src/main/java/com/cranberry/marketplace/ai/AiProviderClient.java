@@ -162,6 +162,7 @@ public class AiProviderClient {
 
         // Extract REAL products from system context (includes name, category, price)
         List<ProductInfo> products = extractProductsFromContext(systemContext);
+        logger.info("[AI Fallback] Parsed products from system context: {}", products);
         
         // If we have real products from database, use them for dynamic responses
         if (!products.isEmpty()) {
