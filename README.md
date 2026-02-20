@@ -1,607 +1,425 @@
 <div align="center">
 
-# Cranberry
+# 🍒 Cranberry
 
-## AI-Powered Multi-Vendor E-Commerce Platform
+### AI-Powered Multi-Vendor E-Commerce Platform
 
-**Democratizing E-Commerce Technology for Small Businesses**
+A full-stack marketplace platform with integrated LLM capabilities — built for intelligent product discovery, vendor analytics, and autonomous customer support.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Site-0066FF?style=for-the-badge&logo=vercel)](https://cranberry-ai-multivendor-e-commerce.vercel.app)
-[![API Status](https://img.shields.io/badge/API-Online-00C853?style=for-the-badge&logo=spring)](https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health)
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat-square&logo=react)](https://react.dev)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4-6DB33F?style=flat-square&logo=spring)](https://spring.io)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql)](https://postgresql.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-
-**Zero Platform Fees • AI-Powered Features • Enterprise-Grade Technology**
+[![Live Demo](https://img.shields.io/badge/Live_Demo-cranberry.vercel.app-0066FF?style=for-the-badge&logo=vercel)](https://cranberry-ai-multivendor-e-commerce.vercel.app)
+[![API](https://img.shields.io/badge/REST_API-Online-00C853?style=for-the-badge&logo=spring)](https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health)
+[![Java](https://img.shields.io/badge/Java-17-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.2-6DB33F?style=flat-square&logo=spring-boot)](https://spring.io/projects/spring-boot)
+[![React](https://img.shields.io/badge/React-18.2-61DAFB?style=flat-square&logo=react)](https://react.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 🚀 Project Overview
 
-- [Live Demo](#-live-demo)
-- [Problem Statement](#-problem-statement)
-- [Our Solution](#-our-solution)
-- [UN Sustainable Development Goals](#-un-sustainable-development-goals)
-- [System Architecture](#-system-architecture)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Database Design](#-database-design)
-- [API Architecture](#-api-architecture)
-- [AI/ML Pipeline](#-aiml-pipeline)
-- [Security Architecture](#-security-architecture)
-- [Deployment Architecture](#-deployment-architecture)
-- [Getting Started](#-getting-started)
-- [API Documentation](#-api-documentation)
-- [Future Roadmap](#-future-roadmap)
-- [Team](#-team)
+**Cranberry** is a production-grade, multi-vendor e-commerce platform that integrates large language models (LLMs) directly into the marketplace experience. The system supports three distinct user roles — **Customer**, **Vendor**, and **Admin** — each with dedicated interfaces, capabilities, and access-controlled API surfaces.
 
-## 🌐 Live Demo
+The platform solves a core problem in marketplace design: **how to deliver AI-driven product discovery, pricing intelligence, and conversational support without depending on expensive third-party AI APIs**. Cranberry achieves this by integrating [Ollama](https://ollama.com) as a self-hosted LLM runtime, enabling semantic search, contextual recommendations, dynamic pricing suggestions, and a fully autonomous AI chatbot — all running on local infrastructure with zero per-request cost.
 
-| Component | URL | Status |
-|-----------|-----|--------|
-| **Web Application** | [cranberry-ai-multivendor-e-commerce.vercel.app](https://cranberry-ai-multivendor-e-commerce.vercel.app) | ✅ Live |
-| **REST API** | [cranberry-ai-powered-multi-vendor-e.onrender.com](https://cranberry-ai-powered-multi-vendor-e.onrender.com) | ✅ Live |
-| **Health Check** | [/api/health](https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health) | ✅ Active |
-
-### Demo Credentials
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@cranberry.com | password |
-| Vendor | techvista@cranberry.com | password |
-| Customer | aryan@example.com | password |
+> **Engineering philosophy:** Build a system where AI is not a bolt-on feature, but a deeply integrated layer that enhances every user interaction — from search to checkout to vendor analytics.
 
 ---
 
-## 🖼️ Platform Screenshots
+## 🧠 Problem Statement
 
-<div align="center">
+Modern multi-vendor marketplaces face a fundamental tension: **customers expect intelligent, personalized experiences**, but the AI infrastructure required to deliver them is prohibitively expensive for most platforms.
 
-| Customer Experience | Vendor Management | Admin Analytics |
-|-------------------|------------------|----------------|
-| ![Customer View](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.47.47%E2%80%AFPM.png) | ![Vendor Dashboard](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.56.38%E2%80%AFPM.png) | ![Admin Dashboard](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.57.01%E2%80%AFPM.png) |
+| Challenge | Impact |
+|-----------|--------|
+| Keyword-based search returns irrelevant results | Poor product discovery → lost conversions |
+| No pricing intelligence for vendors | Suboptimal pricing → reduced competitiveness |
+| Customer support requires human agents at scale | High operational cost → slow response times |
+| Recommendation engines require massive datasets | Cold-start problem → generic suggestions |
 
-| Product Discovery | Shopping Cart | Secure Checkout |
-|------------------|---------------|----------------|
-| ![Products](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.50.23%E2%80%AFPM.png) | ![Cart](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.46.35%E2%80%AFPM.png) | ![Checkout](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.51.37%E2%80%AFPM.png) |
+**Cranberry addresses these challenges** by embedding a self-hosted LLM (via Ollama) into the platform's service layer, enabling:
 
-</div>
-
----
-
-
----
-
-## 🖼️ Demo Screenshots
-
-
-Below are key screenshots showcasing the Cranberry platform in action:
-
-| Cart | Product Detail | Home Page |
-|------|---------------|------------|
-| ![Cart](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.46.35%E2%80%AFPM.png) | ![Product Detail](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.47.04%E2%80%AFPM.png) | ![Home Page ](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.47.47%E2%80%AFPM.png) |
-
-| Products | Checkout | Razorpay Payment |
-|----------|----------|--------------|
-| ![Products](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.50.23%E2%80%AFPM.png) | ![Checkout](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.51.37%E2%80%AFPM.png) | ![Razorpay Payment](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.53.21%E2%80%AFPM.png) |
-
- Vendor Dashboard 
- ![Vendor Dashboard](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.56.38%E2%80%AFPM.png)  
- Admin Dashboard 
-![Admin Dashboard](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.57.01%E2%80%AFPM.png) 
----
-
-## 🎯 The E-Commerce Challenge
-
-### Market Barriers for Small Businesses
-
-Small and medium businesses face significant obstacles in digital commerce:
-
-<div align="center">
-
-| 💰 **High Costs** | 🤖 **No AI Access** | 📊 **Limited Insights** |
-|------------------|-------------------|----------------------|
-| 15-30% platform fees | Enterprise AI costs $10K+/month | No customer behavior analytics |
-| Per-transaction charges | Premium-only features | Manual inventory management |
-| Hidden costs | Complex integrations | No market intelligence |
-
-| 🔍 **Poor Discovery** | 😤 **Complex Checkout** | 📱 **Technical Barriers** |
-|---------------------|---------------------|------------------------|
-| Products lost among millions | 70% cart abandonment rate | No technical expertise required |
-| Limited search capabilities | Complex payment flows | High development costs |
-| No personalization | Multi-step processes | Maintenance overhead |
-
-</div>
-
-### Market Impact
-
-| Metric | Statistic | Source |
-|--------|-----------|--------|
-| **Digital Transformation Struggle** | 60% of SMBs | World Bank 2024 |
-| **Global Cart Abandonment** | $4.6 Trillion annually | Baymard Institute |
-| **Personalization Expectation** | 73% of customers | Salesforce Report |
-| **AI Tool Accessibility** | 89% cannot afford | Gartner Survey |
+- **Semantic search** that understands natural language intent, not just keyword matches
+- **AI-powered pricing suggestions** derived from real-time market data analysis  
+- **Autonomous chatbot** capable of product search, order tracking, and contextual Q&A
+- **Personalized recommendations** based on purchase history and browsing behavior
 
 ---
 
-## 💡 Our Solution
+## ✨ Key Features
 
-**Cranberry** is a comprehensive AI-powered multi-vendor marketplace that democratizes e-commerce technology for small businesses.
+### Customer Features
+- Natural language product search with semantic understanding
+- AI chatbot for product discovery, order tracking, and support
+- Personalized product recommendations based on purchase history
+- Wishlist and persistent cart management
+- Razorpay-integrated secure checkout with order lifecycle tracking
+- Responsive, mobile-first shopping interface
 
-<div align="center">
+### Vendor Features
+- Dedicated vendor dashboard with real-time sales analytics
+- AI-powered price suggestion engine (market analysis + competitive positioning)
+- Full product catalog management (CRUD with image support)
+- Order fulfillment workflow with status management
+- Revenue and performance metrics
 
-### 🎯 Platform Architecture
+### Admin Features
+- Platform-wide analytics dashboard
+- Vendor approval and management workflows
+- Product moderation and category management
+- User management with role-based controls
+- AI-generated order insights and business intelligence
 
-```mermaid
-graph TD
-    A[🍒 Cranberry AI Marketplace] --> B[🏪 For Vendors]
-    A --> C[🛍️ For Customers]
-    A --> D[⚙️ For Admins]
-    
-    B --> B1[Zero Platform Fees]
-    B --> B2[AI Pricing Suggestions]
-    B --> B3[Dashboard Analytics]
-    B --> B4[Order Management]
-    
-    C --> C1[AI Chatbot Assistant]
-    C --> C2[Smart Semantic Search]
-    C --> C3[Personalized Recommendations]
-    C --> C4[Secure Payments]
-    
-    D --> D1[Platform Analytics]
-    D --> D2[Vendor Management]
-    D --> D3[Product Moderation]
-    D --> D4[User Management]
+### AI Features
+- **Conversational AI** — Multi-turn chatbot with intent detection (product search, order tracking, deals, general queries)
+- **Semantic Search** — LLM-enhanced query understanding with relevance scoring
+- **Recommendation Engine** — Collaborative filtering with category-based personalization
+- **Price Intelligence** — Market analysis with AI-generated pricing insights
+- **Order Analytics** — AI-summarized business intelligence for admin dashboards
+
+---
+
+## 🏗️ System Architecture
+
+Cranberry follows a **layered monolithic architecture** with clear separation of concerns. The backend enforces a strict `Controller → Service → Repository → Database` pattern, with cross-cutting concerns (authentication, CORS, request validation) handled at the filter level.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        CLIENT LAYER                             │
+│   React 18 SPA (Vite)  •  TailwindCSS  •  Radix UI / shadcn    │
+│   Customer UI  │  Vendor Dashboard  │  Admin Panel              │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │ HTTPS / REST
+┌───────────────────────────▼─────────────────────────────────────┐
+│                      API GATEWAY LAYER                          │
+│   CORS Filter  →  JWT Authentication Filter  →  Rate Limiting   │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────────────┐
+│                    APPLICATION LAYER                             │
+│                                                                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐     │
+│  │  Controllers  │  │   Services   │  │   AI Module        │     │
+│  │              │  │              │  │                    │     │
+│  │ Auth         │  │ AuthService  │  │ AiService          │     │
+│  │ Product      │──│ Product      │  │ AiProviderClient   │     │
+│  │ Order        │  │ Order        │  │ RecommendationSvc  │     │
+│  │ Cart         │  │ Cart         │  │ OrderInsightsSvc   │     │
+│  │ Payment      │  │ Payment      │  │                    │     │
+│  │ Vendor       │  │ Vendor       │  └────────┬───────────┘     │
+│  │ Admin        │  │ Admin        │           │                 │
+│  │ AI           │  │ Wishlist     │           │                 │
+│  └──────────────┘  └──────┬───────┘           │                 │
+│                           │                   │                 │
+│  ┌────────────────────────▼───────┐  ┌────────▼───────────┐     │
+│  │       Repository Layer         │  │   Ollama Runtime   │     │
+│  │  Spring Data JPA / Hibernate   │  │  llama3.2 / gemma3 │     │
+│  └────────────────┬───────────────┘  └────────────────────┘     │
+└───────────────────┼─────────────────────────────────────────────┘
+                    │
+     ┌──────────────▼──────────────┐
+     │     PostgreSQL / MySQL      │
+     │  Users │ Products │ Orders  │
+     │  Vendors │ Payments │ Cart  │
+     └─────────────────────────────┘
 ```
 
-</div>
+### JWT Authentication Flow
 
-### 🚀 Competitive Advantages
-
-| Feature | Traditional Platforms | 🍒 **Cranberry** |
-|---------|----------------------|------------------|
-| **Platform Fees** | 15-30% per sale | **0%** |
-| **AI Chatbot** | Premium only ($$$) | ✅ **Included** |
-| **Smart Search** | Basic keyword | 🤖 **AI-powered semantic** |
-| **Price Optimization** | Not available | 💡 **AI suggestions** |
-| **Personalization** | Enterprise tier | ✅ **For everyone** |
-| **Setup Complexity** | High technical barrier | 📱 **Zero-code setup** |
-
----
-
-## 🌍 UN Sustainable Development Goals
-
-<div align="center">
-
-### 🎯 Global Impact Alignment
-
-Cranberry directly contributes to achieving key UN Sustainable Development Goals:
-
-| 🎯 **SDG 8** | 🏗️ **SDG 9** | ⚖️ **SDG 10** | ♻️ **SDG 12** |
-|-------------|--------------|---------------|--------------|
-| **Decent Work & Economic Growth** | **Industry, Innovation & Infrastructure** | **Reduced Inequalities** | **Responsible Consumption & Production** |
-| • Enables small vendors in digital economy | • Democratizes AI technology | • Levels playing field for businesses | • AI reduces wasteful purchases |
-| • Zero-barrier entrepreneurship | • Modern e-commerce infrastructure | • Equal access to AI tools | • Smart inventory management |
-| • Enterprise tools for all | • Promotes retail innovation | • Reduces economic disparities | • Data-driven sustainability |
-
-</div>
-
----
-
-## 🏗 System Architecture
-
-<div align="center">
-
-### 🎯 High-Level Architecture
-
-```mermaid
-graph TB
-    subgraph "📱 Client Layer"
-        A1[🛍️ Customer Web App]
-        A2[🏪 Vendor Dashboard]
-        A3[⚙️ Admin Dashboard]
-        A4[📱 Mobile App - Future]
-    end
-    
-    subgraph "🌐 Presentation Layer"
-        B1[⚡ Vercel CDN]
-        B2[⚛️ React 18.3 SPA]
-        B3[🎨 TailwindCSS]
-        B4[🧩 shadcn/ui Components]
-    end
-    
-    subgraph "🚪 API Gateway"
-        C1[🔒 CORS Filter]
-        C2[⏱️ Rate Limiter]
-        C3[✅ Request Validation]
-        C4[🎫 JWT Filter]
-    end
-    
-    subgraph "⚙️ Application Layer"
-        D1[🎮 Controller Layer]
-        D2[💼 Service Layer]
-        D3[📊 Repository Layer]
-    end
-    
-    subgraph "💾 Data Layer"
-        E1[🗄️ PostgreSQL]
-        E2[🤖 Ollama AI]
-        E3[💳 Razorpay]
-    end
-    
-    A1 --> B1
-    A2 --> B1
-    A3 --> B1
-    B1 --> C1
-    C1 --> D1
-    D1 --> D2
-    D2 --> D3
-    D3 --> E1
-    D2 --> E2
-    D2 --> E3
+```
+Client                    JwtFilter                  JwtUtil                  Controller
+  │                          │                         │                         │
+  │── POST /api/auth/login ──▶                         │                         │
+  │                          │                         │                         │
+  │◀── JWT {email, userId, role, exp} ─────────────────│                         │
+  │                          │                         │                         │
+  │── GET /api/orders ───────▶                         │                         │
+  │   Authorization: Bearer  │── extractEmail(token) ──▶                         │
+  │                          │── extractRole(token) ───▶                         │
+  │                          │◀── claims ──────────────│                         │
+  │                          │── isTokenValid() ───────▶                         │
+  │                          │◀── true ────────────────│                         │
+  │                          │── setAuthentication ────────────────▶             │
+  │                          │                         │        Process Request  │
+  │◀──────────────── 200 OK + Response ────────────────────────────│             │
 ```
 
-</div>
+> *📌 Architecture diagram assets can be placed in the repository root as `architecture-diagram.svg`.*
 
-### 🔧 Technology Stack
+---
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| **Frontend** | React 18.3 + Vite | Modern SPA with fast builds |
-| **Styling** | TailwindCSS + shadcn/ui | Responsive, accessible UI |
-| **Backend** | Spring Boot 3.4.2 | Enterprise-grade Java framework |
-| **Database** | PostgreSQL 16 | Scalable relational database |
-| **AI/ML** | Ollama (llama3.2, gemma3) | Local LLM for privacy |
-| **Payments** | Razorpay | Secure payment processing |
-| **Deployment** | Vercel + Render | Cloud-native infrastructure |
+## 🤖 AI Architecture
 
-### 🔄 Component Flow
+The AI subsystem is implemented as a dedicated module (`com.cranberry.marketplace.ai`) with four core components:
 
-<div align="center">
+### Component Overview
 
-```mermaid
-sequenceDiagram
-    participant U as 👤 User
-    participant F as 🌐 Frontend
-    participant A as 🚪 API Gateway
-    participant S as ⚙️ Services
-    participant D as 💾 Database
-    participant AI as 🤖 AI Engine
-    
-    U->>F: 1. Browse Products
-    F->>A: 2. GET /api/products
-    A->>S: 3. Validate Request
-    S->>D: 4. Query Products
-    D-->>S: 5. Product Data
-    S-->>A: 6. Process Response
-    A-->>F: 7. JSON Response
-    F-->>U: 8. Render UI
-    
-    U->>F: 9. AI Search Query
-    F->>AI: 10. POST /api/ai/search
-    AI->>AI: 11. Semantic Processing
-    AI-->>F: 12. Smart Results
-    F-->>U: 13. Display Results
+| Component | Class | Responsibility |
+|-----------|-------|----------------|
+| **LLM Client** | `AiProviderClient` | HTTP interface to Ollama runtime; handles prompt construction, response parsing, and fallback logic |
+| **AI Service** | `AiService` | Core business logic for chat, search, recommendations, and pricing — orchestrates LLM calls with database queries |
+| **Recommendation Engine** | `RecommendationService` | Collaborative filtering and category-based personalization |
+| **Order Insights** | `OrderInsightsService` | Aggregates order data and generates AI-summarized business intelligence |
+
+### LLM Integration (Ollama)
+
+Cranberry uses **Ollama** as a self-hosted LLM runtime, supporting `llama3.2` and `gemma3` models. The `AiProviderClient` communicates with Ollama via its REST API (`localhost:11434`) using Spring WebFlux's `WebClient`.
+
+```
+User Query → Intent Detection → Route to Handler
+                                    │
+                    ┌───────────────┼───────────────┐
+                    ▼               ▼               ▼
+            Product Search    Order Tracking    General Query
+                    │               │               │
+            ┌───────▼──────┐  ┌─────▼─────┐  ┌─────▼──────┐
+            │ Extract:     │  │ Lookup     │  │ Forward to │
+            │ - Keywords   │  │ orders by  │  │ LLM with   │
+            │ - Price range│  │ user ID    │  │ marketplace│
+            │ - Category   │  │            │  │ context    │
+            └───────┬──────┘  └─────┬─────┘  └─────┬──────┘
+                    ▼               ▼               ▼
+            DB Query +        Format order      LLM Response
+            Relevance         status info       Generation
+            Scoring
+                    │               │               │
+                    └───────────────┼───────────────┘
+                                    ▼
+                            Structured Response
+                            to Client
 ```
 
-</div>
+### Semantic Search Pipeline
+
+1. **Query Analysis** — Extract keywords, price constraints (`min`/`max`), and category signals from natural language input
+2. **Database Retrieval** — Fetch candidate products using extracted filters via JPA queries
+3. **Relevance Scoring** — Score each product against the original query using token overlap, category matching, and price proximity
+4. **Result Ranking** — Sort by composite relevance score and return top-N results with AI-generated search insights
+
+### Recommendation Logic
+
+The recommendation engine supports two modes:
+
+- **Similar Products** (`productId` → related items) — Finds products in the same category, ranks by price proximity and name similarity, excludes the source product
+- **Personalized Recommendations** (`userId` → suggested items) — Analyzes user's order history to identify preferred categories, retrieves unseen products weighted by purchase frequency, applies diversity constraints to avoid echo-chamber recommendations
+
+### AI Price Suggestion Engine
+
+For vendor pricing decisions, the system:
+
+1. Retrieves all products in the same category from the database
+2. Computes market statistics (average price, price range, standard deviation)
+3. Determines competitive positioning (budget / mid-range / premium)
+4. Sends market context to the LLM for natural language pricing insights
+5. Returns structured response with recommended price, confidence score, and strategic rationale
 
 ---
 
-## 🚀 Core Features
+## ⚙️ Tech Stack
 
-<div align="center">
-
-### 🛍️ Customer Experience
-- **🤖 AI Chatbot Assistant** - 24/7 intelligent customer support
-- **🔍 Semantic Search** - Natural language product discovery
-- **🎯 Personalized Recommendations** - AI-driven product suggestions
-- **💳 Secure Payments** - Razorpay integrated checkout
-- **📱 Responsive Design** - Mobile-first shopping experience
-
-### 🏪 Vendor Management
-- **💰 Zero Platform Fees** - Keep 100% of your revenue
-- **📊 Dashboard Analytics** - Real-time business insights
-- **💡 AI Price Suggestions** - Optimize pricing with AI
-- **📦 Order Management** - Streamlined fulfillment workflow
-- **🎨 Product Management** - Easy inventory control
-
-### ⚙️ Admin Operations
-- **📈 Platform Analytics** - Comprehensive business metrics
-- **👥 Vendor Management** - Approve and manage vendors
-- **🛡️ Content Moderation** - Product quality control
-- **🔧 User Management** - Customer support tools
-- **📊 Order Insights** - AI-powered business intelligence
-
-</div>
+| Layer | Technology | Version | Purpose |
+|-------|-----------|---------|---------|
+| **Frontend** | React | 18.2 | Component-based SPA framework |
+| **Build Tool** | Vite | 7.3.1 | Fast HMR and optimized production builds |
+| **Styling** | TailwindCSS | 3.4.17 | Utility-first CSS framework |
+| **UI Components** | Radix UI + shadcn/ui | Latest | Accessible, headless component primitives |
+| **Routing** | React Router | 7.5.1 | Client-side navigation |
+| **Forms** | React Hook Form + Zod | 7.56 / 3.24 | Type-safe form validation |
+| **Backend** | Spring Boot | 3.4.2 | Enterprise Java application framework |
+| **Language** | Java | 17 | Backend runtime |
+| **Security** | Spring Security + JWT | 6.x / jjwt 0.11.5 | Authentication and authorization |
+| **ORM** | Spring Data JPA / Hibernate | 3.x | Database abstraction and query generation |
+| **Database** | PostgreSQL (prod) / MySQL (dev) | 16 / 8.0 | Relational data persistence |
+| **AI Runtime** | Ollama | Latest | Self-hosted LLM inference engine |
+| **AI Models** | llama3.2, gemma3 | Latest | Language models for chat, search, recommendations |
+| **HTTP Client** | Spring WebFlux (WebClient) | 6.x | Non-blocking HTTP for Ollama API calls |
+| **Payments** | Razorpay SDK | 1.4.7 | Payment gateway integration |
+| **Validation** | Spring Validation (Hibernate Validator) | 3.x | Request payload validation |
+| **Deployment** | Vercel (FE) + Render (BE) | — | Cloud hosting infrastructure |
 
 ---
 
-## 🛠 Technology Stack
+## 🔐 Security & Authentication
 
-### Frontend Technologies
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **React** | 18.3 | Modern SPA framework |
-| **Vite** | 7.3.1 | Fast build tool |
-| **React Router** | 7.5.1 | Client-side routing |
-| **TailwindCSS** | 3.4.17 | Utility-first styling |
-| **shadcn/ui** | 46+ components | Accessible UI library |
-| **Axios** | 1.8.4 | HTTP client |
+### Authentication Architecture
 
-### Backend Technologies
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Spring Boot** | 3.4.2 | Enterprise framework |
-| **Java** | 17 | Programming language |
-| **Spring Security** | 6.x | Authentication & authorization |
-| **Spring Data JPA** | 3.x | Database abstraction |
-| **PostgreSQL** | 16 | Production database |
-| **MySQL** | 8.0 | Development database |
+- **Stateless JWT authentication** — No server-side session storage; all auth state is encoded in the token
+- **Token structure** — JWT payload includes `email`, `userId`, and `role` claims with HMAC-SHA256 signing
+- **Token lifecycle** — 24-hour expiration with client-side token refresh
+- **Password security** — BCrypt hashing with Spring Security's `BCryptPasswordEncoder`
 
-### AI & Integration
-| Technology | Purpose |
-|------------|---------|
-| **Ollama** | Local LLM deployment |
-| **llama3.2** | Primary AI model |
-| **gemma3** | Alternative AI model |
-| **Razorpay** | Payment processing |
-| **JWT** | Token-based auth |
+### Role-Based Access Control (RBAC)
 
----
+| Resource Pattern | Customer | Vendor | Admin | Public |
+|-----------------|----------|--------|-------|--------|
+| `GET /api/products/**` | ✅ | ✅ | ✅ | ✅ |
+| `POST /api/products/**` | ❌ | ✅ | ✅ | ❌ |
+| `/api/cart/**`, `/api/wishlist/**` | ✅ | ✅ | ✅ | ❌ |
+| `/api/orders/**` | ✅ | ✅ | ✅ | ❌ |
+| `/api/vendor/dashboard` | ❌ | ✅ | ✅ | ❌ |
+| `/api/admin/**` | ❌ | ❌ | ✅ | ❌ |
+| `/api/ai/admin/**` | ❌ | ❌ | ✅ | ❌ |
+| `/api/ai/chat`, `/api/ai/search` | ✅ | ✅ | ✅ | ✅ |
 
-## 📊 Database Design
+### Secure API Design Principles
 
-### Entity Relationships
-```mermaid
-erDiagram
-    USERS ||--o{ VENDORS : "has one"
-    VENDORS ||--o{ PRODUCTS : "owns many"
-    USERS ||--o{ ORDERS : "places many"
-    USERS ||--o{ CARTS : "has one"
-    USERS ||--o{ WISHLISTS : "has one"
-    ORDERS ||--o{ ORDER_ITEMS : "contains many"
-    PRODUCTS ||--o{ ORDER_ITEMS : "appears in many"
-    PRODUCTS ||--o{ CART_ITEMS : "in many carts"
-    PRODUCTS ||--o{ WISHLIST_ITEMS : "in many wishlists"
-    ORDERS ||--|| PAYMENTS : "has one"
-```
-
-### Key Tables
-| Table | Primary Key | Relationships |
-|-------|-------------|---------------|
-| **users** | id | 1:1 with vendors |
-| **vendors** | id | 1:many with products |
-| **products** | id | many:1 with vendors |
-| **orders** | id | many:1 with users |
-| **payments** | id | 1:1 with orders |
+- **CORS policy** — Explicitly configured allowed origins, methods, and headers
+- **Filter chain** — `CorsFilter → JwtFilter → UsernamePasswordAuthenticationFilter`
+- **Input validation** — Bean validation (`@Valid`) on all request DTOs
+- **SQL injection prevention** — Parameterized queries via JPA/Hibernate
+- **Stateless sessions** — `SessionCreationPolicy.STATELESS` enforced globally
+- **Environment-based secrets** — Database credentials, API keys loaded from environment variables (dotenv in dev)
 
 ---
 
-## 🔐 Security Architecture
+## 📊 Scalability & Engineering Decisions
 
-### Authentication & Authorization
-- **JWT Tokens** - Secure stateless authentication
-- **Role-Based Access** - Customer, Vendor, Admin roles
-- **BCrypt Encryption** - Password hashing
-- **CORS Configuration** - Cross-origin security
-- **Rate Limiting** - API protection
-
-### Data Protection
-- **Environment Variables** - Secure configuration
-- **Input Validation** - Prevent injection attacks
-- **SQL Injection Prevention** - Parameterized queries
-- **HTTPS Enforcement** - Encrypted communication
+| Decision | Rationale |
+|----------|-----------|
+| **Spring Boot 3.4** | Mature, battle-tested framework with excellent ecosystem support. Provides out-of-the-box dependency injection, security, data access, and web infrastructure. Suitable for horizontal scaling behind a load balancer. |
+| **Stateless JWT** | Eliminates server-side session storage entirely. Any instance can validate any request — critical for horizontal scaling. No sticky sessions or shared session stores required. |
+| **Multi-vendor data model** | First-class `Vendor` entity with dedicated product, order, and analytics APIs. Designed for multi-tenancy from day one — vendor data isolation enforced at the service layer. |
+| **Self-hosted LLM (Ollama)** | Zero per-request AI cost. No vendor lock-in. Full control over model selection, prompt engineering, and inference latency. Enables AI features that would be cost-prohibitive with OpenAI/Anthropic APIs at scale. |
+| **Layered architecture** | Strict `Controller → Service → Repository` separation enables independent testing, clear ownership boundaries, and straightforward refactoring to microservices. |
+| **PostgreSQL + MySQL dual support** | PostgreSQL for production (ACID compliance, advanced indexing), MySQL for lightweight local development. Seamless switching via Spring profiles. |
+| **React + Vite** | Fast development iteration with HMR. Tree-shaking and code-splitting for optimized production bundles. Component-based architecture maps cleanly to the three user roles. |
 
 ---
 
-## 🚀 Deployment Architecture
+## 🚀 Future Improvements
 
-### Production Environment
-| Component | Platform | Purpose |
-|-----------|----------|---------|
-| **Frontend** | Vercel CDN | Static hosting & CDN |
-| **Backend** | Render | Spring Boot deployment |
-| **Database** | Render PostgreSQL | Managed database |
-| **AI Services** | Ollama (local) | LLM inference |
-| **Payments** | Razorpay | Payment gateway |
+These enhancements reflect production-readiness concerns for scaling the platform:
 
-### Development Environment
-```bash
-# Frontend Development
-cd Cranberry-Frontend
-npm install
-npm run dev
-
-# Backend Development
-cd Cranberry-Backend
-./mvnw spring-boot:run
-
-# Full Stack with Docker
-docker-compose up
-```
+| Area | Improvement | Impact |
+|------|-------------|--------|
+| **Caching** | Redis layer for product catalog, search results, and session-adjacent data | Reduce DB load by ~60% on read-heavy endpoints |
+| **Event-Driven Processing** | Kafka/RabbitMQ for order state transitions, payment confirmations, inventory updates | Decouple order pipeline; enable async processing and retry semantics |
+| **Microservices Decomposition** | Extract AI, Payment, and Order modules into independent services | Independent scaling, deployment, and failure isolation |
+| **AI Personalization** | Vector embeddings (pgvector) for product descriptions; user behavior embeddings for collaborative filtering | Move from keyword-based to true semantic similarity |
+| **Observability** | Structured logging (ELK), distributed tracing (OpenTelemetry), metrics (Prometheus + Grafana) | Production debugging, SLA monitoring, performance profiling |
+| **Search Infrastructure** | Elasticsearch/OpenSearch for full-text product search with faceting | Sub-100ms search latency at scale with relevance tuning |
+| **CI/CD Pipeline** | GitHub Actions with automated testing, linting, Docker builds, and staged deployments | Reduce deployment risk; enforce code quality gates |
+| **Rate Limiting & API Gateway** | Spring Cloud Gateway or Kong for centralized rate limiting, API versioning, and request routing | Protect against abuse; enable API evolution without breaking clients |
 
 ---
 
-## 📚 API Documentation
-
-### Core Endpoints
-
-#### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `POST /api/auth/google` - Google OAuth
-
-#### Products
-- `GET /api/products` - List products
-- `GET /api/products/{id}` - Product details
-- `POST /api/products` - Create product (vendor)
-- `PUT /api/products/{id}` - Update product (vendor)
-
-#### AI Services
-- `POST /api/ai/chat` - AI chatbot
-- `POST /api/ai/search` - Semantic search
-- `POST /api/ai/recommend` - Recommendations
-- `POST /api/ai/price-suggest` - Price optimization
-
-#### Orders & Payments
-- `POST /api/orders` - Create order
-- `GET /api/orders` - User orders
-- `POST /api/payments/create/{orderId}` - Initiate payment
-
-### Response Format
-```json
-{
-  "success": true,
-  "message": "Operation successful",
-  "data": { ... },
-  "timestamp": "2026-02-12T15:30:00Z"
-}
-```
-
----
-
-## 🚀 Getting Started
+## 🧪 Local Setup
 
 ### Prerequisites
-- **Node.js** 18.0.0+
-- **Java** 17+
-- **PostgreSQL** 16+ (or MySQL 8.0+)
-- **Ollama** (for AI features)
 
-### Quick Start
+| Tool | Version | Required |
+|------|---------|----------|
+| Java JDK | 17+ | ✅ |
+| Node.js | 18+ | ✅ |
+| MySQL | 8.0+ | ✅ (dev) |
+| Ollama | Latest | Optional (AI features) |
 
-1. **Clone Repository**
+### Backend Setup
+
 ```bash
+# 1. Clone the repository
 git clone https://github.com/aryangaikwad-966/Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-.git
 cd Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-
-```
 
-2. **Setup Backend**
-```bash
+# 2. Configure environment
 cd Cranberry-Backend
 cp .env.example .env
-# Configure database and API keys
+# Edit .env: set DB_URL, DB_USERNAME, DB_PASSWORD, RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
+
+# 3. Start the backend server (port 8080)
 ./mvnw spring-boot:run
 ```
 
-3. **Setup Frontend**
+### Frontend Setup
+
 ```bash
+# 1. Install dependencies
 cd Cranberry-Frontend
 npm install
+
+# 2. Start the dev server (port 5173)
 npm run dev
 ```
 
-4. **Setup AI Services**
+### AI Services Setup (Optional)
+
 ```bash
-# Install Ollama
+# 1. Install Ollama
 curl -fsSL https://ollama.ai/install.sh | sh
 
-# Pull models
+# 2. Pull the required models
 ollama pull llama3.2
 ollama pull gemma3
+
+# 3. Verify Ollama is running
+curl http://localhost:11434/api/tags
 ```
 
-### Docker Deployment
-```bash
-# Full stack deployment
-docker-compose up -d
+### Verify Installation
 
-# Access services
-# Frontend: http://localhost:3000
-# Backend: http://localhost:8080
-# API Health: http://localhost:8080/api/health
-```
+| Service | URL | Expected |
+|---------|-----|----------|
+| Frontend | `http://localhost:5173` | React application loads |
+| Backend API | `http://localhost:8080/api/health` | `{"status": "UP"}` |
+| AI Health | `http://localhost:8080/api/ai/health` | `{"ollama_available": true}` |
 
 ---
 
-## 🔮 Future Roadmap
-
-### Phase 1: Enhanced AI Features
-- [ ] **Visual Search** - Image-based product discovery
-- [ ] **Voice Commerce** - Voice-activated shopping
-- [ ] **Predictive Analytics** - Demand forecasting
-- [ ] **Dynamic Pricing** - Real-time price optimization
-
-### Phase 2: Platform Expansion
-- [ ] **Mobile Applications** - iOS & Android apps
-- [ ] **Multi-Language Support** - Global localization
-- [ ] **Advanced Analytics** - Business intelligence dashboard
-- [ ] **Marketplace Integrations** - Third-party platforms
-
-### Phase 3: Enterprise Features
-- [ ] **B2B Solutions** - Wholesale marketplace
-- [ ] **API Marketplace** - Third-party integrations
-- [ ] **White-Label Solutions** - Custom deployments
-- [ ] **Advanced AI Models** - Custom model training
-
----
-
-## 👥 Team
+## 📸 Screenshots
 
 <div align="center">
 
-**🍒 Cranberry** is developed with passion for democratizing e-commerce technology.
+| Home Page | Product Discovery | Shopping Cart |
+|-----------|------------------|---------------|
+| ![Home](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.47.47%E2%80%AFPM.png) | ![Products](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.50.23%E2%80%AFPM.png) | ![Cart](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.46.35%E2%80%AFPM.png) |
 
-### Core Contributors
-- **[Aryan Gaikwad](https://github.com/aryangaikwad-966)** - Lead Developer & Architect
-- **Open Source Community** - Contributors and collaborators
+| Product Detail | Secure Checkout | Razorpay Payment |
+|----------------|----------------|------------------|
+| ![Detail](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.47.04%E2%80%AFPM.png) | ![Checkout](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.51.37%E2%80%AFPM.png) | ![Payment](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.53.21%E2%80%AFPM.png) |
 
-### Project Philosophy
-- 💡 **Innovation First** - Pushing boundaries of e-commerce technology
-- 🤖 **AI-Driven** - Leveraging artificial intelligence for business growth
-- 🌍 **Global Impact** - Supporting small businesses worldwide
-- 🚀 **Open Source** - Community-driven development
+| Vendor Dashboard | Admin Panel |
+|------------------|-------------|
+| ![Vendor](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.56.38%E2%80%AFPM.png) | ![Admin](Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.57.01%E2%80%AFPM.png) |
 
 </div>
 
 ---
 
-## 📄 License
+## 📈 Learning Outcomes
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project demonstrates competency across the following engineering domains:
 
----
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### How to Contribute
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+| Domain | Skills Demonstrated |
+|--------|-------------------|
+| **System Design** | Multi-tenant data modeling, role-based access control architecture, layered service decomposition, API contract design |
+| **Backend Engineering** | Spring Boot application architecture, JPA entity relationships, transactional service logic, custom security filter chains |
+| **AI/ML Integration** | LLM prompt engineering, semantic search pipeline design, recommendation algorithm implementation, self-hosted inference infrastructure |
+| **Security Engineering** | JWT-based stateless authentication, RBAC implementation, CORS policy configuration, input validation and injection prevention |
+| **Frontend Engineering** | React component architecture, client-side routing, state management, form validation with Zod, responsive design with TailwindCSS |
+| **Full-Stack Coordination** | End-to-end feature delivery across frontend, backend, database, and AI layers; API design and integration; deployment pipeline to Vercel + Render |
+| **Payment Systems** | Razorpay integration with order lifecycle management, payment verification, and idempotent transaction handling |
 
 ---
 
-## 📞 Contact & Support
+## 🎯 Portfolio Positioning
 
-<div align="center">
+Cranberry is a **full-stack, AI-integrated marketplace** built to production-grade standards. It demonstrates the ability to:
 
-### 🌐 Live Demo
-[**Visit Platform**](https://cranberry-ai-multivendor-e-commerce.vercel.app)
+- **Design and implement complex backend systems** with authentication, authorization, and multi-entity data models
+- **Integrate AI/ML capabilities** into a real application — not as a demo, but as functional features serving real user workflows
+- **Make deliberate engineering trade-offs** (self-hosted LLM vs. API, monolith vs. microservices, JWT vs. sessions) and articulate the reasoning behind them
+- **Ship end-to-end** — from database schema to RESTful APIs to responsive frontend to cloud deployment
 
-### 📧 Business Inquiries
-- **Email**: business@cranberry.com
-- **GitHub**: [aryangaikwad-966](https://github.com/aryangaikwad-966)
-
-### 🐛 Bug Reports & Feature Requests
-- **Issues**: [GitHub Issues](https://github.com/aryangaikwad-966/Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/aryangaikwad-966/Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-/discussions)
+This project is representative of the scope, complexity, and technical depth expected in **backend engineering**, **AI engineering**, and **full-stack software engineering** roles at product-driven companies.
 
 ---
 
 <div align="center">
 
-**⭐ Star this repository if you believe in democratizing e-commerce!**
+**Built by [Aryan Gaikwad](https://github.com/aryangaikwad-966)**
 
-**🍒 Join us in revolutionizing digital commerce for small businesses everywhere.**
+[![GitHub](https://img.shields.io/badge/GitHub-aryangaikwad--966-181717?style=flat-square&logo=github)](https://github.com/aryangaikwad-966)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 </div>
-
-</div>  
