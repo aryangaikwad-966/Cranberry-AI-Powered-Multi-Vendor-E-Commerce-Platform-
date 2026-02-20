@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 850" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#0f0f1a"/><stop offset="100%" style="stop-color:#1a1a2e"/></linearGradient>
+    <linearGradient id="b3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4361ee"/><stop offset="100%" style="stop-color:#3a56d4"/></linearGradient>
+    <linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#7209b7"/><stop offset="100%" style="stop-color:#560bad"/></linearGradient>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2d6a4f"/><stop offset="100%" style="stop-color:#1b4332"/></linearGradient>
+    <linearGradient id="t3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#219ebc"/><stop offset="100%" style="stop-color:#1a7a94"/></linearGradient>
+    <linearGradient id="o3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e09f3e"/><stop offset="100%" style="stop-color:#c47f17"/></linearGradient>
+    <linearGradient id="r3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e63946"/><stop offset="100%" style="stop-color:#c1121f"/></linearGradient>
+    <linearGradient id="lp" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9b5de5"/><stop offset="100%" style="stop-color:#7209b7"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/></filter>
+  </defs>
+  <rect width="900" height="850" fill="url(#bg3)" rx="12"/>
+  <text x="450" y="35" fill="#fff" font-size="18" font-weight="700" text-anchor="middle" letter-spacing="1">AI ARCHITECTURE — CRANBERRY</text>
+  <line x1="300" y1="45" x2="600" y2="45" stroke="#7209b7" stroke-width="2" opacity="0.6"/>
+
+  <!-- User Input -->
+  <rect x="350" y="60" width="200" height="38" rx="8" fill="url(#b3)" filter="url(#sh)"/>
+  <text x="450" y="83" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">User Message</text>
+  <line x1="450" y1="98" x2="450" y2="116" stroke="#fff" stroke-width="1.5" opacity="0.4"/>
+  <polygon points="446,114 450,122 454,114" fill="#fff" opacity="0.4"/>
+
+  <!-- Intent Detection -->
+  <rect x="280" y="122" width="340" height="48" rx="10" fill="url(#p3)" filter="url(#sh)"/>
+  <text x="450" y="145" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">Intent Detection Engine</text>
+  <text x="450" y="162" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">Keyword matching + LLM classification → 5 intent types</text>
+
+  <!-- Fan-out arrows -->
+  <line x1="310" y1="170" x2="95" y2="200" stroke="#9b5de5" stroke-width="1.5" opacity="0.5"/>
+  <line x1="370" y1="170" x2="265" y2="200" stroke="#9b5de5" stroke-width="1.5" opacity="0.5"/>
+  <line x1="450" y1="170" x2="450" y2="200" stroke="#9b5de5" stroke-width="1.5" opacity="0.5"/>
+  <line x1="530" y1="170" x2="635" y2="200" stroke="#9b5de5" stroke-width="1.5" opacity="0.5"/>
+  <line x1="590" y1="170" x2="805" y2="200" stroke="#9b5de5" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- 5 Intent Boxes -->
+  <!-- PRODUCT SEARCH -->
+  <rect x="30" y="200" width="140" height="40" rx="6" fill="url(#g3)" filter="url(#sh)"/>
+  <text x="100" y="218" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">PRODUCT SEARCH</text>
+  <text x="100" y="232" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">Semantic matching</text>
+
+  <!-- ORDER TRACKING -->
+  <rect x="195" y="200" width="140" height="40" rx="6" fill="url(#t3)" filter="url(#sh)"/>
+  <text x="265" y="218" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">ORDER TRACKING</text>
+  <text x="265" y="232" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">Status lookup</text>
+
+  <!-- DEALS QUERY -->
+  <rect x="375" y="200" width="140" height="40" rx="6" fill="url(#o3)" filter="url(#sh)"/>
+  <text x="445" y="218" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">DEALS QUERY</text>
+  <text x="445" y="232" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">Discount surfacing</text>
+
+  <!-- HELP -->
+  <rect x="565" y="200" width="140" height="40" rx="6" fill="#444" filter="url(#sh)"/>
+  <text x="635" y="218" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">HELP REQUEST</text>
+  <text x="635" y="232" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">Static menu</text>
+
+  <!-- GENERAL -->
+  <rect x="735" y="200" width="140" height="40" rx="6" fill="url(#lp)" filter="url(#sh)"/>
+  <text x="805" y="218" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">GENERAL QUERY</text>
+  <text x="805" y="232" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">LLM inference</text>
+
+  <!-- Processing details under each -->
+  <!-- Product Search pipeline -->
+  <line x1="100" y1="240" x2="100" y2="258" stroke="#2d6a4f" stroke-width="1" opacity="0.4"/>
+  <rect x="20" y="258" width="160" height="70" rx="6" fill="#2d6a4f" fill-opacity="0.15" stroke="#2d6a4f" stroke-opacity="0.3"/>
+  <text x="100" y="275" fill="#52b788" font-size="9" font-weight="500" text-anchor="middle">1. Extract keywords, price</text>
+  <text x="100" y="289" fill="#52b788" font-size="9" font-weight="500" text-anchor="middle">2. JPA candidate retrieval</text>
+  <text x="100" y="303" fill="#52b788" font-size="9" font-weight="500" text-anchor="middle">3. Multi-axis scoring</text>
+  <text x="100" y="317" fill="#52b788" font-size="9" font-weight="500" text-anchor="middle">4. Rank + return top-N</text>
+
+  <!-- Order Tracking -->
+  <line x1="265" y1="240" x2="265" y2="258" stroke="#219ebc" stroke-width="1" opacity="0.4"/>
+  <rect x="195" y="258" width="140" height="50" rx="6" fill="#219ebc" fill-opacity="0.12" stroke="#219ebc" stroke-opacity="0.3"/>
+  <text x="265" y="278" fill="#4cc9f0" font-size="9" font-weight="500" text-anchor="middle">Lookup orders by userId</text>
+  <text x="265" y="294" fill="#4cc9f0" font-size="9" font-weight="500" text-anchor="middle">Format status timeline</text>
+
+  <!-- Deals -->
+  <line x1="445" y1="240" x2="445" y2="258" stroke="#e09f3e" stroke-width="1" opacity="0.4"/>
+  <rect x="375" y="258" width="140" height="50" rx="6" fill="#e09f3e" fill-opacity="0.12" stroke="#e09f3e" stroke-opacity="0.3"/>
+  <text x="445" y="278" fill="#e09f3e" font-size="9" font-weight="500" text-anchor="middle">Query discounted products</text>
+  <text x="445" y="294" fill="#e09f3e" font-size="9" font-weight="500" text-anchor="middle">Format deal listings</text>
+
+  <!-- Help -->
+  <line x1="635" y1="240" x2="635" y2="258" stroke="#888" stroke-width="1" opacity="0.4"/>
+  <rect x="565" y="258" width="140" height="50" rx="6" fill="#fff" fill-opacity="0.04" stroke="#888" stroke-opacity="0.3"/>
+  <text x="635" y="278" fill="#aaa" font-size="9" font-weight="500" text-anchor="middle">Return structured</text>
+  <text x="635" y="294" fill="#aaa" font-size="9" font-weight="500" text-anchor="middle">help menu (static)</text>
+
+  <!-- General -->
+  <line x1="805" y1="240" x2="805" y2="258" stroke="#9b5de5" stroke-width="1" opacity="0.4"/>
+  <rect x="735" y="258" width="140" height="50" rx="6" fill="#7209b7" fill-opacity="0.12" stroke="#9b5de5" stroke-opacity="0.3"/>
+  <text x="805" y="278" fill="#c77dff" font-size="9" font-weight="500" text-anchor="middle">Forward to Ollama with</text>
+  <text x="805" y="294" fill="#c77dff" font-size="9" font-weight="500" text-anchor="middle">marketplace context</text>
+
+  <!-- Convergence arrows -->
+  <line x1="100" y1="328" x2="400" y2="360" stroke="#fff" stroke-width="1" opacity="0.2"/>
+  <line x1="265" y1="308" x2="400" y2="360" stroke="#fff" stroke-width="1" opacity="0.2"/>
+  <line x1="445" y1="308" x2="450" y2="360" stroke="#fff" stroke-width="1" opacity="0.2"/>
+  <line x1="635" y1="308" x2="500" y2="360" stroke="#fff" stroke-width="1" opacity="0.2"/>
+  <line x1="805" y1="308" x2="500" y2="360" stroke="#fff" stroke-width="1" opacity="0.2"/>
+
+  <!-- Response box -->
+  <rect x="320" y="360" width="260" height="38" rx="8" fill="url(#b3)" filter="url(#sh)"/>
+  <text x="450" y="378" fill="#fff" font-size="11" font-weight="600" text-anchor="middle">Structured JSON Response</text>
+  <text x="450" y="392" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">{message, products[], suggestions[]}</text>
+
+  <!-- Scoring detail box (side) -->
+  <rect x="640" y="340" width="230" height="60" rx="8" fill="#fff" fill-opacity="0.04" stroke="#2d6a4f" stroke-opacity="0.3"/>
+  <text x="755" y="357" fill="#52b788" font-size="10" font-weight="600" text-anchor="middle">Relevance Scoring Weights</text>
+  <text x="755" y="373" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">Token overlap: 0.5 · Category: 0.3</text>
+  <text x="755" y="389" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">Price proximity: 0.2</text>
+  <line x1="640" y1="370" x2="580" y2="370" stroke="#2d6a4f" stroke-width="1" opacity="0.2" stroke-dasharray="4,3"/>
+
+  <!-- Divider -->
+  <line x1="30" y1="420" x2="870" y2="420" stroke="#fff" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- SIDE DEPENDENCIES -->
+  <text x="50" y="448" fill="#9b5de5" font-size="12" font-weight="700" letter-spacing="2">AI SERVICE DEPENDENCIES</text>
+
+  <!-- Ollama Runtime -->
+  <rect x="50" y="465" width="250" height="55" rx="8" fill="url(#p3)" filter="url(#sh)"/>
+  <text x="175" y="487" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">Ollama Runtime</text>
+  <text x="175" y="505" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">llama3.2 · gemma3 — localhost:11434</text>
+
+  <!-- ProductRepository -->
+  <rect x="330" y="465" width="230" height="55" rx="8" fill="url(#t3)" filter="url(#sh)"/>
+  <text x="445" y="487" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">ProductRepository</text>
+  <text x="445" y="505" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">Search, pricing, recommendations</text>
+
+  <!-- OrderRepository -->
+  <rect x="590" y="465" width="260" height="55" rx="8" fill="url(#t3)" filter="url(#sh)"/>
+  <text x="720" y="487" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">OrderRepository</text>
+  <text x="720" y="505" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">History, analytics, personalisation</text>
+
+  <!-- Connection lines -->
+  <text x="175" y="540" fill="#9b5de5" font-size="8" text-anchor="middle" opacity="0.5">Non-blocking WebClient</text>
+  <text x="445" y="540" fill="#219ebc" font-size="8" text-anchor="middle" opacity="0.5">Constructor Injection (DI)</text>
+  <text x="720" y="540" fill="#219ebc" font-size="8" text-anchor="middle" opacity="0.5">Constructor Injection (DI)</text>
+
+  <!-- Divider -->
+  <line x1="30" y1="555" x2="870" y2="555" stroke="#fff" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- ADDITIONAL AI SERVICES -->
+  <text x="50" y="580" fill="#e09f3e" font-size="12" font-weight="700" letter-spacing="2">ADDITIONAL AI SERVICES</text>
+
+  <!-- Recommendation Engine -->
+  <rect x="50" y="598" width="260" height="100" rx="8" fill="url(#g3)" filter="url(#sh)"/>
+  <text x="180" y="618" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">Recommendation Engine</text>
+  <text x="180" y="636" fill="#fff" font-size="9" text-anchor="middle" opacity="0.8">RecommendationService</text>
+  <line x1="70" y1="648" x2="290" y2="648" stroke="#fff" stroke-width="0.5" opacity="0.1"/>
+  <text x="95" y="668" fill="#52b788" font-size="9" font-weight="500">Similar:</text>
+  <text x="145" y="668" fill="#fff" font-size="8" opacity="0.7">category + price proximity</text>
+  <text x="95" y="684" fill="#52b788" font-size="9" font-weight="500">Personal:</text>
+  <text x="150" y="684" fill="#fff" font-size="8" opacity="0.7">purchase freq + diversity cap</text>
+
+  <!-- Price Intelligence -->
+  <rect x="330" y="598" width="230" height="100" rx="8" fill="url(#o3)" filter="url(#sh)"/>
+  <text x="445" y="618" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">Price Intelligence</text>
+  <text x="445" y="636" fill="#fff" font-size="9" text-anchor="middle" opacity="0.8">AiService.suggestPrice()</text>
+  <line x1="348" y1="648" x2="542" y2="648" stroke="#fff" stroke-width="0.5" opacity="0.1"/>
+  <text x="445" y="666" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">1. Compute market stats (avg, stdDev)</text>
+  <text x="445" y="680" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">2. Determine position (BUDGET/MID/PREMIUM)</text>
+  <text x="445" y="694" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">3. LLM-generated pricing rationale</text>
+
+  <!-- Order Analytics -->
+  <rect x="580" y="598" width="270" height="100" rx="8" fill="url(#r3)" filter="url(#sh)"/>
+  <text x="715" y="618" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">Order Analytics</text>
+  <text x="715" y="636" fill="#fff" font-size="9" text-anchor="middle" opacity="0.8">OrderInsightsService</text>
+  <line x1="598" y1="648" x2="832" y2="648" stroke="#fff" stroke-width="0.5" opacity="0.1"/>
+  <text x="715" y="666" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">1. Aggregate order metrics (revenue, count)</text>
+  <text x="715" y="680" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">2. Compute trends + distributions</text>
+  <text x="715" y="694" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">3. AI-summarised business insights</text>
+
+  <!-- Integration note -->
+  <rect x="50" y="718" width="800" height="48" rx="8" fill="#fff" fill-opacity="0.03" stroke="#fff" stroke-opacity="0.08"/>
+  <text x="450" y="738" fill="#9b5de5" font-size="10" font-weight="600" text-anchor="middle">Integration Model</text>
+  <text x="450" y="755" fill="#888" font-size="9" text-anchor="middle">AI module is a first-class citizen within the service layer — not a standalone microservice. Direct repository access via DI</text>
+  <text x="450" y="768" fill="#888" font-size="8" text-anchor="middle" opacity="0.7">enables live data queries. Designed for future extraction into independent service with minimal refactoring.</text>
+
+  <!-- Legend -->
+  <rect x="50" y="785" width="800" height="50" rx="8" fill="#fff" fill-opacity="0.03" stroke="#fff" stroke-opacity="0.08"/>
+  <text x="80" y="805" fill="#888" font-size="9" font-weight="600" letter-spacing="1">COMPONENTS</text>
+  <rect x="80" y="815" width="12" height="12" rx="2" fill="#7209b7"/><text x="100" y="825" fill="#aaa" font-size="8">Intent Engine</text>
+  <rect x="185" y="815" width="12" height="12" rx="2" fill="#2d6a4f"/><text x="205" y="825" fill="#aaa" font-size="8">Search / Recommend</text>
+  <rect x="310" y="815" width="12" height="12" rx="2" fill="#219ebc"/><text x="330" y="825" fill="#aaa" font-size="8">Repositories</text>
+  <rect x="410" y="815" width="12" height="12" rx="2" fill="#e09f3e"/><text x="430" y="825" fill="#aaa" font-size="8">Pricing</text>
+  <rect x="490" y="815" width="12" height="12" rx="2" fill="#e63946"/><text x="510" y="825" fill="#aaa" font-size="8">Analytics</text>
+  <rect x="575" y="815" width="12" height="12" rx="2" fill="#9b5de5"/><text x="595" y="825" fill="#aaa" font-size="8">Ollama/LLM</text>
+  <rect x="670" y="815" width="12" height="12" rx="2" fill="#4361ee"/><text x="690" y="825" fill="#aaa" font-size="8">Input/Output</text>
+</svg>

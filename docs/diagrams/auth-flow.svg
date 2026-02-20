@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#0f0f1a"/><stop offset="100%" style="stop-color:#1a1a2e"/></linearGradient>
+    <linearGradient id="bl" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4361ee"/><stop offset="100%" style="stop-color:#3a56d4"/></linearGradient>
+    <linearGradient id="gr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2d6a4f"/><stop offset="100%" style="stop-color:#1b4332"/></linearGradient>
+    <linearGradient id="rd" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e63946"/><stop offset="100%" style="stop-color:#c1121f"/></linearGradient>
+    <linearGradient id="tl" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#219ebc"/><stop offset="100%" style="stop-color:#1a7a94"/></linearGradient>
+    <linearGradient id="or" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e09f3e"/><stop offset="100%" style="stop-color:#c47f17"/></linearGradient>
+    <linearGradient id="pr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#7209b7"/><stop offset="100%" style="stop-color:#560bad"/></linearGradient>
+    <filter id="s"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/></filter>
+  </defs>
+  <rect width="900" height="700" fill="url(#bg2)" rx="12"/>
+  <text x="450" y="35" fill="#fff" font-size="18" font-weight="700" text-anchor="middle" letter-spacing="1">AUTHENTICATION &amp; AUTHORIZATION FLOW</text>
+  <line x1="250" y1="45" x2="650" y2="45" stroke="#e63946" stroke-width="2" opacity="0.6"/>
+
+  <!-- PHASE 1 -->
+  <text x="50" y="75" fill="#e63946" font-size="12" font-weight="700" letter-spacing="2">PHASE 1 — LOGIN</text>
+  <rect x="50" y="88" width="140" height="40" rx="8" fill="url(#bl)" filter="url(#s)"/>
+  <text x="120" y="108" fill="#fff" font-size="11" font-weight="600" text-anchor="middle">Client (React)</text>
+  <text x="120" y="122" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">Browser SPA</text>
+  <rect x="250" y="88" width="140" height="40" rx="8" fill="url(#gr)" filter="url(#s)"/>
+  <text x="320" y="108" fill="#fff" font-size="11" font-weight="600" text-anchor="middle">AuthController</text>
+  <text x="320" y="122" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">/api/auth/login</text>
+  <rect x="450" y="88" width="140" height="40" rx="8" fill="url(#tl)" filter="url(#s)"/>
+  <text x="520" y="108" fill="#fff" font-size="11" font-weight="600" text-anchor="middle">AuthService</text>
+  <text x="520" y="122" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">BCrypt verify</text>
+  <rect x="650" y="88" width="140" height="40" rx="8" fill="url(#or)" filter="url(#s)"/>
+  <text x="720" y="108" fill="#fff" font-size="11" font-weight="600" text-anchor="middle">JwtUtil</text>
+  <text x="720" y="122" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">HMAC-SHA256</text>
+
+  <!-- Lifelines -->
+  <line x1="120" y1="128" x2="120" y2="295" stroke="#4361ee" stroke-width="1" opacity="0.25" stroke-dasharray="4,3"/>
+  <line x1="320" y1="128" x2="320" y2="295" stroke="#2d6a4f" stroke-width="1" opacity="0.25" stroke-dasharray="4,3"/>
+  <line x1="520" y1="128" x2="520" y2="295" stroke="#219ebc" stroke-width="1" opacity="0.25" stroke-dasharray="4,3"/>
+  <line x1="720" y1="128" x2="720" y2="295" stroke="#e09f3e" stroke-width="1" opacity="0.25" stroke-dasharray="4,3"/>
+
+  <!-- Login flow arrows -->
+  <line x1="120" y1="148" x2="310" y2="148" stroke="#4cc9f0" stroke-width="1.5"/><polygon points="305,144 315,148 305,152" fill="#4cc9f0"/>
+  <text x="215" y="143" fill="#4cc9f0" font-size="9" text-anchor="middle">POST {email, password}</text>
+  <line x1="320" y1="170" x2="510" y2="170" stroke="#4cc9f0" stroke-width="1.5"/><polygon points="505,166 515,170 505,174" fill="#4cc9f0"/>
+  <text x="415" y="165" fill="#4cc9f0" font-size="9" text-anchor="middle">Validate credentials</text>
+  <line x1="520" y1="192" x2="710" y2="192" stroke="#4cc9f0" stroke-width="1.5"/><polygon points="705,188 715,192 705,196" fill="#4cc9f0"/>
+  <text x="615" y="187" fill="#4cc9f0" font-size="9" text-anchor="middle">generateToken(user)</text>
+  <line x1="720" y1="216" x2="530" y2="216" stroke="#f72585" stroke-width="1.5" stroke-dasharray="6,3"/><polygon points="535,212 525,216 535,220" fill="#f72585"/>
+  <text x="625" y="211" fill="#f72585" font-size="9" text-anchor="middle">JWT {email,userId,role}</text>
+  <line x1="520" y1="238" x2="330" y2="238" stroke="#f72585" stroke-width="1.5" stroke-dasharray="6,3"/><polygon points="335,234 325,238 335,242" fill="#f72585"/>
+  <line x1="320" y1="258" x2="130" y2="258" stroke="#f72585" stroke-width="1.5" stroke-dasharray="6,3"/><polygon points="135,254 125,258 135,262" fill="#f72585"/>
+  <text x="225" y="253" fill="#f72585" font-size="9" text-anchor="middle">200 OK + JWT token</text>
+  <rect x="50" y="278" width="140" height="20" rx="4" fill="#4361ee" fill-opacity="0.15" stroke="#4361ee" stroke-opacity="0.3"/>
+  <text x="120" y="292" fill="#4cc9f0" font-size="9" font-weight="500" text-anchor="middle">Store in localStorage</text>
+
+  <line x1="30" y1="315" x2="870" y2="315" stroke="#fff" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- PHASE 2 -->
+  <text x="50" y="340" fill="#2d6a4f" font-size="12" font-weight="700" letter-spacing="2">PHASE 2 — AUTHENTICATED REQUEST</text>
+  <rect x="50" y="355" width="120" height="36" rx="8" fill="url(#bl)" filter="url(#s)"/>
+  <text x="110" y="375" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">Client + Bearer</text>
+  <rect x="220" y="355" width="120" height="36" rx="8" fill="url(#rd)" filter="url(#s)"/>
+  <text x="280" y="375" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">JwtFilter</text>
+  <rect x="390" y="355" width="120" height="36" rx="8" fill="url(#or)" filter="url(#s)"/>
+  <text x="450" y="375" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">JwtUtil</text>
+  <rect x="560" y="355" width="120" height="36" rx="8" fill="url(#pr)" filter="url(#s)"/>
+  <text x="620" y="375" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">SecurityCtx</text>
+  <rect x="730" y="355" width="120" height="36" rx="8" fill="url(#gr)" filter="url(#s)"/>
+  <text x="790" y="375" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">Controller</text>
+
+  <line x1="110" y1="391" x2="110" y2="540" stroke="#4361ee" stroke-width="1" opacity="0.2" stroke-dasharray="4,3"/>
+  <line x1="280" y1="391" x2="280" y2="540" stroke="#e63946" stroke-width="1" opacity="0.2" stroke-dasharray="4,3"/>
+  <line x1="450" y1="391" x2="450" y2="540" stroke="#e09f3e" stroke-width="1" opacity="0.2" stroke-dasharray="4,3"/>
+  <line x1="620" y1="391" x2="620" y2="540" stroke="#7209b7" stroke-width="1" opacity="0.2" stroke-dasharray="4,3"/>
+  <line x1="790" y1="391" x2="790" y2="540" stroke="#2d6a4f" stroke-width="1" opacity="0.2" stroke-dasharray="4,3"/>
+
+  <line x1="110" y1="410" x2="270" y2="410" stroke="#4cc9f0" stroke-width="1.5"/><polygon points="265,406 275,410 265,414" fill="#4cc9f0"/>
+  <text x="190" y="405" fill="#4cc9f0" font-size="9" text-anchor="middle">GET /api/orders</text>
+  <line x1="280" y1="432" x2="440" y2="432" stroke="#4cc9f0" stroke-width="1.5"/><polygon points="435,428 445,432 435,436" fill="#4cc9f0"/>
+  <text x="360" y="427" fill="#4cc9f0" font-size="9" text-anchor="middle">extractClaims(token)</text>
+  <line x1="450" y1="454" x2="290" y2="454" stroke="#f72585" stroke-width="1.5" stroke-dasharray="6,3"/><polygon points="295,450 285,454 295,458" fill="#f72585"/>
+  <text x="370" y="449" fill="#f72585" font-size="9" text-anchor="middle">✓ Valid + Claims</text>
+  <line x1="280" y1="476" x2="610" y2="476" stroke="#9b5de5" stroke-width="1.5"/><polygon points="605,472 615,476 605,480" fill="#9b5de5"/>
+  <text x="445" y="471" fill="#9b5de5" font-size="9" text-anchor="middle">SecurityContext.set(auth + role)</text>
+  <line x1="280" y1="498" x2="780" y2="498" stroke="#4cc9f0" stroke-width="1.5"/><polygon points="775,494 785,498 775,502" fill="#4cc9f0"/>
+  <text x="530" y="493" fill="#4cc9f0" font-size="9" text-anchor="middle">Forward to Controller</text>
+  <line x1="790" y1="520" x2="120" y2="520" stroke="#f72585" stroke-width="1.5" stroke-dasharray="6,3"/><polygon points="125,516 115,520 125,524" fill="#f72585"/>
+  <text x="455" y="515" fill="#f72585" font-size="9" text-anchor="middle">200 OK + JSON Response</text>
+
+  <line x1="30" y1="555" x2="870" y2="555" stroke="#fff" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- RBAC -->
+  <text x="50" y="580" fill="#e09f3e" font-size="12" font-weight="700" letter-spacing="2">ROLE-BASED ACCESS CONTROL</text>
+  <rect x="50" y="595" width="185" height="45" rx="8" fill="#2d6a4f" fill-opacity="0.2" stroke="#2d6a4f" stroke-opacity="0.4"/>
+  <text x="142" y="613" fill="#52b788" font-size="11" font-weight="600" text-anchor="middle">CUSTOMER</text>
+  <text x="142" y="630" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">cart · wishlist · orders · payments</text>
+  <rect x="260" y="595" width="185" height="45" rx="8" fill="#e09f3e" fill-opacity="0.15" stroke="#e09f3e" stroke-opacity="0.4"/>
+  <text x="352" y="613" fill="#e09f3e" font-size="11" font-weight="600" text-anchor="middle">VENDOR</text>
+  <text x="352" y="630" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">+ dashboard · products · analytics</text>
+  <rect x="470" y="595" width="185" height="45" rx="8" fill="#e63946" fill-opacity="0.15" stroke="#e63946" stroke-opacity="0.4"/>
+  <text x="562" y="613" fill="#e63946" font-size="11" font-weight="600" text-anchor="middle">ADMIN</text>
+  <text x="562" y="630" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">+ users · vendors · platform · AI admin</text>
+  <rect x="680" y="595" width="170" height="45" rx="8" fill="#4361ee" fill-opacity="0.15" stroke="#4361ee" stroke-opacity="0.4"/>
+  <text x="765" y="613" fill="#4cc9f0" font-size="11" font-weight="600" text-anchor="middle">PUBLIC</text>
+  <text x="765" y="630" fill="#fff" font-size="8" text-anchor="middle" opacity="0.7">auth · products · AI chat</text>
+
+  <!-- JWT details -->
+  <rect x="50" y="658" width="800" height="28" rx="6" fill="#fff" fill-opacity="0.03" stroke="#fff" stroke-opacity="0.08"/>
+  <text x="450" y="676" fill="#888" font-size="8" text-anchor="middle">JWT: {email, userId, role} · HMAC-SHA256 · 24h expiry · Stateless sessions · BCrypt password hashing · Bean Validation on all DTOs</text>
+</svg>

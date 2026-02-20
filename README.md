@@ -155,7 +155,9 @@ AI Module (Ollama)  +  Repository Layer (JPA/Hibernate)
 LLM Inference           MySQL / PostgreSQL
 ```
 
-`[INSERT SYSTEM ARCHITECTURE DIAGRAM HERE]`
+<p align="center">
+  <img src="docs/diagrams/system-architecture.svg" alt="System Architecture Diagram" width="100%" />
+</p>
 
 ---
 
@@ -214,7 +216,9 @@ Client                      JwtFilter                   JwtUtil                 
 - **Input validation** — Bean Validation (`@Valid`) on all request DTOs with Zod schema validation on the client.
 - **SQL injection prevention** — Parameterized queries enforced through JPA/Hibernate.
 
-`[INSERT AUTH FLOW DIAGRAM HERE]`
+<p align="center">
+  <img src="docs/diagrams/auth-flow.svg" alt="Authentication & Authorization Flow Diagram" width="100%" />
+</p>
 
 ---
 
@@ -317,7 +321,9 @@ The AI module is **not** a standalone microservice. It is a first-class citizen 
 
 This tight integration avoids inter-service communication latency while maintaining clean separation through the dedicated `ai` package boundary. The module is designed for future extraction into an independent service with minimal refactoring — repository dependencies map directly to REST API contracts.
 
-`[INSERT AI ARCHITECTURE DIAGRAM HERE]`
+<p align="center">
+  <img src="docs/diagrams/ai-architecture.svg" alt="AI Architecture Diagram" width="100%" />
+</p>
 
 ---
 
