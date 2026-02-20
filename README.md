@@ -17,83 +17,75 @@
 
 ## 🚀 Project Overview
 
-Cranberry is a full-stack multi-vendor e-commerce platform with a natively integrated AI layer. It supports three user roles — **Customer**, **Vendor**, and **Admin** — each backed by dedicated APIs, dashboards, and access-controlled workflows.
+Cranberry is a multi-vendor e-commerce platform with a natively integrated AI layer. The system supports three distinct user roles — **Customer**, **Vendor**, and **Admin** — each backed by dedicated APIs, dashboards, and access-controlled workflows. A self-hosted LLM (Ollama) is embedded directly into the service layer, providing semantic product search, conversational support, pricing intelligence, and personalized recommendations without reliance on external AI APIs or per-request billing.
 
-The platform embeds a self-hosted LLM (Ollama) directly into the service layer, enabling semantic product search, conversational customer support, AI-driven pricing intelligence, and personalized recommendations — without reliance on external AI APIs or per-request billing.
-
-Built with Spring Boot 3.4, React 18, and a layered monolithic architecture designed for clean decomposition into microservices.
+Built on Spring Boot 3.4, React 18, and a layered monolithic architecture with clean seams for microservice decomposition.
 
 ---
 
 ## 🧠 Problem Statement
 
-Multi-vendor marketplaces face compounding technical challenges as they scale:
+Multi-vendor marketplaces face compounding engineering challenges as they scale:
 
-| Challenge | Technical Impact |
-|-----------|-----------------|
-| Keyword-only search fails on natural language queries | Low search relevance → poor conversion rates |
-| No pricing intelligence for independent vendors | Suboptimal pricing → competitive disadvantage |
-| Customer support doesn't scale without automation | Linear cost growth per user → unsustainable ops |
-| Recommendation engines require massive training data | Cold-start problem → generic, low-value suggestions |
-| AI API costs scale linearly with request volume | Per-token billing → unpredictable infrastructure cost |
+- **Search relevance degrades** — Keyword-only search fails on natural language queries, reducing conversion rates across vendor catalogs.
+- **Vendor pricing lacks intelligence** — Independent sellers have no visibility into competitive positioning, resulting in suboptimal pricing and lost revenue.
+- **Customer support scales linearly** — Without automation, support cost grows proportionally with user base — an unsustainable operational model.
+- **Recommendation cold-start** — Traditional recommendation engines require large training datasets; new marketplaces cannot generate meaningful suggestions.
+- **AI cost predictability** — Per-token API billing (OpenAI, Anthropic) introduces unpredictable variable cost that scales with every search, chat, and recommendation request.
 
-**Cranberry's engineering response:**
+**Engineering response:**
 
-- Self-hosted LLM inference (Ollama) eliminates per-request AI cost
-- Intent-detection pipeline routes queries to specialized handlers (search, tracking, deals, general)
-- Relevance scoring combines token overlap, category matching, and price proximity — no external ML pipeline required
-- Pricing engine aggregates real-time market data and generates LLM-powered competitive analysis
-- Stateless JWT auth and layered architecture support horizontal scaling from day one
+Cranberry addresses these constraints through a self-hosted inference runtime (Ollama) that converts AI from a variable per-request cost into a fixed infrastructure cost. An intent-detection pipeline classifies and routes queries to specialized handlers. A multi-axis relevance scoring engine combines token overlap, category matching, and price proximity — no external ML pipeline or training data required. Stateless JWT authentication and strict layered architecture support horizontal scaling from day one.
 
 ---
 
 ## ✨ Key Features
 
 ### Customer Features
-- Semantic product search with natural language understanding
-- AI chatbot — product discovery, order tracking, deals, general Q&A
-- Personalized recommendations based on purchase history and category affinity
-- Persistent cart and wishlist management
-- Razorpay-integrated checkout with full order lifecycle tracking
-- Mobile-responsive interface
+- Semantic product search with natural language query decomposition
+- Multi-turn AI chatbot — product discovery, order tracking, deal surfacing, general Q&A
+- Personalized recommendations derived from purchase history and category affinity
+- Persistent cart and wishlist with server-side state management
+- Razorpay-integrated checkout with full order lifecycle tracking (placed → confirmed → shipped → delivered)
+- Responsive interface across desktop and mobile viewports
 
 ### Vendor Features
-- Real-time sales analytics dashboard
+- Real-time sales analytics dashboard with revenue metrics
 - AI-powered price suggestion engine with market positioning analysis
-- Product catalog CRUD with image management
-- Order fulfillment workflow with status transitions
-- Revenue and performance metrics
+- Product catalog CRUD with image upload management
+- Order fulfillment workflow with explicit status transitions
+- Performance metrics scoped to vendor-owned inventory
 
 ### Admin Features
-- Platform-wide analytics and business intelligence
+- Platform-wide analytics and aggregated business intelligence
 - Vendor approval and moderation pipeline
-- Product and category management
-- User management with role-based controls
-- AI-generated order insights
+- Product and category management with activation/deactivation controls
+- User management with role-based access enforcement
+- AI-generated order insights summarizing platform-level trends
 
 ### AI Features
-- **Conversational AI** — Multi-turn chatbot with intent classification (5 intent types)
-- **Semantic Search** — Query decomposition → keyword/price/category extraction → relevance-scored results
-- **Recommendation Engine** — Category-weighted collaborative filtering with diversity constraints
-- **Price Intelligence** — Market statistics + LLM-generated competitive pricing rationale
-- **Order Analytics** — Aggregated order data with AI-summarized business insights
+- **Conversational AI** — Multi-turn chatbot with intent classification across 5 intent types (product search, order tracking, deals, help, general)
+- **Semantic Search** — Query decomposition → keyword/price/category extraction → multi-axis relevance scoring → ranked results
+- **Recommendation Engine** — Category-weighted collaborative filtering with purchase frequency analysis and diversity constraints
+- **Price Intelligence** — Real-time market statistics computation + LLM-generated competitive pricing rationale for vendors
+- **Order Analytics** — Aggregated order data pipeline with AI-summarized business insights for admin dashboards
 
 ---
 
 ## 🏗️ System Architecture
 
-Cranberry uses a **layered monolithic architecture** with strict separation of concerns:
+Cranberry uses a **layered monolithic architecture** with strict separation of concerns across four tiers:
 
 ```
 Controller Layer  →  Service Layer  →  Repository Layer  →  Database
-     (REST)          (Business Logic)    (Data Access)       (MySQL / PostgreSQL)
+     (REST API)      (Business Logic)    (Data Access)       (MySQL / PostgreSQL)
 ```
 
 Cross-cutting concerns — JWT authentication, CORS enforcement, and request validation — are handled by dedicated filters in the Spring Security filter chain, executed before any controller logic.
 
-The AI module operates as an independent vertical within the application layer. It has its own controller (`AiController`), service classes (`AiService`, `OrderInsightsService`, `RecommendationService`), and a dedicated HTTP client (`AiProviderClient`) that interfaces with the Ollama runtime.
+The AI module operates as an independent vertical within the application layer. It maintains its own controller (`AiController`), service classes (`AiService`, `OrderInsightsService`, `RecommendationService`), and a dedicated non-blocking HTTP client (`AiProviderClient`) that interfaces with the Ollama runtime. This design isolates AI complexity from core business logic while allowing direct repository access for real-time data retrieval.
 
-### High-Level Architecture
+### Architecture Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -107,22 +99,22 @@ The AI module operates as an independent vertical within the application layer. 
 │                       SECURITY FILTER CHAIN                         │
 │                                                                     │
 │   CorsFilter  →  JwtFilter  →  UsernamePasswordAuthFilter          │
-│   (Origin validation)  (Token extraction,    (Spring Security       │
+│   (Origin whitelist)   (Token extraction,    (Spring Security       │
 │                         claim verification,   authentication        │
 │                         role injection)        context setup)        │
 └──────────────────────────────┬──────────────────────────────────────┘
-                               │
+                               │ Authenticated SecurityContext
 ┌──────────────────────────────▼──────────────────────────────────────┐
 │                      APPLICATION LAYER                              │
 │                                                                     │
 │  ┌─────────────────────────────────────────────────────────────┐    │
-│  │                     CONTROLLERS (10)                         │    │
+│  │                   CONTROLLERS (11)                           │    │
 │  │  Auth · Product · Order · Cart · Wishlist · Payment          │    │
-│  │  Vendor · Admin · User · AI                                  │    │
+│  │  Vendor · Admin · User · Health · AI                         │    │
 │  └───────────────────────────┬─────────────────────────────────┘    │
 │                              │                                      │
 │  ┌───────────────────────────▼──────────┐  ┌────────────────────┐  │
-│  │          SERVICE LAYER (10)          │  │    AI MODULE        │  │
+│  │         SERVICE LAYER (10)           │  │    AI MODULE        │  │
 │  │                                      │  │                    │  │
 │  │  AuthService    ProductService       │  │  AiService         │  │
 │  │  OrderService   CartService          │  │  AiProviderClient  │  │
@@ -131,8 +123,8 @@ The AI module operates as an independent vertical within the application layer. 
 │  └───────────────────────────┬──────────┘  └─────────┬──────────┘  │
 │                              │                       │              │
 │  ┌───────────────────────────▼───────┐  ┌────────────▼──────────┐  │
-│  │      REPOSITORY LAYER (10)        │  │   OLLAMA RUNTIME      │  │
-│  │    Spring Data JPA / Hibernate    │  │   llama3.2 · gemma3   │  │
+│  │     REPOSITORY LAYER (10)         │  │   OLLAMA RUNTIME      │  │
+│  │   Spring Data JPA / Hibernate     │  │   llama3.2 · gemma3   │  │
 │  └───────────────────┬───────────────┘  │   localhost:11434     │  │
 │                      │                  └───────────────────────┘  │
 └──────────────────────┼────────────────────────────────────────────┘
@@ -149,9 +141,35 @@ The AI module operates as an independent vertical within the application layer. 
         └─────────────────────────────┘
 ```
 
+### Simplified Request Flow
+
+```
+Client (React SPA)
+       ↓
+Spring Boot API Gateway (JWT Security Filter Chain)
+       ↓
+Service Layer (Business Logic + Validation)
+       ↓
+AI Module (Ollama)  +  Repository Layer (JPA/Hibernate)
+       ↓                        ↓
+LLM Inference           MySQL / PostgreSQL
+```
+
 `[INSERT SYSTEM ARCHITECTURE DIAGRAM HERE]`
 
-### JWT Authentication Request Flow
+---
+
+## 🔐 Authentication & Authorization Flow
+
+### JWT Lifecycle
+
+1. **Login** — Client sends credentials to `POST /api/auth/login`.
+2. **Token Generation** — `JwtUtil.generateToken()` creates a signed JWT containing `email`, `userId`, and `role` claims. Algorithm: HMAC-SHA256. Expiry: 24 hours.
+3. **Token Storage** — Client persists the JWT in local storage and attaches it to every subsequent request via the `Authorization: Bearer <token>` header.
+4. **Filter Validation** — On each request, `JwtFilter` extracts the token, validates signature and expiry via `JwtUtil`, and injects the authenticated principal into Spring's `SecurityContext`.
+5. **Role-Based Authorization** — Controllers receive pre-authenticated requests. Endpoint access is enforced at both the filter level and the controller level based on the `role` claim.
+
+### Request Authentication Sequence
 
 ```
 Client                      JwtFilter                   JwtUtil                 Controller
@@ -173,24 +191,49 @@ Client                      JwtFilter                   JwtUtil                 
   │◀────────────────── 200 OK + JSON Response ─────────────────────────│            │
 ```
 
+### Role-Based Access Matrix
+
+| Endpoint Pattern | Public | Customer | Vendor | Admin |
+|-----------------|--------|----------|--------|-------|
+| `POST /api/auth/**` | ✅ | ✅ | ✅ | ✅ |
+| `GET /api/products/**` | ✅ | ✅ | ✅ | ✅ |
+| `POST /api/ai/chat`, `/search` | ✅ | ✅ | ✅ | ✅ |
+| `POST/PUT/DELETE /api/products/**` | ❌ | ❌ | ✅ | ✅ |
+| `/api/cart/**`, `/api/wishlist/**` | ❌ | ✅ | ✅ | ✅ |
+| `/api/orders/**`, `/api/payments/**` | ❌ | ✅ | ✅ | ✅ |
+| `/api/vendor/dashboard`, `/orders` | ❌ | ❌ | ✅ | ✅ |
+| `/api/ai/price-suggest` | ❌ | ❌ | ✅ | ✅ |
+| `/api/admin/**` | ❌ | ❌ | ❌ | ✅ |
+| `/api/ai/admin/**` | ❌ | ❌ | ❌ | ✅ |
+
+### Security Implementation Details
+
+- **Stateless sessions** — `SessionCreationPolicy.STATELESS` enforced globally; zero server-side session storage.
+- **CORS** — Explicit origin, method, and header whitelisting via `CorsConfig`.
+- **Password hashing** — BCrypt via Spring Security's `BCryptPasswordEncoder`.
+- **Input validation** — Bean Validation (`@Valid`) on all request DTOs with Zod schema validation on the client.
+- **SQL injection prevention** — Parameterized queries enforced through JPA/Hibernate.
+
+`[INSERT AUTH FLOW DIAGRAM HERE]`
+
 ---
 
 ## 🤖 AI Architecture
 
-The AI subsystem is implemented as a dedicated module at `com.cranberry.marketplace.ai` with four components that integrate directly into the business logic layer.
+The AI subsystem is implemented as a dedicated module at `com.cranberry.marketplace.ai` with four core components that integrate directly into the service layer via constructor injection.
 
 ### Component Map
 
-| Component | Class | Lines | Responsibility |
-|-----------|-------|-------|----------------|
-| LLM Client | `AiProviderClient` | 350+ | HTTP interface to Ollama. Prompt construction, response parsing, model fallback (llama3.2 → gemma3), health checking |
-| Core AI Service | `AiService` | 757 | Intent detection, semantic search, recommendations, price suggestions. Orchestrates LLM calls with database queries |
-| Recommendation Engine | `RecommendationService` | 150+ | Category-weighted collaborative filtering, purchase history analysis, diversity constraints |
-| Order Intelligence | `OrderInsightsService` | 600+ | Aggregates order metrics, generates AI-summarized business intelligence for admin dashboards |
+| Component | Class | Responsibility |
+|-----------|-------|----------------|
+| **LLM Client** | `AiProviderClient` | HTTP interface to Ollama runtime. Handles prompt construction, response parsing, model fallback (llama3.2 → gemma3), and health checking. |
+| **Core AI Service** | `AiService` | Intent detection, semantic search, recommendation orchestration, price suggestions. Coordinates LLM calls with live database queries. |
+| **Recommendation Engine** | `RecommendationService` | Category-weighted collaborative filtering. Analyses purchase history, applies diversity constraints, and generates personalized product sets. |
+| **Order Intelligence** | `OrderInsightsService` | Aggregates order metrics across the platform and generates AI-summarized business intelligence for admin dashboards. |
 
 ### Intent Detection & Routing Pipeline
 
-Every chatbot message passes through a multi-stage pipeline:
+Every chatbot message passes through a multi-stage classification and routing pipeline:
 
 ```
 User Message
@@ -227,26 +270,22 @@ User Message
 
 ### Semantic Search Pipeline
 
-1. **Query Decomposition** — Extract keywords, min/max price constraints, and category signals from natural language input using regex + heuristics
-2. **Candidate Retrieval** — JPA queries against product table using extracted filters
-3. **Relevance Scoring** — Each product scored on three axes:
+1. **Query Decomposition** — Extract keywords, min/max price constraints, and category signals from natural language input using regex-based heuristics.
+2. **Candidate Retrieval** — JPA queries against the product table using extracted filters.
+3. **Multi-Axis Relevance Scoring** — Each candidate is scored across three dimensions:
    - Token overlap between query terms and product `name + description` (weight: 0.5)
-   - Category match (weight: 0.3)
+   - Category match against extracted category signal (weight: 0.3)
    - Price proximity to query constraints (weight: 0.2)
-4. **Ranking & Response** — Sort by composite score, return top-N results with LLM-generated search insight
+4. **Ranking & Response** — Sort by composite score, return top-N results with LLM-generated search insight.
 
-### Recommendation Logic
-
-Two operational modes with distinct algorithms:
+### Recommendation Algorithms
 
 | Mode | Input | Algorithm |
 |------|-------|-----------|
 | **Similar Products** | `productId` | Retrieve same-category products → rank by price proximity + name token similarity → exclude source product |
-| **Personalized** | `userId` | Analyze order history → extract category frequency distribution → retrieve unseen products weighted by purchase frequency → apply diversity cap per category |
+| **Personalized** | `userId` | Analyse order history → extract category frequency distribution → retrieve unseen products weighted by purchase frequency → apply diversity cap per category |
 
 ### AI Price Suggestion Engine
-
-Vendor pricing flow:
 
 ```
 Vendor submits: {productName, category, intendedPrice}
@@ -267,165 +306,116 @@ Construct prompt with market context → Send to Ollama
 Return: {recommendedPrice, confidence, marketPosition, aiInsights}
 ```
 
-### Integration with Business Logic
+### Integration Model
 
-The AI module is **not** a standalone microservice — it is a first-class citizen within the service layer. `AiService` directly depends on `ProductRepository` and `OrderRepository` via constructor injection, allowing it to:
+The AI module is **not** a standalone microservice. It is a first-class citizen within the service layer. `AiService` directly depends on `ProductRepository` and `OrderRepository` via constructor injection, enabling:
 
-- Query live product data for search and recommendations
-- Access order history for personalization
-- Compute real-time market statistics for pricing
-- Generate business intelligence from aggregated order data
+- Live product data queries for search and recommendations
+- Order history access for personalisation
+- Real-time market statistics computation for pricing
+- Aggregated order data for business intelligence
 
-This tight integration avoids the latency and complexity of inter-service communication while maintaining clean separation through the dedicated `ai` package boundary.
+This tight integration avoids inter-service communication latency while maintaining clean separation through the dedicated `ai` package boundary. The module is designed for future extraction into an independent service with minimal refactoring — repository dependencies map directly to REST API contracts.
+
+`[INSERT AI ARCHITECTURE DIAGRAM HERE]`
 
 ---
 
 ## ⚙️ Tech Stack
 
-| Layer | Technology | Version | Purpose |
-|-------|-----------|---------|---------|
-| **Frontend** | React | 18.2 | Component-based SPA |
-| **Build** | Vite | 7.3.1 | Dev server with HMR, optimized production builds |
-| **Styling** | TailwindCSS | 3.4.17 | Utility-first CSS |
-| **UI Library** | Radix UI + shadcn/ui | Latest | Accessible, headless component primitives |
-| **Routing** | React Router | 7.5.1 | Client-side navigation |
-| **Forms** | React Hook Form + Zod | 7.56 / 3.24 | Declarative form state + schema validation |
-| **Backend** | Spring Boot | 3.4.2 | Application framework |
-| **Language** | Java | 17 | Backend runtime |
-| **Security** | Spring Security + JWT (jjwt) | 6.x / 0.11.5 | Authentication, authorization, filter chain |
-| **ORM** | Spring Data JPA / Hibernate | 3.x | Object-relational mapping, query generation |
-| **Database** | PostgreSQL (prod) / MySQL (dev) | 16 / 8.0 | Relational data store |
-| **AI Runtime** | Ollama | Latest | Self-hosted LLM inference |
-| **AI Models** | llama3.2, gemma3 | Latest | Chat, search, recommendations, pricing |
-| **AI HTTP Client** | Spring WebFlux (WebClient) | 6.x | Non-blocking HTTP for Ollama API |
-| **Payments** | Razorpay Java SDK | 1.4.7 | Payment gateway |
-| **Validation** | Hibernate Validator | 8.x | Request DTO validation |
-| **Frontend Hosting** | Vercel | — | CDN + edge deployment |
-| **Backend Hosting** | Render | — | Managed container deployment |
+| Category | Technologies |
+|----------|-------------|
+| **Frontend** | React 18, Vite 7.3, TailwindCSS 3.4, Radix UI + shadcn/ui, React Router 7.5, React Hook Form + Zod |
+| **Backend** | Java 17, Spring Boot 3.4.2, Spring Security 6.x, Spring Data JPA / Hibernate |
+| **AI** | Ollama (self-hosted), llama3.2, gemma3, Spring WebFlux WebClient (non-blocking HTTP) |
+| **Database** | PostgreSQL 16 (production), MySQL 8.0 (development) |
+| **Payments** | Razorpay Java SDK 1.4.7 |
+| **Tools / Environment** | Maven, Vercel (frontend CDN), Render (backend containers), Git |
 
 ---
 
-## 🔐 Security & Authentication
+## 📊 Engineering Decisions & Scalability
 
-### JWT Lifecycle
-
-1. **Login** — Client sends credentials to `POST /api/auth/login`
-2. **Token Generation** — `JwtUtil.generateToken()` creates a signed JWT containing `email`, `userId`, and `role` claims. Algorithm: HMAC-SHA256. Expiry: 24 hours
-3. **Subsequent Requests** — Client includes token in `Authorization: Bearer <token>` header
-4. **Filter Validation** — `JwtFilter` extracts token, validates signature and expiry via `JwtUtil`, injects authenticated principal into Spring SecurityContext
-5. **Controller Access** — Controllers receive pre-authenticated requests; role checks enforced at both filter and controller levels
-
-### Role-Based Access Control
-
-| Endpoint Pattern | Public | Customer | Vendor | Admin |
-|-----------------|--------|----------|--------|-------|
-| `POST /api/auth/**` | ✅ | ✅ | ✅ | ✅ |
-| `GET /api/products/**` | ✅ | ✅ | ✅ | ✅ |
-| `POST /api/ai/chat`, `/search` | ✅ | ✅ | ✅ | ✅ |
-| `POST/PUT/DELETE /api/products/**` | ❌ | ❌ | ✅ | ✅ |
-| `/api/cart/**`, `/api/wishlist/**` | ❌ | ✅ | ✅ | ✅ |
-| `/api/orders/**`, `/api/payments/**` | ❌ | ✅ | ✅ | ✅ |
-| `/api/vendor/dashboard`, `/orders` | ❌ | ❌ | ✅ | ✅ |
-| `/api/ai/price-suggest` | ❌ | ❌ | ✅ | ✅ |
-| `/api/admin/**` | ❌ | ❌ | ❌ | ✅ |
-| `/api/ai/admin/**` | ❌ | ❌ | ❌ | ✅ |
-
-### Secure API Design
-
-- **Stateless sessions** — `SessionCreationPolicy.STATELESS` enforced globally. No server-side session storage.
-- **CORS** — Explicit origin, method, and header whitelisting via `CorsConfig`
-- **Password hashing** — BCrypt via Spring Security's `BCryptPasswordEncoder`
-- **Input validation** — Bean Validation (`@Valid`) on all request DTOs with Zod schema validation on the client
-- **SQL injection prevention** — Parameterized queries enforced through JPA/Hibernate
-- **Separation of concerns** — Security logic isolated in `security/` and `config/` packages; controllers contain zero auth logic
-
----
-
-## 📊 Scalability & Engineering Decisions
+### Architectural Rationale
 
 | Decision | Rationale |
 |----------|-----------|
-| **Spring Boot 3.4** | Production-proven framework. Auto-configuration reduces boilerplate. Native support for JPA, Security, Validation, WebFlux. Large ecosystem for future integration (Spring Cloud, Actuator, etc.) |
-| **Stateless JWT** | Eliminates server-side session storage. Any backend instance can validate any request independently — prerequisite for horizontal scaling behind a load balancer. No sticky sessions or Redis session replication required. |
-| **Layered architecture** | `Controller → Service → Repository` enforces single-responsibility at each layer. Services are independently testable. Repository interfaces are swappable (JPA today, custom query implementations tomorrow). Clean seam for future microservice extraction. |
-| **Multi-vendor data model** | `Vendor` is a first-class entity with its own product ownership, order visibility, and analytics scope. Tenant isolation enforced at the service layer via vendor ID filtering. Designed for multi-tenancy from the initial schema. |
-| **Self-hosted LLM** | Ollama eliminates per-request API cost (OpenAI/Anthropic charges $0.01–$0.06/1K tokens). Full control over model selection, prompt templates, and inference latency. No vendor lock-in. AI features become a fixed infrastructure cost, not a variable per-user cost. |
-| **PostgreSQL + MySQL dual support** | PostgreSQL for production (advanced indexing, JSONB, full ACID). MySQL for fast local development. Seamless switching via Spring profiles (`application-dev.yml` / `application-prod.yml`). |
-| **React + Vite** | Vite provides sub-second HMR during development and tree-shaken production bundles. React's component model maps cleanly to the three-role UI (Customer / Vendor / Admin pages as isolated route groups). |
-| **WebClient (non-blocking)** | Ollama API calls use Spring WebFlux's `WebClient` instead of `RestTemplate`. Non-blocking I/O prevents LLM inference latency from consuming servlet threads. |
+| **Spring Boot 3.4** | Production-proven framework with auto-configuration, native JPA/Security/Validation support, and a clear upgrade path to Spring Cloud for future microservice decomposition. |
+| **Stateless JWT** | Eliminates server-side session storage. Any backend instance can validate any request independently — a prerequisite for horizontal scaling behind a load balancer without sticky sessions or session replication. |
+| **Layered Architecture** | `Controller → Service → Repository` enforces single-responsibility at each tier. Services are independently testable. Repository interfaces are swappable. Clean seams exist for future bounded context extraction. |
+| **Multi-Vendor Data Model** | `Vendor` is a first-class entity with product ownership, order visibility, and analytics scoping. Tenant isolation is enforced at the service layer via vendor ID filtering from day one. |
+| **Self-Hosted LLM (Ollama)** | Eliminates per-request API cost (OpenAI charges $0.01–$0.06/1K tokens). Full control over model selection, prompt templates, and inference latency. AI features become a fixed infrastructure cost, not a variable per-user cost. Zero vendor lock-in. |
+| **WebClient (Non-Blocking)** | Ollama API calls use Spring WebFlux's `WebClient` instead of `RestTemplate`. Non-blocking I/O prevents LLM inference latency (typically 2–10s) from consuming servlet threads. |
+
+### Scalability Posture
+
+- **Stateless APIs** — No server-side session state. Horizontal scaling requires only a load balancer and additional instances.
+- **Service Separation** — Business logic is isolated per domain (auth, product, order, payment, AI). Each service can be extracted into an independent deployment unit without schema changes.
+- **Horizontal Scaling Readiness** — JWT validation is CPU-only (no shared state). Database connection pooling via HikariCP. AI inference is offloaded to a dedicated Ollama process.
 
 ---
 
-## 🚀 Future Engineering Improvements
+## 🚀 Future Engineering Roadmap
 
-| Priority | Area | Implementation | Impact |
-|----------|------|----------------|--------|
-| **P0** | Caching | Redis cache for product catalog, search results, vendor analytics. Cache invalidation on product write. | ~60% reduction in DB read load |
-| **P0** | CI/CD | GitHub Actions pipeline: lint → test → build → Docker image → staged deployment | Automated quality gates, zero-downtime deploys |
-| **P1** | Event-Driven Processing | Kafka topics for `order.created`, `payment.verified`, `order.shipped`. Consumers handle inventory updates, notification dispatch, analytics ingestion | Decoupled order pipeline, async processing, retry semantics |
-| **P1** | Microservices Decomposition | Extract three bounded contexts: `ai-service`, `payment-service`, `order-service`. Communicate via REST + Kafka events | Independent scaling, isolated failure domains, team-parallel development |
-| **P1** | Containerization | Dockerfile per service, `docker-compose.yml` for local stack, Kubernetes manifests for production | Environment parity, reproducible builds, container orchestration readiness |
-| **P2** | Vector Search | pgvector extension for product description embeddings. Replace keyword-based scoring with cosine similarity on dense vectors | True semantic similarity, ~3x relevance improvement on ambiguous queries |
-| **P2** | Observability | Structured logging (ELK stack), distributed tracing (OpenTelemetry), metrics (Prometheus + Grafana) | Production debugging, SLA monitoring, performance profiling |
-| **P2** | AI Personalization | User behavior embeddings (click, cart, purchase signals). Real-time feature store for recommendation model input | Context-aware recommendations, reduced cold-start, improved conversion |
-| **P3** | Search Infrastructure | Elasticsearch for full-text product search with faceting, autocomplete, and typo tolerance | Sub-50ms search latency at scale |
-| **P3** | API Gateway | Spring Cloud Gateway for centralized rate limiting, API versioning, request routing, circuit breaking | Abuse protection, graceful degradation, API lifecycle management |
+| Priority | Area | Implementation | Expected Impact |
+|----------|------|----------------|-----------------|
+| **P0** | Caching | Redis cache for product catalogue, search results, and vendor analytics. Write-through invalidation on product mutations. | ~60% reduction in database read load |
+| **P0** | CI/CD | GitHub Actions: lint → test → build → Docker image → staged deployment | Automated quality gates, zero-downtime deployments |
+| **P1** | Event-Driven Processing | Kafka topics for `order.created`, `payment.verified`, `order.shipped`. Consumers handle inventory updates, notification dispatch, analytics ingestion. | Decoupled order pipeline, async processing, retry semantics |
+| **P1** | Microservices Decomposition | Extract bounded contexts: `ai-service`, `payment-service`, `order-service`. Inter-service communication via REST + Kafka events. | Independent scaling, isolated failure domains, team-parallel development |
+| **P1** | Containerisation | Dockerfile per service, `docker-compose.yml` for local stack, Kubernetes manifests for production. | Environment parity, reproducible builds, orchestration readiness |
+| **P2** | Vector Search | pgvector extension for product description embeddings. Replace keyword scoring with cosine similarity on dense vectors. | True semantic similarity, ~3x relevance improvement on ambiguous queries |
+| **P2** | Observability | Structured logging (ELK), distributed tracing (OpenTelemetry), metrics (Prometheus + Grafana). | Production debugging, SLA monitoring, performance profiling |
+| **P2** | AI Personalisation | User behaviour embeddings (click, cart, purchase signals). Real-time feature store for recommendation model input. | Context-aware recommendations, reduced cold-start, improved conversion |
 
 ---
 
 ## 🧪 Local Setup
 
-### Prerequisites
-
-| Tool | Version | Required |
-|------|---------|----------|
-| Java JDK | 17+ | Yes |
-| Node.js | 18+ | Yes |
-| MySQL | 8.0+ | Yes |
-| Ollama | Latest | Optional (for AI features) |
-
 ### Backend Setup
 
-```bash
-git clone https://github.com/aryangaikwad-966/Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-.git
-cd Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-/Cranberry-Backend
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/aryangaikwad-966/Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-.git
+   cd Cranberry-AI-Powered-Multi-Vendor-E-Commerce-Platform-/Cranberry-Backend
+   ```
 
-cp .env.example .env
-# Configure: DB_URL, DB_USERNAME, DB_PASSWORD, RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
+2. Configure environment variables:
+   ```bash
+   cp .env.example .env
+   # Set: DB_URL, DB_USERNAME, DB_PASSWORD, RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
+   ```
 
-./mvnw spring-boot:run
-# Backend starts on http://localhost:8080
-```
+3. Start the backend:
+   ```bash
+   ./mvnw spring-boot:run
+   # Starts on http://localhost:8080
+   ```
 
 ### Frontend Setup
 
-```bash
-cd Cranberry-Frontend
-
-npm install
-npm run dev
-# Frontend starts on http://localhost:5173
-```
+1. Install dependencies and start the dev server:
+   ```bash
+   cd Cranberry-Frontend
+   npm install
+   npm run dev
+   # Starts on http://localhost:5173
+   ```
 
 ### AI Setup (Optional)
 
 ```bash
-# Install Ollama
 curl -fsSL https://ollama.ai/install.sh | sh
-
-# Pull models
 ollama pull llama3.2
 ollama pull gemma3
-
-# Verify
-curl http://localhost:11434/api/tags
+curl http://localhost:11434/api/tags   # Verify models are available
 ```
 
-### Verify
+### Verification
 
 | Service | Endpoint | Expected |
 |---------|----------|----------|
-| Frontend | `http://localhost:5173` | React app loads |
+| Frontend | `http://localhost:5173` | React application loads |
 | Backend | `http://localhost:8080/api/health` | `{"status": "UP"}` |
 | AI | `http://localhost:8080/api/ai/health` | `{"ollama_available": true}` |
 
@@ -449,29 +439,26 @@ curl http://localhost:11434/api/tags
 
 </div>
 
-`[AI CHATBOT SCREENSHOT — TODO]`
+`[AI Chatbot Screenshot — TODO]`
 
 ---
 
-## 📈 Learning Outcomes
-
-This project demonstrates applied competency across the following engineering domains:
+## 📈 Engineering Skills Demonstrated
 
 | Domain | Demonstrated Capability |
 |--------|------------------------|
-| **System Design** | Multi-tenant data model with 11 entities, role-based access control, layered service architecture with clean package boundaries, API contract design across 10 controllers |
-| **Backend Engineering** | Spring Boot application development, JPA entity relationships (1:1, 1:N, M:N), transactional service logic, custom Spring Security filter chain, stateless session management |
-| **AI Engineering** | LLM integration via HTTP client, prompt engineering for intent detection and insight generation, semantic search with multi-axis relevance scoring, recommendation algorithm with diversity constraints |
-| **Security** | JWT authentication lifecycle (generation, validation, claim extraction), RBAC with endpoint-level access control, BCrypt password hashing, CORS policy configuration, input validation |
-| **Full-Stack Integration** | React SPA consuming RESTful APIs, client-side form validation (Zod) mirroring server-side validation, role-aware UI rendering, real-time dashboard data |
-| **Payment Systems** | Razorpay SDK integration with order lifecycle management, payment creation and verification, idempotent transaction handling |
-| **DevOps** | Vercel (frontend) + Render (backend) deployment pipeline, environment-based configuration (dev/prod profiles), database driver switching via Spring profiles |
+| **System Design** | Multi-tenant data model with 11 entities, role-based access control, layered service architecture with clean package boundaries, API contract design across 11 controllers. |
+| **Backend Architecture** | Spring Boot application with JPA entity relationships (1:1, 1:N, M:N), transactional service logic, custom Spring Security filter chain, stateless session management, and 28 request/response DTOs. |
+| **Secure Authentication** | JWT lifecycle implementation (generation, validation, claim extraction), RBAC with endpoint-level access control, BCrypt password hashing, CORS policy configuration, input validation pipeline. |
+| **AI Integration** | LLM integration via non-blocking HTTP client, prompt engineering for intent detection and insight generation, semantic search with multi-axis relevance scoring, recommendation algorithm with diversity constraints. |
+| **Full-Stack Coordination** | React SPA consuming RESTful APIs, client-side form validation (Zod) mirroring server-side validation, role-aware UI rendering, real-time dashboard data binding. |
+| **Payment Systems** | Razorpay SDK integration with order lifecycle management, payment creation and signature verification, idempotent transaction handling. |
 
 ---
 
 ## 🎯 Portfolio Positioning
 
-Cranberry demonstrates production-grade backend engineering, applied AI integration, and scalable multi-vendor marketplace architecture. The system covers the full stack — from relational schema design and secure REST APIs to LLM-powered search and payment processing — reflecting the scope and technical depth expected in backend engineering, AI engineering, and full-stack software engineering roles. The architectural decisions (stateless auth, layered services, self-hosted inference, multi-tenant data modeling) are deliberate trade-offs documented with engineering rationale, representative of the systems thinking evaluated in graduate-level computer science programs and industry engineering interviews.
+This project demonstrates production-grade backend engineering, applied AI system design, and scalable multi-vendor marketplace architecture. The system covers the full vertical — from relational schema design and secure REST APIs to LLM-powered semantic search and payment processing — reflecting the technical depth expected in backend engineering, AI engineering, and full-stack software engineering roles. Architectural decisions (stateless authentication, layered services, self-hosted inference, multi-tenant data modelling) are deliberate trade-offs documented with engineering rationale, representative of the systems thinking evaluated in graduate-level computer science programmes and industry engineering interviews.
 
 ---
 
