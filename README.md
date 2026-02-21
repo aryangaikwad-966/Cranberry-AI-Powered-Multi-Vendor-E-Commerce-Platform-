@@ -17,9 +17,12 @@
 
 ## 🚀 Project Overview
 
-Cranberry is a multi-vendor e-commerce platform with a natively integrated AI layer. The system supports three distinct user roles — **Customer**, **Vendor**, and **Admin** — each backed by dedicated APIs, dashboards, and access-controlled workflows. A self-hosted LLM (Ollama) is embedded directly into the service layer, providing semantic product search, conversational support, pricing intelligence, and personalized recommendations without reliance on external AI APIs or per-request billing.
+Cranberry is a multi-vendor e-commerce platform with an integrated AI inference layer.
 
-Built on Spring Boot 3.4, React 18, and a layered monolithic architecture with clean seams for microservice decomposition.
+- **Three user roles** — Customer, Vendor, Admin — each with dedicated APIs, dashboards, and access-controlled workflows
+- **Self-hosted LLM** (Ollama) embedded in the service layer for semantic search, conversational support, pricing intelligence, and recommendations
+- **Zero external AI API dependency** — inference runs locally, eliminating per-request billing
+- **Stack** — Spring Boot 3.4 · React 18 · MySQL/PostgreSQL · layered monolith with clean microservice extraction seams
 
 ---
 
@@ -33,9 +36,12 @@ Multi-vendor marketplaces face compounding engineering challenges as they scale:
 - **Recommendation cold-start** — Traditional recommendation engines require large training datasets; new marketplaces cannot generate meaningful suggestions.
 - **AI cost predictability** — Per-token API billing (OpenAI, Anthropic) introduces unpredictable variable cost that scales with every search, chat, and recommendation request.
 
-**Engineering response:**
+**Approach:**
 
-Cranberry addresses these constraints through a self-hosted inference runtime (Ollama) that converts AI from a variable per-request cost into a fixed infrastructure cost. An intent-detection pipeline classifies and routes queries to specialized handlers. A multi-axis relevance scoring engine combines token overlap, category matching, and price proximity — no external ML pipeline or training data required. Stateless JWT authentication and strict layered architecture support horizontal scaling from day one.
+- Self-hosted inference (Ollama) converts AI from variable per-request cost to fixed infrastructure cost
+- Intent-detection pipeline classifies and routes queries to specialised handlers
+- Multi-axis relevance scoring (token overlap + category match + price proximity) replaces external ML pipelines
+- Stateless JWT authentication and layered architecture support horizontal scaling without shared state
 
 ---
 
@@ -74,18 +80,20 @@ Cranberry addresses these constraints through a self-hosted inference runtime (O
 
 ## 🏗️ System Architecture
 
-Cranberry uses a **layered monolithic architecture** with strict separation of concerns across four tiers:
+Layered monolithic architecture with strict separation of concerns:
 
 ```
 Controller Layer  →  Service Layer  →  Repository Layer  →  Database
      (REST API)      (Business Logic)    (Data Access)       (MySQL / PostgreSQL)
 ```
 
-Cross-cutting concerns — JWT authentication, CORS enforcement, and request validation — are handled by dedicated filters in the Spring Security filter chain, executed before any controller logic.
-
-The AI module operates as an independent vertical within the application layer. It maintains its own controller (`AiController`), service classes (`AiService`, `OrderInsightsService`, `RecommendationService`), and a dedicated non-blocking HTTP client (`AiProviderClient`) that interfaces with the Ollama runtime. This design isolates AI complexity from core business logic while allowing direct repository access for real-time data retrieval.
+- **Cross-cutting concerns** — JWT auth, CORS, request validation — handled by Spring Security filter chain before controller dispatch
+- **AI module** — independent vertical with its own controller (`AiController`), services (`AiService`, `RecommendationService`, `OrderInsightsService`), and non-blocking HTTP client (`AiProviderClient`) for Ollama
+- **Isolation** — AI complexity is separated from core business logic via the `ai` package boundary while retaining direct repository access
 
 ### Architecture Diagram
+
+> Full system topology: client layer, security filter chain, application layer (controllers, services, AI module), data access, and Ollama runtime.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -141,27 +149,13 @@ The AI module operates as an independent vertical within the application layer. 
         └─────────────────────────────┘
 ```
 
-### Simplified Request Flow
-
-```
-Client (React SPA)
-       ↓
-Spring Boot API Gateway (JWT Security Filter Chain)
-       ↓
-Service Layer (Business Logic + Validation)
-       ↓
-AI Module (Ollama)  +  Repository Layer (JPA/Hibernate)
-       ↓                        ↓
-LLM Inference           MySQL / PostgreSQL
-```
-
 <p align="center">
   <img src="docs/diagrams/system-architecture.svg" alt="System Architecture Diagram" width="100%" />
 </p>
 
 ---
 
-## 🔐 Authentication & Authorization Flow
+## 🔐 Authentication & Authorization
 
 ### JWT Lifecycle
 
@@ -216,6 +210,8 @@ Client                      JwtFilter                   JwtUtil                 
 - **Input validation** — Bean Validation (`@Valid`) on all request DTOs with Zod schema validation on the client.
 - **SQL injection prevention** — Parameterized queries enforced through JPA/Hibernate.
 
+> **Diagram:** Login sequence, token validation lifecycle, and role-based endpoint access matrix.
+
 <p align="center">
   <img src="docs/diagrams/auth-flow.svg" alt="Authentication & Authorization Flow Diagram" width="100%" />
 </p>
@@ -224,7 +220,7 @@ Client                      JwtFilter                   JwtUtil                 
 
 ## 🤖 AI Architecture
 
-The AI subsystem is implemented as a dedicated module at `com.cranberry.marketplace.ai` with four core components that integrate directly into the service layer via constructor injection.
+Dedicated module at `com.cranberry.marketplace.ai` — four components integrated into the service layer via constructor injection.
 
 ### Component Map
 
@@ -312,14 +308,9 @@ Return: {recommendedPrice, confidence, marketPosition, aiInsights}
 
 ### Integration Model
 
-The AI module is **not** a standalone microservice. It is a first-class citizen within the service layer. `AiService` directly depends on `ProductRepository` and `OrderRepository` via constructor injection, enabling:
+The AI module is **not** a standalone microservice — it is a first-class citizen within the service layer. `AiService` depends on `ProductRepository` and `OrderRepository` via constructor injection for live data access. This avoids inter-service latency while the `ai` package boundary maintains clean separation. Repository dependencies map directly to REST API contracts, enabling future extraction with minimal refactoring.
 
-- Live product data queries for search and recommendations
-- Order history access for personalisation
-- Real-time market statistics computation for pricing
-- Aggregated order data for business intelligence
-
-This tight integration avoids inter-service communication latency while maintaining clean separation through the dedicated `ai` package boundary. The module is designed for future extraction into an independent service with minimal refactoring — repository dependencies map directly to REST API contracts.
+> **Diagram:** Intent detection pipeline, semantic search scoring, recommendation engine, price intelligence, and service dependencies.
 
 <p align="center">
   <img src="docs/diagrams/ai-architecture.svg" alt="AI Architecture Diagram" width="100%" />
@@ -342,22 +333,16 @@ This tight integration avoids inter-service communication latency while maintain
 
 ## 📊 Engineering Decisions & Scalability
 
-### Architectural Rationale
-
 | Decision | Rationale |
 |----------|-----------|
-| **Spring Boot 3.4** | Production-proven framework with auto-configuration, native JPA/Security/Validation support, and a clear upgrade path to Spring Cloud for future microservice decomposition. |
-| **Stateless JWT** | Eliminates server-side session storage. Any backend instance can validate any request independently — a prerequisite for horizontal scaling behind a load balancer without sticky sessions or session replication. |
-| **Layered Architecture** | `Controller → Service → Repository` enforces single-responsibility at each tier. Services are independently testable. Repository interfaces are swappable. Clean seams exist for future bounded context extraction. |
-| **Multi-Vendor Data Model** | `Vendor` is a first-class entity with product ownership, order visibility, and analytics scoping. Tenant isolation is enforced at the service layer via vendor ID filtering from day one. |
-| **Self-Hosted LLM (Ollama)** | Eliminates per-request API cost (OpenAI charges $0.01–$0.06/1K tokens). Full control over model selection, prompt templates, and inference latency. AI features become a fixed infrastructure cost, not a variable per-user cost. Zero vendor lock-in. |
-| **WebClient (Non-Blocking)** | Ollama API calls use Spring WebFlux's `WebClient` instead of `RestTemplate`. Non-blocking I/O prevents LLM inference latency (typically 2–10s) from consuming servlet threads. |
+| **Spring Boot 3.4** | Auto-configuration, native JPA/Security/Validation support, clear Spring Cloud upgrade path for microservice decomposition. |
+| **Stateless JWT** | No server-side session storage. Any instance validates any request independently — prerequisite for horizontal scaling without sticky sessions. |
+| **Layered Architecture** | `Controller → Service → Repository` enforces single-responsibility per tier. Services independently testable. Clean seams for bounded context extraction. |
+| **Multi-Vendor Data Model** | `Vendor` as first-class entity with product ownership, order visibility, analytics scoping. Tenant isolation via vendor ID filtering at the service layer. |
+| **Self-Hosted LLM** | Fixed infrastructure cost vs. per-token API billing. Full control over model selection, prompt templates, inference latency. Zero vendor lock-in. |
+| **Non-Blocking WebClient** | Ollama calls via `WebClient` prevent LLM inference latency (2–10s) from consuming servlet threads. |
 
-### Scalability Posture
-
-- **Stateless APIs** — No server-side session state. Horizontal scaling requires only a load balancer and additional instances.
-- **Service Separation** — Business logic is isolated per domain (auth, product, order, payment, AI). Each service can be extracted into an independent deployment unit without schema changes.
-- **Horizontal Scaling Readiness** — JWT validation is CPU-only (no shared state). Database connection pooling via HikariCP. AI inference is offloaded to a dedicated Ollama process.
+**Scaling posture:** Stateless APIs (load balancer + instances). Domain-isolated services (extractable without schema changes). CPU-only JWT validation. HikariCP connection pooling. AI inference offloaded to dedicated Ollama process.
 
 ---
 
@@ -445,8 +430,6 @@ curl http://localhost:11434/api/tags   # Verify models are available
 
 </div>
 
-`[AI Chatbot Screenshot — TODO]`
-
 ---
 
 ## 📈 Engineering Skills Demonstrated
@@ -462,9 +445,9 @@ curl http://localhost:11434/api/tags   # Verify models are available
 
 ---
 
-## 🎯 Portfolio Positioning
+## 🎯 Summary
 
-This project demonstrates production-grade backend engineering, applied AI system design, and scalable multi-vendor marketplace architecture. The system covers the full vertical — from relational schema design and secure REST APIs to LLM-powered semantic search and payment processing — reflecting the technical depth expected in backend engineering, AI engineering, and full-stack software engineering roles. Architectural decisions (stateless authentication, layered services, self-hosted inference, multi-tenant data modelling) are deliberate trade-offs documented with engineering rationale, representative of the systems thinking evaluated in graduate-level computer science programmes and industry engineering interviews.
+Covers the full vertical: relational schema design, secure REST APIs, LLM-powered semantic search, payment processing, and multi-vendor tenant isolation. Architectural decisions — stateless authentication, layered services, self-hosted inference, multi-tenant data modelling — are deliberate trade-offs documented with engineering rationale. Suitable for evaluation in backend engineering, AI engineering, and full-stack roles at the graduate and industry level.
 
 ---
 
