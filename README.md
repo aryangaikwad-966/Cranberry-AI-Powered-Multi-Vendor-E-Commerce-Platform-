@@ -4,120 +4,76 @@
 
 **AI-Powered Multi-Vendor E-Commerce Platform**
 
-[Live Demo](https://cranberry-ai-multivendor-e-commerce.vercel.app) · [API Endpoint](https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health) · [Documentation](Cranberry-Backend/API_DOCUMENTATION.md)
-
-<br />
-
-![Java 17](https://img.shields.io/badge/Java-17-ED8B00?style=flat&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4-6DB33F?style=flat&logo=spring-boot&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=black)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=flat&logo=postgresql&logoColor=white)
-![Ollama](https://img.shields.io/badge/Ollama-LLM-000000?style=flat)
+[Live Demo](https://cranberry-ai-multivendor-e-commerce.vercel.app) ·
+[API](https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health) ·
+[Docs](Cranberry-Backend/API_DOCUMENTATION.md)
 
 </div>
 
 <br />
 
-## Overview
+## What is this?
 
-Full-stack e-commerce marketplace with **self-hosted LLM inference** for semantic search, conversational AI, personalized recommendations, and vendor pricing intelligence. Supports three user roles (Customer, Vendor, Admin) with role-based access control across 11 REST endpoints.
+A production-deployed e-commerce marketplace with **self-hosted LLM inference** — semantic search, conversational AI, personalized recommendations, and pricing intelligence — all without external API costs.
 
-**Key differentiator:** Zero external AI API costs — all inference runs locally via Ollama, converting variable per-request billing to fixed infrastructure cost.
+| Metric | Value |
+|--------|-------|
+| **Users** | 3 roles (Customer, Vendor, Admin) with RBAC |
+| **Backend** | 11 controllers, 10 services, 28 DTOs |
+| **Database** | 9 tables with relational integrity |
+| **AI** | 5 intent types, 3-axis relevance scoring |
 
 <br />
 
-## Features
+## Technical Highlights
 
-| Module | Capabilities |
-|--------|-------------|
-| **Search & Discovery** | Natural language queries with intent classification, multi-axis relevance scoring (keyword overlap 0.5 + category match 0.3 + price proximity 0.2) |
-| **Conversational AI** | Multi-turn chatbot with 5 intent types: product search, order tracking, deals, help, general Q&A |
-| **Recommendations** | Category-weighted collaborative filtering with purchase history analysis and diversity constraints |
-| **Price Intelligence** | Market position analysis (budget/mid/premium) with AI-generated pricing rationale for vendors |
-| **Authentication** | Stateless JWT with HMAC-SHA256, 24h expiry, BCrypt password hashing, CORS whitelisting |
-| **Payments** | Razorpay SDK integration with order lifecycle management and signature verification |
+**System Design**
+- Multi-tenant architecture with vendor isolation at service layer
+- Stateless JWT authentication (HMAC-SHA256, 24h expiry)
+- Layered monolith with clean microservice extraction boundaries
+
+**AI/ML Integration**
+- Self-hosted LLM (Ollama) — fixed cost vs. per-token API billing
+- Intent classification pipeline routing to specialized handlers
+- Semantic search with composite scoring: `0.5×keyword + 0.3×category + 0.2×price`
+- Non-blocking inference via Spring WebFlux WebClient
+
+**Backend Engineering**
+- Spring Boot 3.4 with Spring Security 6 filter chain
+- JPA entity relationships (1:1, 1:N, M:N) with cascade policies
+- Transactional service methods with HikariCP connection pooling
+
+**Full-Stack**
+- React 18 SPA with role-aware route protection
+- Form validation (Zod) mirroring server-side Bean Validation
+- Razorpay payment integration with signature verification
 
 <br />
 
 ## Architecture
 
 <p align="center">
-  <img src="docs/diagrams/system-architecture.svg" alt="System Architecture" width="90%" />
+  <img src="docs/diagrams/system-architecture.svg" alt="Architecture" width="85%" />
 </p>
 
-```
-React 18 SPA  ──►  Spring Boot 3.4  ──►  PostgreSQL
-     │                   │
-     └── REST + JWT ─────┼──► Ollama Runtime (llama3.2, gemma3)
-                         │
-              11 Controllers · 10 Services · 10 Repositories
-```
-
 <details>
-<summary><b>AI Pipeline</b></summary>
-<br />
+<summary>View AI Pipeline</summary>
 <p align="center">
-  <img src="docs/diagrams/ai-architecture.svg" alt="AI Pipeline" width="90%" />
+  <img src="docs/diagrams/ai-architecture.svg" alt="AI Pipeline" width="85%" />
 </p>
 </details>
 
 <br />
 
-## Tech Stack
+## Stack
 
-| Layer | Stack |
-|-------|-------|
-| **Frontend** | React 18, Vite, TailwindCSS, shadcn/ui, React Router, React Hook Form, Zod |
-| **Backend** | Java 17, Spring Boot 3.4, Spring Security 6, Spring Data JPA, Hibernate |
-| **AI/ML** | Ollama (self-hosted), llama3.2, gemma3, WebFlux WebClient (non-blocking) |
-| **Database** | PostgreSQL 16 (prod), MySQL 8 (dev), HikariCP connection pooling |
-| **Infrastructure** | Vercel (frontend CDN), Render (backend containers), Maven |
-
-<br />
-
-## Database Schema
-
-```
-┌──────────────┐       ┌──────────────┐       ┌──────────────┐
-│    users     │       │    vendor    │       │   product    │
-├──────────────┤       ├──────────────┤       ├──────────────┤
-│ id           │◄─┐    │ id           │◄─┐    │ id           │
-│ name         │  │    │ shop_name    │  │    │ name         │
-│ email        │  │    │ status       │  │    │ price        │
-│ password     │  └────│ user_id (FK) │  └────│ vendor_id(FK)│
-│ role         │       │ contact_*    │       │ category     │
-└──────────────┘       └──────────────┘       │ stock        │
-       │                                      └──────────────┘
-       │                                             │
-       ▼                                             ▼
-┌──────────────┐       ┌──────────────┐       ┌──────────────┐
-│    orders    │       │  order_item  │       │   payments   │
-├──────────────┤       ├──────────────┤       ├──────────────┤
-│ id           │◄──────│ order_id(FK) │       │ id           │
-│ user_id (FK) │       │ product_id   │───────│ order_id(FK) │
-│ total_amount │       │ quantity     │       │ razorpay_*   │
-│ status       │       │ price        │       │ status       │
-└──────────────┘       └──────────────┘       └──────────────┘
-       │
-       ▼
-┌──────────────┐       ┌──────────────┐
-│    carts     │       │  wishlists   │
-├──────────────┤       ├──────────────┤
-│ id           │       │ id           │
-│ user_id (FK) │       │ user_id (FK) │
-│ cart_items[] │       │ items[]      │
-└──────────────┘       └──────────────┘
-```
-
-| Entity | Relationships | Key Fields |
-|--------|---------------|------------|
-| `users` | 1:1 vendor, 1:N orders, 1:1 cart, 1:1 wishlist | email (unique), role (CUSTOMER/VENDOR/ADMIN) |
-| `vendor` | 1:N products | shop_name, status (PENDING/APPROVED) |
-| `product` | N:1 vendor, 1:N order_items | price, category, stock |
-| `orders` | N:1 user, 1:N order_items, 1:1 payment | status (CREATED→CONFIRMED→SHIPPED→DELIVERED) |
-| `payments` | 1:1 order | razorpay_order_id, razorpay_payment_id |
-
-> Full schema: [database_setup.sql](Cranberry-Backend/database_setup.sql)
+| | |
+|---|---|
+| **Backend** | Java 17, Spring Boot 3.4, Spring Security 6, Spring Data JPA |
+| **Frontend** | React 18, Vite, TailwindCSS, shadcn/ui |
+| **AI** | Ollama, llama3.2, gemma3 |
+| **Database** | PostgreSQL 16, MySQL 8 |
+| **Infra** | Vercel, Render |
 
 <br />
 
@@ -125,148 +81,61 @@ React 18 SPA  ──►  Spring Boot 3.4  ──►  PostgreSQL
 
 <table>
 <tr>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/home.png" alt="Home" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/products.png" alt="Products" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/cart.png" alt="Cart" /></td>
+<td><img src="Cranberry-Frontend/public/images/screenshots/home.png" alt="Home" /></td>
+<td><img src="Cranberry-Frontend/public/images/screenshots/products.png" alt="Products" /></td>
+<td><img src="Cranberry-Frontend/public/images/screenshots/cart.png" alt="Cart" /></td>
 </tr>
 <tr>
-<td align="center"><sub>Home</sub></td>
-<td align="center"><sub>Product Discovery</sub></td>
-<td align="center"><sub>Shopping Cart</sub></td>
-</tr>
-<tr>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/vendor-dashboard.png" alt="Vendor" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/admin-panel.png" alt="Admin" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/payment.png" alt="Payment" /></td>
-</tr>
-<tr>
-<td align="center"><sub>Vendor Dashboard</sub></td>
-<td align="center"><sub>Admin Panel</sub></td>
-<td align="center"><sub>Razorpay Checkout</sub></td>
+<td><img src="Cranberry-Frontend/public/images/screenshots/vendor-dashboard.png" alt="Vendor" /></td>
+<td><img src="Cranberry-Frontend/public/images/screenshots/admin-panel.png" alt="Admin" /></td>
+<td><img src="Cranberry-Frontend/public/images/screenshots/payment.png" alt="Payment" /></td>
 </tr>
 </table>
 
 <br />
 
-## Quick Start
+## Run Locally
 
 ```bash
-# Backend (requires Java 17+)
-cd Cranberry-Backend
-./mvnw spring-boot:run
+# Backend
+cd Cranberry-Backend && ./mvnw spring-boot:run
 
-# Frontend (requires Node 18+)
-cd Cranberry-Frontend
-npm install && npm run dev
+# Frontend
+cd Cranberry-Frontend && npm install && npm run dev
 
-# AI inference (optional)
-ollama pull llama3.2 && ollama pull gemma3
+# AI (optional)
+ollama pull llama3.2
 ```
 
-| Service | URL | Health Check |
-|---------|-----|--------------|
-| Frontend | `localhost:5173` | — |
-| Backend | `localhost:8080` | `/api/health` |
-| Ollama | `localhost:11434` | `/api/tags` |
-
-> See [SETUP_GUIDE.md](Cranberry-Backend/SETUP_GUIDE.md) for database configuration and environment variables.
-
-<br />
-
-## API Overview
-
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/api/auth/register` | POST | — | User registration |
-| `/api/auth/login` | POST | — | JWT token generation |
-| `/api/products` | GET | — | Product listing with filters |
-| `/api/products/{id}` | GET | — | Product details |
-| `/api/ai/search` | POST | — | Semantic product search |
-| `/api/ai/chat` | POST | — | Conversational AI |
-| `/api/ai/recommendations/{userId}` | GET | JWT | Personalized recommendations |
-| `/api/cart` | GET/POST/DELETE | JWT | Cart management |
-| `/api/orders` | GET/POST | JWT | Order lifecycle |
-| `/api/payments/create` | POST | JWT | Razorpay order creation |
-| `/api/vendor/dashboard` | GET | Vendor | Sales analytics |
-| `/api/ai/price-suggest` | POST | Vendor | AI pricing intelligence |
-| `/api/admin/analytics` | GET | Admin | Platform metrics |
-
-> Full API reference: [API_DOCUMENTATION.md](Cranberry-Backend/API_DOCUMENTATION.md)
-
-<br />
-
-## Environment Variables
-
-```bash
-# Database
-DB_URL=jdbc:postgresql://localhost:5432/cranberry
-DB_USERNAME=postgres
-DB_PASSWORD=your_password
-
-# JWT
-JWT_SECRET=your_256_bit_secret_key
-
-# Razorpay
-RAZORPAY_KEY_ID=rzp_test_xxx
-RAZORPAY_KEY_SECRET=xxx
-
-# Ollama (optional)
-OLLAMA_BASE_URL=http://localhost:11434
-```
+> [Setup Guide](Cranberry-Backend/SETUP_GUIDE.md) · [API Docs](Cranberry-Backend/API_DOCUMENTATION.md) · [Database Schema](Cranberry-Backend/database_setup.sql)
 
 <br />
 
 ## Project Structure
 
 ```
-├── Cranberry-Backend/
-│   ├── src/main/java/com/cranberry/marketplace/
-│   │   ├── controller/         # 11 REST controllers
-│   │   ├── service/            # 10 business services
-│   │   ├── repository/         # 10 JPA repositories
-│   │   ├── model/              # 11 entity classes
-│   │   ├── dto/                # 28 request/response DTOs
-│   │   ├── security/           # JWT filter, auth config
-│   │   ├── config/             # CORS, security, app config
-│   │   ├── exception/          # Global exception handling
-│   │   └── ai/                 # AI module (search, chat, recommendations)
-│   ├── API_DOCUMENTATION.md
-│   └── SETUP_GUIDE.md
-│
-├── Cranberry-Frontend/
-│   ├── src/
-│   │   ├── components/         # UI components (shadcn/ui)
-│   │   ├── pages/              # Route components (customer, vendor, admin)
-│   │   ├── services/           # API client
-│   │   ├── context/            # Auth, Cart, Wishlist state
-│   │   └── hooks/              # Custom React hooks
-│   └── package.json
-│
-└── docs/diagrams/              # Architecture diagrams (SVG)
+Cranberry-Backend/
+├── controller/    11 REST endpoints
+├── service/       10 business logic services
+├── repository/    10 JPA repositories
+├── model/         9 entity classes
+├── dto/           28 request/response objects
+├── security/      JWT filter, CORS config
+└── ai/            Search, chat, recommendations
+
+Cranberry-Frontend/
+├── components/    shadcn/ui components
+├── pages/         Customer, Vendor, Admin views
+├── context/       Auth, Cart, Wishlist state
+└── services/      API client
 ```
 
 <br />
 
-## Engineering Highlights
-
-| Area | Implementation |
-|------|----------------|
-| **System Design** | Multi-tenant data model (11 entities), layered architecture with clean service boundaries, tenant isolation via vendor ID filtering |
-| **Security** | Custom JWT filter chain, role-based endpoint access (Customer/Vendor/Admin), stateless session management |
-| **AI Integration** | Non-blocking LLM calls via WebClient, intent classification pipeline, semantic search with composite scoring |
-| **API Design** | RESTful contracts across 11 controllers, DTO pattern for request/response separation, Bean Validation |
-| **Database** | JPA relationships (1:1, 1:N, M:N), transactional service methods, HikariCP pooling |
-
-<br />
-
-## License
-
-[MIT](LICENSE)
-
-<br />
+---
 
 <div align="center">
 
-**[Aryan Gaikwad](https://github.com/aryangaikwad-966)**
+[Aryan Gaikwad](https://github.com/aryangaikwad-966) · [MIT License](LICENSE)
 
 </div>
