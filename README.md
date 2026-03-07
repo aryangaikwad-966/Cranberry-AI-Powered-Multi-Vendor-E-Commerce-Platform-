@@ -50,6 +50,13 @@ A production-ready marketplace supporting **3 user roles** (Customer, Vendor, Ad
 
 ## 🏗️ Architecture
 
+<p align="center">
+  <img src="docs/diagrams/system-architecture.svg" alt="System Architecture" width="100%" />
+</p>
+
+<details>
+<summary>View Text Diagram</summary>
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  React SPA (Customer / Vendor / Admin Dashboards)           │
@@ -67,6 +74,16 @@ A production-ready marketplace supporting **3 user roles** (Customer, Vendor, Ad
     │  (11 entity model)  │     │  (llama3.2, gemma3) │
     └─────────────────────┘     └─────────────────────┘
 ```
+
+</details>
+
+---
+
+## 🤖 AI Pipeline
+
+<p align="center">
+  <img src="docs/diagrams/ai-architecture.svg" alt="AI Architecture" width="100%" />
+</p>
 
 ---
 
