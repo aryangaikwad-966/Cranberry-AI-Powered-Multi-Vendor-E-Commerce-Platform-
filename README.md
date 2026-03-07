@@ -41,6 +41,35 @@ Production-deployed e-commerce platform supporting **3 user roles** (Customer, V
 
 ---
 
+## Screenshots
+
+<table>
+<tr>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/home.png" alt="Home" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/products.png" alt="Products" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/cart.png" alt="Cart" /></td>
+</tr>
+<tr>
+<td align="center"><b>Home</b></td>
+<td align="center"><b>Product Discovery</b></td>
+<td align="center"><b>Shopping Cart</b></td>
+</tr>
+<tr>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/vendor-dashboard.png" alt="Vendor" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/admin-panel.png" alt="Admin" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/payment.png" alt="Payment" /></td>
+</tr>
+<tr>
+<td align="center"><b>Vendor Dashboard</b></td>
+<td align="center"><b>Admin Panel</b></td>
+<td align="center"><b>Razorpay Checkout</b></td>
+</tr>
+</table>
+
+<br />
+
+---
+
 ## System Architecture
 
 <p align="center">
@@ -190,35 +219,6 @@ User Query → Intent Detection → Query Decomposition → Candidate Retrieval 
 | **AI/ML** | Ollama (self-hosted), llama3.2, gemma3, WebFlux WebClient |
 | **Database** | PostgreSQL 16 (prod), MySQL 8 (dev) |
 | **Infrastructure** | Vercel (frontend), Render (backend), Maven |
-
-<br />
-
----
-
-## Screenshots
-
-<table>
-<tr>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/home.png" alt="Home" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/products.png" alt="Products" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/cart.png" alt="Cart" /></td>
-</tr>
-<tr>
-<td align="center"><b>Home</b></td>
-<td align="center"><b>Product Discovery</b></td>
-<td align="center"><b>Shopping Cart</b></td>
-</tr>
-<tr>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/vendor-dashboard.png" alt="Vendor" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/admin-panel.png" alt="Admin" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/payment.png" alt="Payment" /></td>
-</tr>
-<tr>
-<td align="center"><b>Vendor Dashboard</b></td>
-<td align="center"><b>Admin Panel</b></td>
-<td align="center"><b>Razorpay Checkout</b></td>
-</tr>
-</table>
 
 <br />
 
