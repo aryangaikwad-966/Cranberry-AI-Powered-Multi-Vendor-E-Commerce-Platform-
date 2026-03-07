@@ -75,6 +75,52 @@ React 18 SPA  ──►  Spring Boot 3.4  ──►  PostgreSQL
 
 <br />
 
+## Database Schema
+
+```
+┌──────────────┐       ┌──────────────┐       ┌──────────────┐
+│    users     │       │    vendor    │       │   product    │
+├──────────────┤       ├──────────────┤       ├──────────────┤
+│ id           │◄─┐    │ id           │◄─┐    │ id           │
+│ name         │  │    │ shop_name    │  │    │ name         │
+│ email        │  │    │ status       │  │    │ price        │
+│ password     │  └────│ user_id (FK) │  └────│ vendor_id(FK)│
+│ role         │       │ contact_*    │       │ category     │
+└──────────────┘       └──────────────┘       │ stock        │
+       │                                      └──────────────┘
+       │                                             │
+       ▼                                             ▼
+┌──────────────┐       ┌──────────────┐       ┌──────────────┐
+│    orders    │       │  order_item  │       │   payments   │
+├──────────────┤       ├──────────────┤       ├──────────────┤
+│ id           │◄──────│ order_id(FK) │       │ id           │
+│ user_id (FK) │       │ product_id   │───────│ order_id(FK) │
+│ total_amount │       │ quantity     │       │ razorpay_*   │
+│ status       │       │ price        │       │ status       │
+└──────────────┘       └──────────────┘       └──────────────┘
+       │
+       ▼
+┌──────────────┐       ┌──────────────┐
+│    carts     │       │  wishlists   │
+├──────────────┤       ├──────────────┤
+│ id           │       │ id           │
+│ user_id (FK) │       │ user_id (FK) │
+│ cart_items[] │       │ items[]      │
+└──────────────┘       └──────────────┘
+```
+
+| Entity | Relationships | Key Fields |
+|--------|---------------|------------|
+| `users` | 1:1 vendor, 1:N orders, 1:1 cart, 1:1 wishlist | email (unique), role (CUSTOMER/VENDOR/ADMIN) |
+| `vendor` | 1:N products | shop_name, status (PENDING/APPROVED) |
+| `product` | N:1 vendor, 1:N order_items | price, category, stock |
+| `orders` | N:1 user, 1:N order_items, 1:1 payment | status (CREATED→CONFIRMED→SHIPPED→DELIVERED) |
+| `payments` | 1:1 order | razorpay_order_id, razorpay_payment_id |
+
+> Full schema: [database_setup.sql](Cranberry-Backend/database_setup.sql)
+
+<br />
+
 ## Screenshots
 
 <table>
