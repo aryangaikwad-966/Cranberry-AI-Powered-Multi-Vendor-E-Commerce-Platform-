@@ -79,9 +79,9 @@ React 18 SPA  ──►  Spring Boot 3.4  ──►  PostgreSQL
 
 <table>
 <tr>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.47.47%E2%80%AFPM.png" alt="Home" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.50.23%E2%80%AFPM.png" alt="Products" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.46.35%E2%80%AFPM.png" alt="Cart" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/home.png" alt="Home" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/products.png" alt="Products" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/cart.png" alt="Cart" /></td>
 </tr>
 <tr>
 <td align="center"><sub>Home</sub></td>
@@ -89,9 +89,9 @@ React 18 SPA  ──►  Spring Boot 3.4  ──►  PostgreSQL
 <td align="center"><sub>Shopping Cart</sub></td>
 </tr>
 <tr>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.56.38%E2%80%AFPM.png" alt="Vendor" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.57.01%E2%80%AFPM.png" alt="Admin" /></td>
-<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/Screenshot%202026-02-04%20at%201.53.21%E2%80%AFPM.png" alt="Payment" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/vendor-dashboard.png" alt="Vendor" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/admin-panel.png" alt="Admin" /></td>
+<td width="33%"><img src="Cranberry-Frontend/public/images/screenshots/payment.png" alt="Payment" /></td>
 </tr>
 <tr>
 <td align="center"><sub>Vendor Dashboard</sub></td>
@@ -127,26 +127,73 @@ ollama pull llama3.2 && ollama pull gemma3
 
 <br />
 
+## API Overview
+
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| `/api/auth/register` | POST | — | User registration |
+| `/api/auth/login` | POST | — | JWT token generation |
+| `/api/products` | GET | — | Product listing with filters |
+| `/api/products/{id}` | GET | — | Product details |
+| `/api/ai/search` | POST | — | Semantic product search |
+| `/api/ai/chat` | POST | — | Conversational AI |
+| `/api/ai/recommendations/{userId}` | GET | JWT | Personalized recommendations |
+| `/api/cart` | GET/POST/DELETE | JWT | Cart management |
+| `/api/orders` | GET/POST | JWT | Order lifecycle |
+| `/api/payments/create` | POST | JWT | Razorpay order creation |
+| `/api/vendor/dashboard` | GET | Vendor | Sales analytics |
+| `/api/ai/price-suggest` | POST | Vendor | AI pricing intelligence |
+| `/api/admin/analytics` | GET | Admin | Platform metrics |
+
+> Full API reference: [API_DOCUMENTATION.md](Cranberry-Backend/API_DOCUMENTATION.md)
+
+<br />
+
+## Environment Variables
+
+```bash
+# Database
+DB_URL=jdbc:postgresql://localhost:5432/cranberry
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+
+# JWT
+JWT_SECRET=your_256_bit_secret_key
+
+# Razorpay
+RAZORPAY_KEY_ID=rzp_test_xxx
+RAZORPAY_KEY_SECRET=xxx
+
+# Ollama (optional)
+OLLAMA_BASE_URL=http://localhost:11434
+```
+
+<br />
+
 ## Project Structure
 
 ```
-├── Cranberry-Backend/          # Spring Boot application
-│   ├── src/main/java/com/cranberry/
+├── Cranberry-Backend/
+│   ├── src/main/java/com/cranberry/marketplace/
 │   │   ├── controller/         # 11 REST controllers
 │   │   ├── service/            # 10 business services
 │   │   ├── repository/         # 10 JPA repositories
 │   │   ├── model/              # 11 entity classes
 │   │   ├── dto/                # 28 request/response DTOs
 │   │   ├── security/           # JWT filter, auth config
+│   │   ├── config/             # CORS, security, app config
+│   │   ├── exception/          # Global exception handling
 │   │   └── ai/                 # AI module (search, chat, recommendations)
-│   └── API_DOCUMENTATION.md
+│   ├── API_DOCUMENTATION.md
+│   └── SETUP_GUIDE.md
 │
-├── Cranberry-Frontend/         # React SPA
+├── Cranberry-Frontend/
 │   ├── src/
 │   │   ├── components/         # UI components (shadcn/ui)
 │   │   ├── pages/              # Route components (customer, vendor, admin)
 │   │   ├── services/           # API client
-│   │   └── context/            # Auth, Cart, Wishlist state
+│   │   ├── context/            # Auth, Cart, Wishlist state
+│   │   └── hooks/              # Custom React hooks
 │   └── package.json
 │
 └── docs/diagrams/              # Architecture diagrams (SVG)
