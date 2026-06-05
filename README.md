@@ -2,7 +2,7 @@
 
 # Cranberry
 
-### AI-Powered Multi-Vendor E-Commerce Platform
+### AI-Powered Multi-Vendor Marketplace
 
 [**Live Demo**](https://cranberry-ai-multivendor-e-commerce.vercel.app) ·
 [**API**](https://cranberry-ai-powered-multi-vendor-e.onrender.com/api/health) ·
