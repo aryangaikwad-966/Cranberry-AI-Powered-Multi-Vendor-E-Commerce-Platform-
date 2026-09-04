@@ -22,13 +22,13 @@ import com.cranberry.marketplace.repository.WishlistRepository;
 
 /**
  * Data Initializer - Seeds the database with sample data on startup
- * Runs in production profile when database is empty (no products)
+ * Runs only in the explicit demo profile; production databases are never seeded.
  */
 @Configuration
 public class DataInitializer {
 
     @Bean
-    @Profile("prod")
+    @Profile("demo")
     CommandLineRunner initDatabase(
             UserRepository userRepository,
             VendorRepository vendorRepository,
@@ -44,7 +44,7 @@ public class DataInitializer {
                 return;
             }
 
-            System.out.println("🌱 Seeding production database with sample data...");
+            System.out.println("🌱 Seeding demo database with sample data...");
 
             // ============ CREATE USERS ============
             // Admin

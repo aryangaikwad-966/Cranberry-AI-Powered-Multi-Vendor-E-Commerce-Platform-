@@ -49,29 +49,30 @@ public class SecurityConfig {
                         // Payment config is public (just returns key)
                         .requestMatchers(HttpMethod.GET, "/api/payments/config").permitAll()
                         // Product management - vendors only
-                        .requestMatchers(HttpMethod.POST, "/api/products/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("VENDOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("VENDOR")
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("VENDOR")
                         // Cart & Wishlist - authenticated users
                         .requestMatchers("/api/cart/**").authenticated()
                         .requestMatchers("/api/wishlist/**").authenticated()
                         // Orders - authenticated users
+                        .requestMatchers(HttpMethod.PUT, "/api/orders/*/status").hasRole("ADMIN")
                         .requestMatchers("/api/orders/**").authenticated()
                         // Payments - authenticated users
                         .requestMatchers("/api/payments/**").authenticated()
                         // User profile - authenticated users
                         .requestMatchers("/api/users/**").authenticated()
                         // Vendor endpoints
-                        .requestMatchers("/api/vendor/dashboard").authenticated()
-                        .requestMatchers("/api/vendor/products").authenticated()
-                        .requestMatchers("/api/vendor/orders").authenticated()
+                        .requestMatchers("/api/vendor/dashboard").hasRole("VENDOR")
+                        .requestMatchers("/api/vendor/products").hasRole("VENDOR")
+                        .requestMatchers("/api/vendor/orders/**").hasRole("VENDOR")
                         .requestMatchers(HttpMethod.GET, "/api/vendor/**").permitAll()
                         .requestMatchers("/api/vendor/**").authenticated()
                         // Admin endpoints
-                        .requestMatchers("/api/admin/**").authenticated()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // AI admin endpoints
-                        .requestMatchers("/api/ai/admin/**").authenticated()
-                        .requestMatchers("/api/ai/price-suggest").authenticated()
+                        .requestMatchers("/api/ai/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/ai/price-suggest").hasRole("VENDOR")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtFilter(),

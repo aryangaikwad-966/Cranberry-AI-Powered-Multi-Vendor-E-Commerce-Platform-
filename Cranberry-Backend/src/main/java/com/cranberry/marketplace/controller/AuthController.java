@@ -14,6 +14,7 @@ import com.cranberry.marketplace.dto.GoogleAuthRequest;
 import com.cranberry.marketplace.dto.LoginRequest;
 import com.cranberry.marketplace.dto.RegisterRequest;
 import com.cranberry.marketplace.dto.VendorRequest;
+import com.cranberry.marketplace.exception.BadRequestException;
 import com.cranberry.marketplace.model.User;
 import com.cranberry.marketplace.security.JwtUtil;
 import com.cranberry.marketplace.service.AuthService;
@@ -45,6 +46,9 @@ public class AuthController {
         
         // If registering as vendor, first register as CUSTOMER, then create vendor profile
         String requestedRole = request.getRole() != null ? request.getRole().toUpperCase() : "CUSTOMER";
+        if (!"CUSTOMER".equals(requestedRole) && !"VENDOR".equals(requestedRole)) {
+            throw new BadRequestException("Only customer or vendor registration is allowed");
+        }
         if ("VENDOR".equals(requestedRole)) {
             user.setRole("CUSTOMER"); // Initially set as customer
         } else {

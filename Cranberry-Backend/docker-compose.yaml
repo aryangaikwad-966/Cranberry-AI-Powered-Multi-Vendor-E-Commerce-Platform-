@@ -7,12 +7,10 @@ services:
     container_name: cranberry-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
       MYSQL_DATABASE: cranberry_db
       MYSQL_USER: cranberry
-      MYSQL_PASSWORD: ${DB_PASSWORD:-rootpassword}
-    ports:
-      - "3306:3306"
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -34,19 +32,21 @@ services:
     ports:
       - "8080:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-default}
       # Database
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cranberry_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: cranberry
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-rootpassword}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      # Local Compose development only. Production uses the prod profile, which validates migrations.
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
       
       # JWT
-      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-min-32-characters}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
       
       # Razorpay
-      RAZORPAY_KEY: ${RAZORPAY_KEY:-your_razorpay_key}
-      RAZORPAY_SECRET: ${RAZORPAY_SECRET:-your_razorpay_secret}
+      RAZORPAY_KEY: ${RAZORPAY_KEY:?Set RAZORPAY_KEY in .env}
+      RAZORPAY_SECRET: ${RAZORPAY_SECRET:?Set RAZORPAY_SECRET in .env}
       
       # Ollama (connect to host machine)
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}

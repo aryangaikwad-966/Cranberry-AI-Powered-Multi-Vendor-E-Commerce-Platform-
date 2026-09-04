@@ -186,9 +186,9 @@ const LoginPage = () => {
                 <input type="checkbox" className="rounded border-slate-300 text-[#0071E3]" />
                 <span className="ml-2 text-sm text-slate-600">Remember me</span>
               </label>
-              <Link to="/forgot-password" className="text-sm text-[#0071E3] hover:underline">
-                Forgot password?
-              </Link>
+              <p className="text-sm text-slate-500">
+                Need to reset your password? Contact your marketplace administrator.
+              </p>
             </div>
 
             <Button

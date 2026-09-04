@@ -2,26 +2,46 @@ package com.cranberry.marketplace.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private static final String SECRET =
-            "cranberry-marketplace-super-secret-jwt-key-123456";
-    private static final long EXPIRATION = 1000 * 60 * 60 * 24; // 24 hours
+    private static volatile Key key;
+    private static volatile long expiration;
 
-    private static final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    @Value("${jwt.secret}")
+    void setSecret(String secret) {
+        if (secret == null || secret.getBytes(StandardCharsets.UTF_8).length < 32) {
+            throw new IllegalStateException("JWT_SECRET must be at least 32 bytes");
+        }
+        key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Value("${jwt.expiration:86400000}")
+    void setExpiration(long configuredExpiration) {
+        if (configuredExpiration <= 0) {
+            throw new IllegalStateException("JWT expiration must be positive");
+        }
+        expiration = configuredExpiration;
+    }
+
+    private static Key signingKey() {
+        if (key == null) throw new IllegalStateException("JWT signing key is not configured");
+        return key;
+    }
 
     public static String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(signingKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -31,14 +51,14 @@ public class JwtUtil {
                 .claim("userId", userId)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(signingKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public static String extractEmail(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(signingKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -47,7 +67,7 @@ public class JwtUtil {
 
     public static Long extractUserId(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(signingKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -56,7 +76,7 @@ public class JwtUtil {
 
     public static String extractRole(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(signingKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -66,7 +86,7 @@ public class JwtUtil {
     public static boolean isTokenExpired(String token) {
         try {
             Date expiration = Jwts.parserBuilder()
-                    .setSigningKey(key)
+                    .setSigningKey(signingKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody()

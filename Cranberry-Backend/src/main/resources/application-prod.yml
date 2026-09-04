@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/cranberry}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:password}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
@@ -12,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: false
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -33,7 +33,7 @@ spring:
 ai:
   provider: ollama
   ollama:
-    baseUrl: ${OLLAMA_BASE_URL:http://localhost:11434}
+    baseUrl: ${OLLAMA_BASE_URL}
     model: ${OLLAMA_MODEL:llama3.2}
     timeout: 60000
 

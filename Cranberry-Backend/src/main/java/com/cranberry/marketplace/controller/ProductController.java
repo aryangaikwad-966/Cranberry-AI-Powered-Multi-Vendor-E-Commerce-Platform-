@@ -58,10 +58,8 @@ public class ProductController {
             Vendor vendor = vendorService.getVendorByUserId(userId);
             product.setVendor(vendor);
             
-            // Default status is PENDING - admin must approve
-            if (product.getStatus() == null) {
-                product.setStatus("pending");
-            }
+            // Vendors must never be able to self-approve a product.
+            product.setStatus("pending");
 
             Product savedProduct = productService.addProduct(product);
             return ResponseEntity.ok(ApiResponse.success("Product added successfully. It will be visible after admin approval.", savedProduct));
@@ -114,13 +112,17 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Product>> updateProduct(@PathVariable Long id,
-                                                              @Valid @RequestBody Product product) {
+                                                              @Valid @RequestBody Product product,
+                                                              @RequestHeader("Authorization") String authHeader) {
+        requireProductOwner(id, authHeader);
         Product updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(ApiResponse.success("Product updated successfully", updatedProduct));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long id,
+                                                            @RequestHeader("Authorization") String authHeader) {
+        requireProductOwner(id, authHeader);
         productService.deleteProduct(id);
         return ResponseEntity.ok(ApiResponse.success("Product deleted successfully"));
     }
@@ -129,6 +131,15 @@ public class ProductController {
         String token = authHeader.substring(7);
         String email = JwtUtil.extractEmail(token);
         return authService.findByEmail(email).getId();
+    }
+
+    private void requireProductOwner(Long productId, String authHeader) {
+        Product product = productService.getProductById(productId);
+        Long userId = extractUserId(authHeader);
+        Vendor vendor = vendorService.getVendorByUserId(userId);
+        if (product.getVendor() == null || !product.getVendor().getId().equals(vendor.getId())) {
+            throw new SecurityException("You do not have access to this product");
+        }
     }
 
     private ProductResponse convertToResponse(Product p) {

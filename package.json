@@ -4,13 +4,14 @@
     "description": "AI-Powered Multi-Vendor E-Commerce Marketplace",
     "main": "index.js",
     "scripts": {
-        "build": "cd Cranberry-Frontend && npm install && npm run build",
+        "build": "cd Cranberry-Frontend && npm ci && npm run build",
         "dev": "cd Cranberry-Frontend && npm run dev",
         "start": "cd Cranberry-Frontend && npm run preview",
-        "install-frontend": "cd Cranberry-Frontend && npm install",
+        "install-frontend": "cd Cranberry-Frontend && npm ci",
         "clean": "cd Cranberry-Frontend && rm -rf dist node_modules && npm install",
         "deploy": "vercel --prod",
-        "preview": "cd Cranberry-Frontend && npm run build && npm run preview"
+        "preview": "cd Cranberry-Frontend && npm run build && npm run preview",
+        "test": "cd Cranberry-Frontend && npm test -- --run && cd ../Cranberry-Backend && mvn test"
     },
     "repository": {
         "type": "git",

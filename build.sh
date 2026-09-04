@@ -13,7 +13,7 @@ fi
 cd Cranberry-Frontend
 
 echo "📦 Installing dependencies..."
-npm install
+npm ci
 
 echo "🏗️ Building the project..."
 npm run build

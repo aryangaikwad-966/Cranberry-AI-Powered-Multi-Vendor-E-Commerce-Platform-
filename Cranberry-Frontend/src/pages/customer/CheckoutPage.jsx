@@ -108,7 +108,6 @@ const CheckoutPage = () => {
         shippingAddress,
       };
 
-      console.log('Creating order with data:', orderData);
 
       let order;
       try {

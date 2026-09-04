@@ -57,10 +57,8 @@ const VendorProducts = () => {
   const loadProducts = async () => {
     try {
       const response = await vendorApi.getProducts();
-      console.log('API response for vendor products:', response);
       // The axios interceptor already unwraps the response
       const productsArray = Array.isArray(response) ? response : [];
-      console.log('Products array extracted:', productsArray);
       setProducts(productsArray);
     } catch (error) {
       console.error('Failed to load products:', error);

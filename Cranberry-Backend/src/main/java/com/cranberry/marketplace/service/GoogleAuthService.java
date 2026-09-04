@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Base64;
+import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,20 +33,30 @@ public class GoogleAuthService {
      */
     public User authenticateGoogleUser(String credential) {
         try {
-            // Decode the JWT token (Google ID token is a JWT)
-            String[] parts = credential.split("\\.");
-            if (parts.length != 3) {
-                throw new RuntimeException("Invalid Google credential format");
+            if (googleClientId == null || googleClientId.isBlank()) {
+                throw new RuntimeException("Google sign-in is not configured");
             }
 
-            // Decode payload (second part)
-            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
-            JsonNode claims = objectMapper.readTree(payload);
+            // Google verifies the JWT signature, issuer and expiry. Decoding a JWT payload
+            // locally is not authentication because an attacker can forge unsigned claims.
+            JsonNode claims = webClient.get()
+                    .uri("https://oauth2.googleapis.com/tokeninfo?id_token={credential}", credential)
+                    .retrieve()
+                    .bodyToMono(JsonNode.class)
+                    .timeout(Duration.ofSeconds(5))
+                    .block();
+            if (claims == null) {
+                throw new RuntimeException("Google token verification failed");
+            }
 
             // Verify the token is for our client
             String audience = claims.has("aud") ? claims.get("aud").asText() : "";
             if (!googleClientId.isEmpty() && !audience.equals(googleClientId)) {
                 throw new RuntimeException("Invalid token audience");
+            }
+
+            if (!claims.path("email_verified").asBoolean(false)) {
+                throw new RuntimeException("Google account email is not verified");
             }
 
             // Check token expiration
@@ -84,7 +94,7 @@ public class GoogleAuthService {
                 User newUser = new User();
                 newUser.setEmail(email);
                 newUser.setName(name != null ? name : email.split("@")[0]);
-                newUser.setPassword(UUID.randomUUID().toString()); // Random password for OAuth users
+                newUser.setPassword(UUID.randomUUID().toString()); // Unusable random local credential for OAuth users
                 newUser.setRole("CUSTOMER");
                 newUser.setGoogleId(googleId);
                 if (picture != null) {

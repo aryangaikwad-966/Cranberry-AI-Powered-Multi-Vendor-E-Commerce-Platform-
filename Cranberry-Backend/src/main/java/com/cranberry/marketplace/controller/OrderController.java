@@ -121,8 +121,10 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getOrderById(@PathVariable Long orderId) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getOrderById(
+            @PathVariable Long orderId, @RequestHeader("Authorization") String authHeader) {
         Order order = orderService.getOrderById(orderId);
+        requireOwnerOrAdmin(order, authHeader);
         
         Map<String, Object> orderMap = new HashMap<>();
         orderMap.put("id", order.getId());
@@ -177,19 +179,27 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<Order>>> getOrdersByUser(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<List<Order>>> getOrdersByUser(@PathVariable Long userId,
+            @RequestHeader("Authorization") String authHeader) {
+        if (!userId.equals(extractUserId(authHeader)) && !"ADMIN".equalsIgnoreCase(extractUserRole(authHeader))) {
+            throw new SecurityException("You do not have access to these orders");
+        }
         List<Order> orders = orderService.getOrdersByUser(userId);
         return ResponseEntity.ok(ApiResponse.success(orders));
     }
 
     @GetMapping("/{orderId}/items")
-    public ResponseEntity<ApiResponse<List<OrderItem>>> getOrderItems(@PathVariable Long orderId) {
+    public ResponseEntity<ApiResponse<List<OrderItem>>> getOrderItems(@PathVariable Long orderId,
+            @RequestHeader("Authorization") String authHeader) {
+        requireOwnerOrAdmin(orderService.getOrderById(orderId), authHeader);
         List<OrderItem> items = orderService.getOrderItems(orderId);
         return ResponseEntity.ok(ApiResponse.success(items));
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<ApiResponse<Void>> cancelOrder(@PathVariable Long orderId) {
+    public ResponseEntity<ApiResponse<Void>> cancelOrder(@PathVariable Long orderId,
+            @RequestHeader("Authorization") String authHeader) {
+        requireOwnerOrAdmin(orderService.getOrderById(orderId), authHeader);
         orderService.cancelOrder(orderId);
         return ResponseEntity.ok(ApiResponse.success("Order cancelled successfully"));
     }
@@ -310,6 +320,13 @@ public class OrderController {
         String role = extractUserRole(authHeader);
         if (!"admin".equalsIgnoreCase(role)) {
             throw new SecurityException("Admin access required");
+        }
+    }
+
+    private void requireOwnerOrAdmin(Order order, String authHeader) {
+        if ("ADMIN".equalsIgnoreCase(extractUserRole(authHeader))) return;
+        if (order.getUser() == null || !order.getUser().getId().equals(extractUserId(authHeader))) {
+            throw new SecurityException("You do not have access to this order");
         }
     }
 }
